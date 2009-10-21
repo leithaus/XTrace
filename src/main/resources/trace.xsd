@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:complexType mixed="true" name="conversationType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="requester"/>
+      <xs:element ref="request"/>
+      <xs:element ref="waiting"/>
+      <xs:element ref="conversation"/>
+      <xs:element ref="responder"/>
+      <xs:element ref="response"/>
+    </xs:choice>
+    <xs:attributeGroup ref="attlist.conversation"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="requesterType">
+    <xs:attributeGroup ref="attlist.requester"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="responderType">
+    <xs:attributeGroup ref="attlist.responder"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="requestType">
+    <xs:attributeGroup ref="attlist.request"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="responseType">
+    <xs:attributeGroup ref="attlist.response"/>
+  </xs:complexType>
+  <xs:complexType mixed="true" name="executionType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="conversation"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="execution" type="executionType"/>
+  <xs:element name="conversation" type="conversationType"/>
+  <xs:element name="waiting" type="xs:string"/>
+  <xs:element name="requester" type="requesterType"/>
+  <xs:element name="request" type="requestType"/>
+  <xs:element name="responder" type="responderType"/>
+  <xs:element name="response" type="responseType"/>  
+  <xs:attributeGroup name="attlist.requester">
+    <xs:attribute name="conversation"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="attlist.responder">
+    <xs:attribute name="conversation"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="attlist.request">
+    <xs:attribute name="conversation"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="attlist.conversation">
+    <xs:attribute name="id"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="attlist.response">
+    <xs:attribute name="conversation"/>
+  </xs:attributeGroup>
+</xs:schema>
