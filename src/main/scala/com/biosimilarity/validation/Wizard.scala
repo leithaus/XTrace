@@ -161,10 +161,10 @@ object Cabal {
 		     }
 		     case _ => {
 		       responsesReceived += response
-		       // traceMonitor.traceEvent(
-// 			 this,
-// 			 "<waiting>Draco " + responses.length + "</waiting>"
-// 		       )
+		       traceMonitor.traceEvent(
+			 this,
+			 "<waiting>Draco " + responses.length + "</waiting>"
+		       )
 		     }
 		   }
 		 }
