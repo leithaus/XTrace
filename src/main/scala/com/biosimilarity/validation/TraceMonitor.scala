@@ -13,38 +13,38 @@ import scala.xml._
 import scala.actors._
 import Actor._
 
-trait LogAction
-trait Report {
-  def agent : Socialite
+trait LogAction[ReqBody,RspBody]
+trait Report[ReqBody,RspBody] {
+  def agent : Socialite[ReqBody,RspBody]
   def message : String
 }
-case class TraceEvent( agent : Socialite, msg : String )
-     extends LogAction with Report {
+case class TraceEvent[ReqBody,RspBody]( agent : Socialite[ReqBody,RspBody], msg : String )
+     extends LogAction[ReqBody,RspBody] with Report[ReqBody,RspBody] {
        override def message = msg
      }
-case class TraceXmlEvent( agent : Socialite, msg : Elem ) 
-     extends LogAction with Report {
+case class TraceXmlEvent[ReqBody,RspBody]( agent : Socialite[ReqBody,RspBody], msg : Elem ) 
+     extends LogAction[ReqBody,RspBody] with Report[ReqBody,RspBody] {
        override def message = msg.toString
      }
-case class ShowLog() extends LogAction
+case class ShowLog[ReqBody,RspBody]() extends LogAction[ReqBody,RspBody]
 
-trait SessionStatus
-case class OpenSession( agent : Socialite )
-     extends LogAction with SessionStatus
-case class CloseSession( agent : Socialite )
-     extends LogAction with SessionStatus
+trait SessionStatus[ReqBody,RspBody]
+case class OpenSession[ReqBody,RspBody]( agent : Socialite[ReqBody,RspBody] )
+     extends LogAction[ReqBody,RspBody] with SessionStatus[ReqBody,RspBody]
+case class CloseSession[ReqBody,RspBody]( agent : Socialite[ReqBody,RspBody] )
+     extends LogAction[ReqBody,RspBody] with SessionStatus[ReqBody,RspBody]
 
 trait DebuggingLevel 
 case class Naked() extends DebuggingLevel
 case class FullyClothed() extends DebuggingLevel
 
-class TraceMonitor extends Actor {
+class TraceMonitor[ReqBody,RspBody] extends Actor {
   var debuggingLevel : DebuggingLevel = Naked()
   //var debuggingLevel : DebuggingLevel = FullyClothed()
-  val sessions : LinkedHashMap[Socialite,SessionStatus] =
-    new LinkedHashMap[Socialite,SessionStatus]()
-  val messageLog : ListBuffer[Report] =
-    new ListBuffer[Report]()
+  val sessions : LinkedHashMap[Socialite[ReqBody,RspBody],SessionStatus[ReqBody,RspBody]] =
+    new LinkedHashMap[Socialite[ReqBody,RspBody],SessionStatus[ReqBody,RspBody]]()
+  val messageLog : ListBuffer[Report[ReqBody,RspBody]] =
+    new ListBuffer[Report[ReqBody,RspBody]]()
 
   def dumpLogToString : String =
     dumpLogToWriter( new java.io.StringWriter() )
@@ -73,10 +73,12 @@ class TraceMonitor extends Actor {
     preamble + dumpLogToString + postScript
   }
 
-  def sessionStatus( agent : Socialite ) : Option[SessionStatus] = {
+  def sessionStatus( agent : Socialite[ReqBody,RspBody] )
+  : Option[SessionStatus[ReqBody,RspBody]] = {
     sessions.get( agent )
   }
-  def openMonitoringSession( agent : Socialite ) : OpenSession = {
+  def openMonitoringSession( agent : Socialite[ReqBody,RspBody] )
+  : OpenSession[ReqBody,RspBody] = {
     sessions.get( agent ) match {
       case Some( agent ) => {
 	throw new Exception( "already in session" )
@@ -88,7 +90,8 @@ class TraceMonitor extends Actor {
       }
     }
   }
-  def closeMonitoringSession( agent : Socialite ) : CloseSession = {
+  def closeMonitoringSession( agent : Socialite[ReqBody,RspBody] )
+  : CloseSession[ReqBody,RspBody] = {
     sessions.get( agent ) match {
       case Some( session ) => {
 	val session = CloseSession( agent )
@@ -113,11 +116,11 @@ class TraceMonitor extends Actor {
     )
   }
   
-  def traceEvent( agent : Socialite, msg : String ) : Unit = {
+  def traceEvent( agent : Socialite[ReqBody,RspBody], msg : String ) : Unit = {
     traceEvent( TraceEvent( agent, msg ) )
   }
 
-  def traceEvent( report : Report ) : Unit = {
+  def traceEvent( report : Report[ReqBody,RspBody] ) : Unit = {
     debuggingLevel match {
       case Naked() => {
 	println( "logging event to console: " + report.message )
@@ -155,19 +158,19 @@ class TraceMonitor extends Actor {
   def act () {
     receive {
       case OpenSession( agent ) => {
-	openMonitoringSession( agent )
+	openMonitoringSession( agent.asInstanceOf[Socialite[ReqBody,RspBody]] )
 	act()
       }
       case CloseSession( agent ) => {
-	closeMonitoringSession( agent )
+	closeMonitoringSession( agent.asInstanceOf[Socialite[ReqBody,RspBody]] )
 	act()
       }
       case TraceEvent( agent, msg ) => {
-	traceEvent( TraceEvent( agent, msg ) )
+	traceEvent( TraceEvent( agent.asInstanceOf[Socialite[ReqBody,RspBody]], msg ) )
 	act()
       }
       case TraceXmlEvent( agent, msg ) => {
-	traceEvent( TraceXmlEvent( agent, msg ) )
+	traceEvent( TraceXmlEvent( agent.asInstanceOf[Socialite[ReqBody,RspBody]], msg ) )
 	act()
       }
       case ShowLog() => {
@@ -178,4 +181,4 @@ class TraceMonitor extends Actor {
   }
 }
 
-object ATraceMonitor extends TraceMonitor
+object AStringTraceMonitor extends TraceMonitor[String,String]

@@ -11,83 +11,105 @@ package com.biosimilarity.validation
 import java.net.URI
 import com.eaio.uuid.UUID
 
-trait Message[Justfication] {
-  def magic : Int
-  def body : String
-  def deeper : Option[Justfication]
-  def to : URI
-  def from : URI
-  def color : UUID
+trait Header {
+  def msgId         : UUID
+  def to            : URI
+  def from          : URI
+  def flowId        : UUID
 }
 
-abstract class Request[Response](
-  magic : Int,
-  body : String,
-  deeper : Option[Response],
-  to : URI,
-  from : URI,
-  color : UUID
-) extends Message[Response]
-
-trait InspectionRequest extends Message[Unit] {
-  val color : UUID = new UUID()
+trait Message[Justfication,BodyType] {  
+  def body          : BodyType
+  def justification : Option[Justfication]  
 }
 
-case class JustifiedRequest(
-  magic : Int,
-  body : String,
-  deeper : Option[Response[JustifiedRequest]],
-  to : URI,
-  from : URI,
-  color : UUID
-) extends Request[Response[JustifiedRequest]](
-  magic, body, deeper, to, from, color
+abstract class Request[Response,BodyType](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : BodyType,
+  justification : Option[Response]  
+) extends Message[Response,BodyType] with Header
+
+abstract class AbstractJustifiedRequest[ReqBody,RspBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : ReqBody,
+  justification : Option[Response[AbstractJustifiedRequest[ReqBody,RspBody],RspBody]]
+) extends Request[Response[AbstractJustifiedRequest[ReqBody,RspBody],RspBody],ReqBody](
+  msgId, to, from, flowId, body, justification
 )
+
+case class JustifiedRequest[ReqBody,RspBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : ReqBody,
+  justification : Option[Response[AbstractJustifiedRequest[ReqBody,RspBody],RspBody]]
+) extends AbstractJustifiedRequest[ReqBody,RspBody](
+  msgId, to, from, flowId, body, justification
+)
+
+abstract class Response[Request,BodyType](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : BodyType,
+  justification : Option[Request]
+) extends Message[Request,BodyType]
+
+abstract class AbstractJustifiedResponse[ReqBody,RspBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : RspBody,
+  justification : Option[Request[AbstractJustifiedResponse[ReqBody,RspBody],ReqBody]]
+) extends Response[Request[AbstractJustifiedResponse[ReqBody,RspBody],ReqBody],RspBody](
+  msgId, to, from, flowId, body, justification
+)
+
+case class JustifiedResponse[ReqBody,RspBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : RspBody,
+  justification : Option[Request[AbstractJustifiedResponse[ReqBody,RspBody],ReqBody]]
+) extends AbstractJustifiedResponse[ReqBody,RspBody](
+  msgId, to, from, flowId, body, justification
+)
+
+// Inspection and other control plane messages
+
+trait InspectionRequest extends Message[Unit,Unit] with Header {
+  val flowId : UUID = new UUID()
+}
 
 case class InspectRequests( to : URI, from : URI )
      extends InspectionRequest {
-       override def magic = 1001
-       override def body = "InspectRequests"
-       override def deeper = None       
+       override def msgId = new UUID()
+       override def body = {}
+       override def justification = None       
      }
 
 case class InspectResponses( to : URI, from : URI )
      extends InspectionRequest {
-       override def magic = 1002
-       override def body = "InspectResponses"
-       override def deeper = None
+       override def msgId = new UUID()
+       override def body = {}
+       override def justification = None
      }
 
 case class InspectNamespace( to : URI, from : URI )
      extends InspectionRequest {
-       override def magic = 1003
-       override def body = "InspectNamespace"
-       override def deeper = None
+       override def msgId = new UUID()
+       override def body = {}
+       override def justification = None
      }
 
-abstract class Response[Request](
-  magic : Int,
-  body : String,
-  deeper : Option[Request],
-  to : URI,
-  from : URI,
-  color : UUID
-) extends Message[Request]
-
-trait InspectionResponse[Request] extends Message[Request]
-
-case class JustifiedResponse(
-  magic : Int,
-  body : String,
-  deeper : Option[Request[JustifiedResponse]],
-  to : URI,
-  from : URI,
-  color : UUID
-) extends Response[Request[JustifiedResponse]](
-  magic, body, deeper, to, from, color
-)
-
-
-
-
-
+trait InspectionResponse[Request] extends Message[Request,Unit]

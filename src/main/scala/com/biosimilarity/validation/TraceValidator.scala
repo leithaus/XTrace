@@ -55,7 +55,7 @@ trait TraceValidation {
 
 }
 
-class TraceValidator( monitor : TraceMonitor )
+class TraceValidator[ReqBody,RspBody]( monitor : TraceMonitor[ReqBody,RspBody] )
 extends TraceValidation
 {
   def validate( property : String ) : Boolean = {
@@ -63,4 +63,5 @@ extends TraceValidation
   }
 }
 
-case object ATraceValidator extends TraceValidator( ATraceMonitor )
+case object AStringTraceValidator
+extends TraceValidator[String,String]( AStringTraceMonitor )

@@ -40,92 +40,95 @@ object Cabal {
 
   // Messages
 
-  val pickUpLine : JustifiedRequest =
+  type AJustStringRequest = JustifiedRequest[String,String]
+  type AJustStringResponse = JustifiedResponse[String,String]  
+
+  val pickUpLine : AJustStringRequest =
     JustifiedRequest(
-      0,
+      new UUID(),
+      hermionesName,
+      ronsName,
+      attraction,
       "chocolateFrog?",
-      None,
-      hermionesName,
-      ronsName,
-      attraction
+      None
     )
-  val friendlyOverture : JustifiedRequest =
+  val friendlyOverture : AJustStringRequest =
     JustifiedRequest(
-      0,
+      new UUID,
+      hermionesName,
+      harrysName,
+      friendship,
       "bean?",
-      None,
-      hermionesName,
-      harrysName,
-      friendship
+      None      
     )
-  val expelliarmus : JustifiedRequest =
+  val expelliarmus : AJustStringRequest =
     JustifiedRequest(
-      0,
+      new UUID(),
+      dracosName,
+      harrysName,
+      magicalDefense,
       "expelliarmus",
-      None,
-      dracosName,
-      harrysName,
-      magicalDefense
+      None      
     )
-//   val expectoPatronum : JustifiedRequest =
+//   val expectoPatronum : AJustStringRequest =
 //     JustifiedRequest( 0, "expectoPatronum", None, dracosName, harrysName )
-  val confundo : JustifiedRequest =
+  val confundo : AJustStringRequest =
     JustifiedRequest(
-      0,
-      "confundo",
-      None,
+      new UUID(),
       harrysName,
       dracosName,
-      magicalAttack
+      magicalAttack,
+      "confundo",
+      None      
     )
-  val impedimenta : JustifiedRequest =
+  val impedimenta : AJustStringRequest =
     JustifiedRequest(
-      0,
-      "impedimenta",
-      None,
+      new UUID(),
       ronsName,
       harrysName,
-      magicalAttackTwo
+      magicalAttackTwo,
+      "impedimenta",
+      None      
     )
-  val finiteIncantatem : JustifiedResponse =
+  val finiteIncantatem : AJustStringResponse =
     JustifiedResponse(
-      0,
-      "finiteIncantatem",
-      Some( expelliarmus.asInstanceOf[Request[JustifiedResponse]] ),
+      new UUID(),
       harrysName,
       dracosName,
-      magicalDefenseTwo
+      magicalDefenseTwo,
+      "finiteIncantatem",
+      Some( expelliarmus.asInstanceOf[Request[AbstractJustifiedResponse[String,String],String]] )      
     )
 
-  val flirt : JustifiedResponse =
+  val flirt : AJustStringResponse =
     JustifiedResponse(
-      1,
-      "chocolateFrog!",
-      Some( pickUpLine.asInstanceOf[Request[JustifiedResponse]] ),
+      new UUID(),
       ronsName,
       hermionesName,
-      attraction
+      attraction,
+      "chocolateFrog!",
+      Some( pickUpLine.asInstanceOf[Request[AbstractJustifiedResponse[String,String],String]] )      
     )
-  val friendlyResponse : JustifiedResponse =
+  val friendlyResponse : AJustStringResponse =
     JustifiedResponse(
-      1,
-      "bean.",
-      Some( friendlyOverture.asInstanceOf[Request[JustifiedResponse]] ),
+      new UUID(),
       harrysName,
       hermionesName,
-      friendship
+      friendship,
+      "bean.",
+      Some( friendlyOverture.asInstanceOf[Request[AbstractJustifiedResponse[String,String],String]] )      
     )  
 
   case object MessengerOne
-     extends Messenger(
+     extends Messenger[String,String](
        harrysName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
-	 val responsesReceived : ListBuffer[JustifiedResponse] =
-	   new ListBuffer[JustifiedResponse]()
+	 val responsesReceived : ListBuffer[AJustStringResponse] =
+	   new ListBuffer[AJustStringResponse]()
 	 override def useBraceNotation : Boolean = true
 	 def script() = {	   
 	   markRequest( friendlyOverture )
@@ -133,14 +136,14 @@ object Cabal {
 	   markRequest( expelliarmus )
 	   MessengerFour ! expelliarmus
 	 }
-	 override def handle( response : JustifiedResponse ) = {
+	 override def handle( response : AJustStringResponse ) = {
 	   //println( "handling: " + response )
 	   response match {
 	     case JustifiedResponse(
-	       mgc, content, Some( req ),
-	       _,
+	       mgc, _,
 	       respondersName,
-	       color
+	       color,
+	       content, Some( req )
 	     ) => {
 	       //println( "matched response case!" )
 	       respondersName.getFragment match {
@@ -203,26 +206,26 @@ object Cabal {
        }
 
   case object MessengerTwo
-     extends Messenger(
+     extends Messenger[String,String](
        ronsName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {
 	   markRequest( pickUpLine )
 	   MessengerThree ! pickUpLine
 	 }
-	 override def handle( response : JustifiedResponse ) = {
+	 override def handle( response : AJustStringResponse ) = {
 	   //println( "handling: " + response )
 	   response match {
 	     case JustifiedResponse(
-	       mgc, content, Some( req ),
-	       _,
+	       mgc, _,
 	       respondersName,
-	       color
+	       color,
+	       content, Some( req )
 	     ) => {
 	       respondersName.getFragment match {
 		 case "Harry" => {
@@ -251,26 +254,26 @@ object Cabal {
        }
 
   case object MessengerThree
-     extends Messenger(
+     extends Messenger[String,String](
        hermionesName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {	   
 	   //markRequest( pickUpLine )
 	   //MessengerThree ! pickUpLine
 	 }
-	 override def handle( request : JustifiedRequest ) = {
+	 override def handle( request : AJustStringRequest ) = {
 	   //println( "handling: " + request )
 	   request match {
 	     case JustifiedRequest(
-	       0, content, None,
-	       _,
+	       mgc, _,
 	       suitorsName,
-	       color
+	       color,
+	       content, None
 	     ) => {
 	       suitorsName.getFragment match {
 		 case "Ron" => {
@@ -329,26 +332,26 @@ object Cabal {
        }
 
   case object MessengerFour
-     extends Messenger(
+     extends Messenger[String,String](
        dracosName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {
 	   //markRequest( pickUpLine )
 	   //MessengerThree ! pickUpLine
 	 }
-	 override def handle( request : JustifiedRequest ) = {
+	 override def handle( request : AJustStringRequest ) = {
 	   println( "handling: " + request )
 	   request match {
 	     case JustifiedRequest(
-	       mgc, content, None,
-	       _,
+	       mgc, _,
 	       requestersName,
-	       color
+	       color,
+	       content, None
 	     ) => {
 	       requestersName.getFragment match {
 		 case "Harry" => {
@@ -392,15 +395,15 @@ object Cabal {
        }
 
   case object RMessengerOne
-     extends RMessenger(
+     extends RMessenger[String,String](
        harrysName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
-	 val responsesReceived : ListBuffer[JustifiedResponse] =
-	   new ListBuffer[JustifiedResponse]()
+	 val responsesReceived : ListBuffer[AJustStringResponse] =
+	   new ListBuffer[AJustStringResponse]()
 	 override def useBraceNotation : Boolean = true
 	 def script() = {	   
 	   markRequest( friendlyOverture )
@@ -409,16 +412,16 @@ object Cabal {
 	   RMessengerFour ! expelliarmus
 	 }
 	 override def handleWithContinuation(
-	   response : JustifiedResponse,
-	   k : Status[JustifiedResponse] => Status[JustifiedResponse]
+	   response : AJustStringResponse,
+	   k : Status[AJustStringResponse] => Status[AJustStringResponse]
 	 ) = {
 	   //println( "handling: " + response )
 	   response match {
 	     case JustifiedResponse(
-	       mgc, content, Some( req ),
-	       _,
+	       mgc, _,
 	       respondersName,
-	       color
+	       color,
+	       content, Some( req )
 	     ) => {
 	       //println( "matched response case!" )
 	       respondersName.getFragment match {
@@ -510,12 +513,12 @@ object Cabal {
        }
 
   case object RMessengerTwo
-     extends RMessenger(
+     extends RMessenger[String,String](
        ronsName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {
@@ -523,16 +526,16 @@ object Cabal {
 	   RMessengerThree ! pickUpLine
 	 }
 	 override def handleWithContinuation(
-	   response : JustifiedResponse,
-	   k : Status[JustifiedResponse] => Status[JustifiedResponse]
+	   response : AJustStringResponse,
+	   k : Status[AJustStringResponse] => Status[AJustStringResponse]
 	 ) = {
 	   //println( "handling: " + response )
 	   response match {
 	     case JustifiedResponse(
-	       mgc, content, Some( req ),
-	       _,
+	       mgc, _,
 	       respondersName,
-	       color
+	       color,
+	       content, Some( req )
 	     ) => {
 	       respondersName.getFragment match {
 		 case "Harry" => {
@@ -590,12 +593,12 @@ object Cabal {
        }
 
   case object RMessengerThree
-     extends RMessenger(
+     extends RMessenger[String,String](
        hermionesName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {	   
@@ -603,16 +606,16 @@ object Cabal {
 	   //RMessengerThree ! pickUpLine
 	 }
 	 override def handleWithContinuation(
-	   request : JustifiedRequest,
-	   k : Status[JustifiedRequest] => Status[JustifiedRequest]
+	   request : AJustStringRequest,
+	   k : Status[AJustStringRequest] => Status[AJustStringRequest]
 	 ) = {
 	   //println( "handling: " + request )
 	   request match {
 	     case JustifiedRequest(
-	       0, content, None,
-	       _,
+	       mgc, _,
 	       suitorsName,
-	       color
+	       color,
+	       content, None
 	     ) => {
 	       suitorsName.getFragment match {
 		 case "Ron" => {
@@ -684,12 +687,12 @@ object Cabal {
        }
 
   case object RMessengerFour
-     extends RMessenger(
+     extends RMessenger[String,String](
        dracosName,
-       new ListBuffer[JustifiedRequest](),
-       new ListBuffer[JustifiedResponse](),
-       Some( new LinkedHashMap[URI,Socialite]() ),
-       ATraceMonitor
+       new ListBuffer[AJustStringRequest](),
+       new ListBuffer[AJustStringResponse](),
+       Some( new LinkedHashMap[URI,Socialite[String,String]]() ),
+       AStringTraceMonitor
        ) {
 	 override def useBraceNotation : Boolean = true
 	 def script() = {
@@ -697,16 +700,16 @@ object Cabal {
 	   //RMessengerThree ! pickUpLine
 	 }
 	 override def handleWithContinuation(
-	   request : JustifiedRequest,
-	   k : Status[JustifiedRequest] => Status[JustifiedRequest]
+	   request : AJustStringRequest,
+	   k : Status[AJustStringRequest] => Status[AJustStringRequest]
 	 ) = {
 	   println( "handling: " + request )
 	   request match {
 	     case JustifiedRequest(
-	       mgc, content, None,
-	       _,
+	       mgc, _,
 	       requestersName,
-	       color
+	       color,
+	       content, None
 	     ) => {
 	       requestersName.getFragment match {
 		 case "Harry" => {
@@ -772,7 +775,7 @@ object Cabal {
     // Harry is introduced to MessengerFour known as Draco
     MessengerOne.introduce( dracosName, MessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( MessengerOne )
+    AStringTraceMonitor.openMonitoringSession( MessengerOne )
 
     // MessengerTwo learns his name is Ron
     MessengerTwo.introduce( ronsName, MessengerTwo )
@@ -783,7 +786,7 @@ object Cabal {
     // Ron is introduced to MessengerFour known as Draco
     MessengerTwo.introduce( dracosName, MessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( MessengerTwo )
+    AStringTraceMonitor.openMonitoringSession( MessengerTwo )
 
     // MessengerThree learns her name is Hermione
     MessengerThree.introduce( hermionesName, MessengerThree )
@@ -794,7 +797,7 @@ object Cabal {
     // Hermione is introduced to MessengerFour known as Draco
     MessengerThree.introduce( dracosName, MessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( MessengerThree )
+    AStringTraceMonitor.openMonitoringSession( MessengerThree )
 
     // MessengerFour learns his name is Draco
     MessengerFour.introduce( dracosName, MessengerFour )
@@ -805,7 +808,7 @@ object Cabal {
     // Draco is introduced to MessengerThree known as Hermione
     MessengerFour.introduce( hermionesName, MessengerThree )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( MessengerFour )
+    AStringTraceMonitor.openMonitoringSession( MessengerFour )
 
     // This community reuses the names for different identities
 
@@ -818,7 +821,7 @@ object Cabal {
     // Harry is introduced to RMessengerFour known as Draco
     RMessengerOne.introduce( dracosName, RMessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( RMessengerOne )
+    AStringTraceMonitor.openMonitoringSession( RMessengerOne )
 
     // RMessengerTwo learns his name is Ron
     RMessengerTwo.introduce( ronsName, RMessengerTwo )
@@ -829,7 +832,7 @@ object Cabal {
     // Ron is introduced to RMessengerFour known as Draco
     RMessengerTwo.introduce( dracosName, RMessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( RMessengerTwo )
+    AStringTraceMonitor.openMonitoringSession( RMessengerTwo )
 
     // RMessengerThree learns her name is Hermione
     RMessengerThree.introduce( hermionesName, RMessengerThree )
@@ -840,7 +843,7 @@ object Cabal {
     // Hermione is introduced to RMessengerFour known as Draco
     RMessengerThree.introduce( dracosName, RMessengerFour )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( RMessengerThree )
+    AStringTraceMonitor.openMonitoringSession( RMessengerThree )
 
     // RMessengerFour learns his name is Draco
     RMessengerFour.introduce( dracosName, RMessengerFour )
@@ -851,7 +854,7 @@ object Cabal {
     // Draco is introduced to RMessengerThree known as Hermione
     RMessengerFour.introduce( hermionesName, RMessengerThree )
     // Connect to log
-    ATraceMonitor.openMonitoringSession( RMessengerFour )
+    AStringTraceMonitor.openMonitoringSession( RMessengerFour )
   }
 
   def activate() = {
@@ -865,7 +868,7 @@ object Cabal {
     RMessengerThree.start
     RMessengerFour.start
 
-    ATraceMonitor.start
+    AStringTraceMonitor.start
   }
 
   def mix() = {                

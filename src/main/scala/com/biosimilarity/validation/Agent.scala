@@ -19,18 +19,18 @@ import Actor._
 
 import com.thoughtworks.xstream._
 
-trait Socialite {  
+trait Socialite[ReqBody,RspBody] {  
   def name : URI
-  def requests : ListBuffer[JustifiedRequest]
-  def responses : ListBuffer[JustifiedResponse]
-  def nameSpace : Option[LinkedHashMap[URI,Socialite]]
+  def requests : ListBuffer[JustifiedRequest[ReqBody,RspBody]]
+  def responses : ListBuffer[JustifiedResponse[ReqBody,RspBody]]
+  def nameSpace : Option[LinkedHashMap[URI,Socialite[ReqBody,RspBody]]]
 
-  def traceMonitor : TraceMonitor
+  def traceMonitor : TraceMonitor[ReqBody,RspBody]
 
-  def isJustified( request : JustifiedRequest ) : Boolean = {
+  def isJustified( request : JustifiedRequest[ReqBody,RspBody] ) : Boolean = {
     request match {
-      case JustifiedRequest( _, _, None, _, _, _ ) => true
-      case JustifiedRequest( _, _, Some( response ), _, _, _ ) => {
+      case JustifiedRequest( _, _, _, _, _, None ) => true
+      case JustifiedRequest( _, _, _, _, _, Some( response ) ) => {
 	responses.contains( response ) match {
 	  case false => {
 	    logError( request, UnjustifiedRequest() )
@@ -43,13 +43,13 @@ trait Socialite {
       }
     }
   }
-  def isJustified( response : JustifiedResponse ) : Boolean = {
+  def isJustified( response : JustifiedResponse[ReqBody,RspBody] ) : Boolean = {
     response match {
-      case JustifiedResponse( _, _, None, _, _, _ ) => {	
+      case JustifiedResponse( _, _, _, _, _, None ) => {	
 	logError( response, UnjustifiedResponseNoRequest() )
 	false
       }
-      case JustifiedResponse( _, _, Some( request ), _, _, _ ) => {
+      case JustifiedResponse( _, _, _, _, _, Some( request ) ) => {
 	requests.contains( request ) match {
 	  case false => {
 	    logError( response, UnjustifiedResponseNoMatch() )
@@ -79,7 +79,7 @@ trait Socialite {
     }
   }
 
-  def validate( request : JustifiedRequest ) : Boolean = {
+  def validate( request : JustifiedRequest[ReqBody,RspBody] ) : Boolean = {
     nameSpace match {
       case None => {
 	logError( request, NoNamespace() )
@@ -110,7 +110,7 @@ trait Socialite {
     }
   }
 
-  def validate( response : JustifiedResponse ) : Boolean = {
+  def validate( response : JustifiedResponse[ReqBody,RspBody] ) : Boolean = {
     nameSpace match {
       case None => {
 	logError( response, NoNamespace() )
@@ -164,10 +164,10 @@ trait Socialite {
     }
   }
 
-  def handle( request : JustifiedRequest ) : Boolean = {
+  def handle( request : JustifiedRequest[ReqBody,RspBody] ) : Boolean = {
     false
   }
-  def handle( response : JustifiedResponse ) : Boolean = {
+  def handle( response : JustifiedResponse[ReqBody,RspBody] ) : Boolean = {
     false
   }
   def handle( request : InspectRequests ) : Boolean = {
@@ -195,9 +195,9 @@ trait Socialite {
     true
   }
 
-  def likes( dsg : URI, acq : Socialite ) : Boolean
+  def likes( dsg : URI, acq : Socialite[ReqBody,RspBody] ) : Boolean
 
-  def introduce( dsg : URI, acq : Socialite ) : Boolean = {
+  def introduce( dsg : URI, acq : Socialite[ReqBody,RspBody] ) : Boolean = {
     if ( likes( dsg, acq ) ) {
       nameSpace match {
 	case None => {
@@ -214,7 +214,7 @@ trait Socialite {
 
   // Record messages for justification
 
-  def markRequest( req : JustifiedRequest ) : Boolean = {
+  def markRequest( req : JustifiedRequest[ReqBody,RspBody] ) : Boolean = {
     requests += req
     true
   }
@@ -222,7 +222,7 @@ trait Socialite {
     //requests += req
     true
   }
-  def markResponse( rsp : JustifiedResponse ) : Boolean = {
+  def markResponse( rsp : JustifiedResponse[ReqBody,RspBody] ) : Boolean = {
     responses += rsp
     true
   }
@@ -242,7 +242,7 @@ trait Socialite {
   // Error logging
 
   def logError(
-    request : JustifiedRequest,
+    request : JustifiedRequest[ReqBody,RspBody],
     error : NoNamespace
   ) : Boolean = {
     (traceMonitor.traceEvent(
@@ -253,7 +253,7 @@ trait Socialite {
   }
   
   def logError(
-    request : JustifiedRequest,
+    request : JustifiedRequest[ReqBody,RspBody],
     error : UnknownRequester
   ) : Boolean = {
     (traceMonitor.traceEvent(
@@ -264,7 +264,7 @@ trait Socialite {
   }
 
   def logError(
-    request : JustifiedRequest,
+    request : JustifiedRequest[ReqBody,RspBody],
     error : IllTargetedRequest
   ) : Boolean = {
     (traceMonitor.traceEvent(
@@ -281,7 +281,7 @@ trait Socialite {
   }
 
   def logError(
-    request : JustifiedRequest,
+    request : JustifiedRequest[ReqBody,RspBody],
     error : UnjustifiedRequest
   ) : Boolean = {
     (traceMonitor.traceEvent(
@@ -293,14 +293,14 @@ trait Socialite {
 	+ " requested "
 	+ request.body
 	+ " without valid justification : "
-	+ request.deeper
+	+ request.justification
       )
     ))
     true
   }
 
   def logError(
-    request : JustifiedResponse,
+    request : JustifiedResponse[ReqBody,RspBody],
     error : NoNamespace
   ) : Boolean = {
     traceMonitor.traceEvent( 
@@ -311,7 +311,7 @@ trait Socialite {
   }
 
   def logError(
-    response : JustifiedResponse,
+    response : JustifiedResponse[ReqBody,RspBody],
     error : UnknownResponder
   ) : Boolean = {
     traceMonitor.traceEvent(
@@ -322,7 +322,7 @@ trait Socialite {
   }  
   
   def logError(
-    response : JustifiedResponse,
+    response : JustifiedResponse[ReqBody,RspBody],
     error : IllTargetedResponse
   ) : Boolean = {
     traceMonitor.traceEvent(
@@ -339,7 +339,7 @@ trait Socialite {
   }
 
   def logError(
-    response : JustifiedResponse,
+    response : JustifiedResponse[ReqBody,RspBody],
     error : UnjustifiedResponseNoRequest
   ) : Boolean = {
     traceMonitor.traceEvent(
@@ -351,14 +351,14 @@ trait Socialite {
 	+ " requested "
 	+ response.body
 	+ " without valid justification : "
-	+ response.deeper
+	+ response.justification
       )
     )
     true
   }
 
   def logError(
-    response : JustifiedResponse,
+    response : JustifiedResponse[ReqBody,RspBody],
     error : UnjustifiedResponseNoMatch
   ) : Boolean = {
     traceMonitor.traceEvent(
@@ -370,7 +370,7 @@ trait Socialite {
 	+ " requested "
 	+ response.body
 	+ " without valid justification : "
-	+ response.deeper
+	+ response.justification
       )
     )
     true
@@ -389,7 +389,7 @@ trait Socialite {
 
   def logError(
     dsg : URI,
-    agent : Socialite,
+    agent : Socialite[ReqBody,RspBody],
     error : NoNamespace
   ) : Boolean = {
     traceMonitor.traceEvent(
@@ -432,17 +432,17 @@ trait Socialite {
   def useBraceNotation : Boolean
 
   def logJustification(
-    request : JustifiedRequest
+    request : JustifiedRequest[ReqBody,RspBody]
   ) : Boolean = {
     if ( useBraceNotation ) {
       traceMonitor.traceEvent(
 	this,
 	(	  
-	  "<" + "conversation " + "id=\"" + request.color + "\">"
-	  + "<requester " + "conversation=\"" + request.color + "\">"
+	  "<" + "conversation " + "id=\"" + request.flowId + "\">"
+	  + "<requester " + "conversation=\"" + request.flowId + "\">"
 	  + request.from.getFragment
 	  + "</requester>"
-	  + "<request " + "conversation=\"" + request.color + "\">"
+	  + "<request " + "conversation=\"" + request.flowId + "\">"
 	  + request.body
 	  + "</request>"
 	)
@@ -458,7 +458,7 @@ trait Socialite {
 	  + " requested "
 	  + request.body
 	  + " justified by "
-	  + (request.deeper match {
+	  + (request.justification match {
 	    case None =>
 	      "the right to open a conversation"
 	    case x => x 
@@ -469,16 +469,16 @@ trait Socialite {
     true
   }
   def logJustification(
-    response : JustifiedResponse
+    response : JustifiedResponse[ReqBody,RspBody]
   ) : Boolean = {
     if ( useBraceNotation ) {
       traceMonitor.traceEvent(
 	this,
 	(
-	  "<responder " + "conversation=\"" + response.color + "\">"
+	  "<responder " + "conversation=\"" + response.flowId + "\">"
 	  + response.from.getFragment
 	  + "</responder>"
-	  + "<response " + "conversation=\"" + response.color + "\">"
+	  + "<response " + "conversation=\"" + response.flowId + "\">"
 	  + response.body
 	  + "</response>"
 	  + "<" + "/" + "conversation" + ">"
@@ -495,7 +495,7 @@ trait Socialite {
 	  + " responded "
 	  + response.body
 	  + " justified by "
-	  + (response.deeper match {
+	  + (response.justification match {
 	    case None =>
 	      throw new Exception( "should never get here" ) 
 	    case x => x 
@@ -517,7 +517,7 @@ trait Socialite {
 	+ " requested "
 	+ request.body
 	+ " justified by "
-	+ (request.deeper match {
+	+ (request.justification match {
 	  case None =>
 	    "the right to inspect"
 	  case x => x 
@@ -528,15 +528,15 @@ trait Socialite {
   }
 }
 
-case class Messenger(
+case class Messenger[ReqBody,RspBody](
   name : URI,
-  requests : ListBuffer[JustifiedRequest],
-  responses : ListBuffer[JustifiedResponse],
-  nameSpace : Option[LinkedHashMap[URI,Socialite]],
-  traceMonitor : TraceMonitor
-) extends Actor with Socialite {
+  requests : ListBuffer[JustifiedRequest[ReqBody,RspBody]],
+  responses : ListBuffer[JustifiedResponse[ReqBody,RspBody]],
+  nameSpace : Option[LinkedHashMap[URI,Socialite[ReqBody,RspBody]]],
+  traceMonitor : TraceMonitor[ReqBody,RspBody]
+) extends Actor with Socialite[ReqBody,RspBody] {
   override def useBraceNotation : Boolean = false
-  def likes( dsg : URI, acq : Socialite ) : Boolean = true
+  def likes( dsg : URI, acq : Socialite[ReqBody,RspBody] ) : Boolean = true
   def act () {
     nameSpace match {
       case None => {
@@ -544,16 +544,24 @@ case class Messenger(
       }
       case Some( map ) => {
 	receive {
-	  case JustifiedRequest( m, p, d, t, f, c ) => {
-	    val jr = JustifiedRequest( m, p, d, t, f, c )
+	  case JustifiedRequest(
+	    m, p, d, t,
+	    f : ReqBody,
+	    c : Option[Response[AbstractJustifiedRequest[ReqBody,RspBody],RspBody]]
+	  ) => {
+	    val jr = JustifiedRequest[ReqBody,RspBody]( m, p, d, t, f, c )
 	    if ( validate( jr ) ) {
 	      println( "calling handle on " + jr )
 	      handle( jr )
 	    }
 	    act()
 	  }
-	  case JustifiedResponse( m, p, d, t, f, c ) =>  {
-	    val jr = JustifiedResponse( m, p, d, t, f, c )
+	  case JustifiedResponse(
+	    m, p, d, t,
+	    f : RspBody,
+	    c : Option[Request[AbstractJustifiedResponse[ReqBody,RspBody],ReqBody]]
+	  ) =>  {
+	    val jr = JustifiedResponse[ReqBody,RspBody]( m, p, d, t, f, c )
 	    if ( validate( jr ) ) {
 	      println( "calling handle on " + jr )
 	      handle( jr )
