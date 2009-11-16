@@ -391,9 +391,25 @@ object RCabal extends Community with Hogwarts {
 	 }
        }
 
-  def hookup() = {
-    // This community reuses the names for different identities
+  override def roles = {
+    List(
+      harrysName,
+      ronsName,
+      hermionesName,
+      dracosName
+    )
+  }
 
+  override def population = {
+    List(
+      MessengerOne,
+      MessengerTwo,
+      MessengerThree,
+      MessengerFour
+    )
+  }  
+
+  def hookup() = {
     // RMessengerOne learns his name is Harry
     RMessengerOne.introduce( harrysName, RMessengerOne )
     // Harry is introduced to RMessengerTwo known as Ron

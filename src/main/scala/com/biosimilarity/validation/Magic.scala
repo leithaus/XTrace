@@ -18,9 +18,13 @@ import Actor._
 import com.thoughtworks.xstream._
 
 trait Community {
-  def hookup() : Unit 
+  // Structural relationships
+  def roles      : List[URI]
+  def population : List[Socialite]
+  def hookup()   : Unit 
+  // Evaluation behavior
   def activate() : Unit
-  def mix() : Unit
+  def mix()      : Unit
 }
 
 trait Hogwarts {
@@ -35,11 +39,11 @@ trait Hogwarts {
     new URI( "wizard", "Hogwarts", "Draco" )
 
   // Conversations
-  val attraction : UUID = new UUID()
-  val friendship : UUID = new UUID()
-  val magicalAttack : UUID = new UUID()
-  val magicalAttackTwo : UUID = new UUID()
-  val magicalDefense : UUID = new UUID()
+  val attraction        : UUID = new UUID()
+  val friendship        : UUID = new UUID()
+  val magicalAttack     : UUID = new UUID()
+  val magicalAttackTwo  : UUID = new UUID()
+  val magicalDefense    : UUID = new UUID()
   val magicalDefenseTwo : UUID = new UUID()
 
   // Messages
