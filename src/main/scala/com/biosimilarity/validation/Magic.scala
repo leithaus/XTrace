@@ -17,10 +17,10 @@ import Actor._
 
 import com.thoughtworks.xstream._
 
-trait Community {
+trait Community[ReqBody,RspBody] {
   // Structural relationships
   def roles      : List[URI]
-  def population : List[Socialite]
+  def population : List[Socialite[ReqBody,RspBody]]
   def hookup()   : Unit 
   // Evaluation behavior
   def activate() : Unit

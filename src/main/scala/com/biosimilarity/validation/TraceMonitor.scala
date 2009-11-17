@@ -48,7 +48,7 @@ class TraceMonitor[ReqBody,RspBody] extends Actor {
 
   def dumpLogToString : String =
     dumpLogToWriter( new java.io.StringWriter() )
-  def dumpLogToXML : Sequence[Node] = {
+  def dumpLogToXML : Seq[Node] = {
     messageLog.map(
       {
 	case TraceEvent( a, s ) => {
