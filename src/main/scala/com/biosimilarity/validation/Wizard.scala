@@ -17,7 +17,9 @@ import Actor._
 
 import com.thoughtworks.xstream._
 
-object Cabal extends Community with Hogwarts {    
+object Cabal
+extends Community[String,String]
+ with Hogwarts {    
   case object MessengerOne
      extends Messenger[String,String](
        harrysName,
