@@ -8,6 +8,9 @@
 
 package com.biosimilarity.validation
 
+import java.net.URI
+import com.eaio.uuid.UUID
+
 import scala.collection.mutable._
 import scala.xml._
 import scala.actors._
@@ -41,8 +44,8 @@ case class FullyClothed() extends DebuggingLevel
 class TraceMonitor[ReqBody,RspBody] extends Actor {
   var debuggingLevel : DebuggingLevel = Naked()
   //var debuggingLevel : DebuggingLevel = FullyClothed()
-  val sessions : LinkedHashMap[Socialite[ReqBody,RspBody],SessionStatus[ReqBody,RspBody]] =
-    new LinkedHashMap[Socialite[ReqBody,RspBody],SessionStatus[ReqBody,RspBody]]()
+  val sessions : LinkedHashMap[URI,SessionStatus[ReqBody,RspBody]] =
+    new LinkedHashMap[URI,SessionStatus[ReqBody,RspBody]]()
   val messageLog : ListBuffer[Report[ReqBody,RspBody]] =
     new ListBuffer[Report[ReqBody,RspBody]]()
 
@@ -75,27 +78,27 @@ class TraceMonitor[ReqBody,RspBody] extends Actor {
 
   def sessionStatus( agent : Socialite[ReqBody,RspBody] )
   : Option[SessionStatus[ReqBody,RspBody]] = {
-    sessions.get( agent )
+    sessions.get( agent.name )
   }
   def openMonitoringSession( agent : Socialite[ReqBody,RspBody] )
   : OpenSession[ReqBody,RspBody] = {
-    sessions.get( agent ) match {
+    sessions.get( agent.name ) match {
       case Some( agent ) => {
 	throw new Exception( "already in session" )
       }
       case None => {
 	val session = OpenSession( agent )
-	sessions.update( agent, session )
+	sessions.update( agent.name, session )
 	session
       }
     }
   }
   def closeMonitoringSession( agent : Socialite[ReqBody,RspBody] )
   : CloseSession[ReqBody,RspBody] = {
-    sessions.get( agent ) match {
+    sessions.get( agent.name ) match {
       case Some( session ) => {
 	val session = CloseSession( agent )
-	sessions.update( agent, session )
+	sessions.update( agent.name, session )
 	session
       }
       case None => {
@@ -126,7 +129,7 @@ class TraceMonitor[ReqBody,RspBody] extends Actor {
 	println( "logging event to console: " + report.message )
       }
     }
-    sessions.get( report.agent ) match {
+    sessions.get( report.agent.name ) match {
       case Some( OpenSession( a ) ) => {
 	messageLog += report
       }

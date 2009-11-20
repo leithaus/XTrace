@@ -536,6 +536,9 @@ case class Messenger[ReqBody,RspBody](
   traceMonitor : TraceMonitor[ReqBody,RspBody]
 ) extends Actor with Socialite[ReqBody,RspBody] {
   override def useBraceNotation : Boolean = false
+  override def toString() : String = {
+    name.toString
+  }
   def likes( dsg : URI, acq : Socialite[ReqBody,RspBody] ) : Boolean = true
   def act () {
     nameSpace match {
