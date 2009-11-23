@@ -54,6 +54,17 @@ case class JustifiedRequest[ReqBody,RspBody](
   msgId, to, from, flowId, body, justification
 )
 
+case class URIJustifiedRequest[ReqBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : ReqBody,
+  justification : Option[Response[AbstractJustifiedRequest[ReqBody,URI],URI]]
+) extends AbstractJustifiedRequest[ReqBody,URI](
+  msgId, to, from, flowId, body, justification
+)
+
 abstract class Response[Request,BodyType](
   msgId         : UUID,
   to            : URI,
@@ -82,6 +93,17 @@ case class JustifiedResponse[ReqBody,RspBody](
   body          : RspBody,
   justification : Option[Request[AbstractJustifiedResponse[ReqBody,RspBody],ReqBody]]
 ) extends AbstractJustifiedResponse[ReqBody,RspBody](
+  msgId, to, from, flowId, body, justification
+)
+
+case class URIJustifiedResponse[RspBody](
+  msgId         : UUID,
+  to            : URI,
+  from          : URI,
+  flowId        : UUID,
+  body          : RspBody,
+  justification : Option[Request[AbstractJustifiedResponse[URI,RspBody],URI]]
+) extends AbstractJustifiedResponse[URI,RspBody](
   msgId, to, from, flowId, body, justification
 )
 

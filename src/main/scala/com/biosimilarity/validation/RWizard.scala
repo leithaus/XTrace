@@ -19,7 +19,7 @@ import Actor._
 
 import com.thoughtworks.xstream._
 
-object RCabal extends Community with Hogwarts {  
+object RCabal extends Community[String,String] with Hogwarts {  
   case object RMessengerOne
      extends RMessenger[String,String](
        harrysName,
@@ -391,6 +391,8 @@ object RCabal extends Community with Hogwarts {
 	 }
        }
 
+  override def identity = hogwartsTrueName
+
   override def roles = {
     List(
       harrysName,
@@ -402,10 +404,10 @@ object RCabal extends Community with Hogwarts {
 
   override def population = {
     List(
-      MessengerOne,
-      MessengerTwo,
-      MessengerThree,
-      MessengerFour
+      RMessengerOne,
+      RMessengerTwo,
+      RMessengerThree,
+      RMessengerFour
     )
   }  
 

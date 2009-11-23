@@ -17,17 +17,9 @@ import Actor._
 
 import com.thoughtworks.xstream._
 
-trait Community {
-  // Structural relationships
-  def roles      : List[URI]
-  def population : List[Socialite]
-  def hookup()   : Unit 
-  // Evaluation behavior
-  def activate() : Unit
-  def mix()      : Unit
-}
-
 trait Hogwarts {
+  val hogwartsTrueName : UUID = new UUID()
+
   // Identities
   val harrysName : URI =
     new URI( "wizard", "Hogwarts", "Harry" )
