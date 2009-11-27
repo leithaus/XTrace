@@ -1,0 +1,85 @@
+Advanced Programming in Scala: Programming Design Patterns for the Web
+Table of Contents for APress Book Proposal
+
+Chapter One: Motivation and background
+
+    * Where are we and why are we here?
+
+          o The concurrency squeeze: from the hardware up, from the web down, applications must be parallel, concurrent and distributed
+
+          o Advances in functional programming, monads and the awkward squad
+          o Ubiquity of robust, high-performance virtual machines
+
+    * Where are we heading?
+          o A functional web
+          o DSL-based design
+
+    * How are we going to get there?
+          o Leading by example: a web application for storing and retrieving programs in a toy DSL (or... how Mozilla ought to have done bespin's backend)
+
+Chapter Two: Our toolbox
+
+    * Introduction to notation and terminology
+
+    * Introduction to our core design patterns
+
+    * Variations in presentation
+
+Chapter Three: An I/O-monad for http-streams
+
+    * Code first, questions later
+
+    * Synchrony, asynchrony and buffering
+
+    * State, statelessness and continuations
+
+Chapter Four: Parsing requests, monadically
+
+    * Obligatory parsing monad
+
+    * Your parser combinators are showing
+
+    * EBNF and why higher levels of abstraction are better
+
+Chapter Five: The domain model as an abstract syntax
+
+    * Our application domain model
+
+    * Our abstract syntax
+
+    * A transform pipeline
+
+Chapter Six: Zippers and contexts and URIs, oh my!
+
+    * Zippers are not just for Bruno anymore
+
+    * Constructing contexts and zippers from data types
+
+    * Mapping URIs to zipper-based paths and back
+
+Chapter Seven:  A review of collections as monads
+
+    * Monad as container
+
+    * Monads and take-out (when there is a co-monad)
+
+Chapter Eight: Domain model, storage and state
+
+    * Mapping our domain model to storage
+
+    * Storage and language-integrated query
+
+    * Continuations revisited
+
+Chapter Nine: Putting it all together
+
+    * Our web application end to end
+    * Deploying our application on Stax
+          o Why we are not deploying on GAE
+
+    * From one web application to a web framework 
+
+Chapter Ten: A semantic web
+
+    * How our web framework enables different kinds of application queries
+    * Searching for programs

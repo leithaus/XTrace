@@ -1,0 +1,68 @@
+<?xml version='1.0'?>
+<project name="monadic" xmlns:ac="antlib:net.sf.antcontrib"
+	 default="help" basedir=".">
+
+  <!-- ****************** Properties ********************* -->
+  <property name="monadic.dir" value="${basedir}"/>
+  <property name="scala.dir" value="${monadic.dir}/../../scala"/>
+  <property name="webapp.dir" value="${monadic.dir}/../../webapp"/>
+  <property name="target.dir" value="${monadic.dir}/../../../target"/>
+  <property name="monadic.reverse.path"
+	    value="`echo ${monadic.package} | sed 's/\./\//g'`"/>
+  <path id="monadic.stem.path">
+    <pathelement location="${monadic.package}"/>
+  </path>
+
+  <pathconvert targetos="unix"
+	       property="monadic.stem.dir"
+	       refid="monadic.stem.path"> 
+    <chainedmapper>
+      <flattenmapper/>
+      <filtermapper>
+	<replacestring from="." to="/"/>
+      </filtermapper>
+    </chainedmapper>
+  </pathconvert>  
+  
+  <!-- ******************   Targets  ********************* -->
+  
+  <target name="monadic-pdf">
+    <echo message="*** Running latex before bibtex ***"/>
+    <exec executable="pdflatex"
+	  failonerror="true"
+	  logerror="true"
+	  dir="${monadic.dir}">
+      <arg value="monadic.tex" />
+    </exec>
+    <echo message="*** Running bibtex ***"/>
+    <exec executable="bibtex"
+	  failonerror="true"
+	  logerror="true"
+	  dir="${monadic.dir}">
+      <arg value="monadic" />
+    </exec>
+    <echo message="*** Running latex after bibtex ***"/>
+    <exec executable="pdflatex"
+	  failonerror="true"
+	  logerror="true"
+	  dir="${monadic.dir}">
+      <arg value="monadic.tex" />
+    </exec>
+  </target>
+
+  <target name="monadic-clean">
+    <delete failonerror="false">
+      <fileset dir="${monadic.dir}" includes="**/*.aux"/>
+      <fileset dir="${monadic.dir}" includes="**/*.bbl"/>           
+      <fileset dir="${monadic.dir}" includes="**/*.blg"/>           
+      <fileset dir="${monadic.dir}" includes="**/*.dvi"/>      
+      <fileset dir="${monadic.dir}" includes="**/*.idx"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.lof"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.log"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.lot"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.out"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.pdf"/>                 
+      <fileset dir="${monadic.dir}" includes="**/*.toc"/>                 
+    </delete>
+  </target>
+</project>

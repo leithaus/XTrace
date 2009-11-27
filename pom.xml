@@ -7,6 +7,7 @@
   <properties>
     <scala.version>2.8-SNAPSHOT</scala.version>
     <scala.home>/Users/lgm/work/src/projex/biosimilarity/scala</scala.home>
+    <doxiaVersion>1.1</doxiaVersion>
   </properties>
 
   <repositories>
@@ -61,6 +62,10 @@
       <id>scala-tools.org</id>
       <name>Scala-Tools Maven2 Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Doxia plugin lib</id>
+      <url>http://repo1.maven.org/maven2/org/apache/</url>
     </pluginRepository>
   </pluginRepositories>
 

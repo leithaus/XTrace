@@ -1,0 +1,83 @@
+
+\documentclass[12pt,leqno]{book}
+\usepackage{amsmath,amssymb,amsfonts} % Typical maths resource packages
+\usepackage{graphics}                 % Packages to allow inclusion of graphics
+\usepackage{color}                    % For creating coloured text and background
+\usepackage{hyperref}                 % For creating hyperlinks in cross references
+\usepackage{makeidx}                  % For indexing
+\usepackage{listings}                 % For code listing
+
+\parindent 1cm
+\parskip 0.2cm
+\topmargin 0.2cm
+\oddsidemargin 1cm
+\evensidemargin 0.5cm
+\textwidth 15cm
+\textheight 21cm
+
+\include{local/local}
+
+\makeindex
+
+
+\title{Pro Scala: Monadic Design Patterns for the Web}
+
+\author{L.G. Meredith  \\
+{\small\em \copyright \  Draft date \today }}
+
+ \date{ }
+\begin{document}
+\maketitle
+ \addcontentsline{toc}{chapter}{Contents}
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+\chapter*{Preface}\normalsize
+  \addcontentsline{toc}{chapter}{Preface}
+\pagestyle{plain}
+% The book root file {\tt bookex.tex} gives a basic example of how to
+% use \LaTeX \ for preparation of a book. Note that all
+% \LaTeX \ commands begin with a
+% backslash.
+
+% Each
+% Chapter, Appendix and the Index is made as a {\tt *.tex} file and is
+% called in by the {\tt include} command---thus {\tt ch1.tex} is
+% the name here of the file containing Chapter~1. The inclusion of any
+% particular file can be suppressed by prefixing the line by a
+% percent sign.
+
+
+%  Do not put an {\tt end{document}} command at the end of chapter files;
+% just one such command is needed at the end of the book.
+
+% Note the tag used to make an index entry. You may need to consult Lamport's
+% book~\cite{lamport} for details of the procedure to make the index input
+% file; \LaTeX \ will create a pre-index by listing all the tagged
+% items in the file {\tt bookex.idx} then you edit this into
+% a {\tt theindex} environment, as {\tt index.tex}.
+
+The book you hold in your hands, Dear Reader, is not at all what you expected...
+
+
+
+\pagestyle{headings}
+\pagenumbering{arabic}
+
+\include{chapters/one/ch}
+\include{chapters/two/ch}
+\include{chapters/three/ch}
+\include{chapters/four/ch}
+\include{chapters/five/ch}
+\include{chapters/six/ch}
+\include{chapters/seven/ch}
+\include{chapters/eight/ch}
+\include{chapters/nine/ch}
+\include{chapters/ten/ch}
+
+\include{bibliography/monadic}
+
+%\include{index/index}
+  \addcontentsline{toc}{chapter}{Index}
+\end{document}

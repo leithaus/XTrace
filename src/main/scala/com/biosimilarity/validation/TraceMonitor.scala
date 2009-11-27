@@ -141,3 +141,33 @@ trait TraceMonitorT[Client] extends {
 }
 
 
+class SimpleMonitor[Client]
+extends Actor
+with TraceMonitorT[Client] {
+  var _debuggingLevel : DebuggingLevel = Naked()
+  override def debuggingLevel : DebuggingLevel = _debuggingLevel
+  override def debuggingLevel( dbglvl : DebuggingLevel ) : Unit = {
+    _debuggingLevel = dbglvl
+  }
+  //var debuggingLevel : DebuggingLevel = FullyClothed()
+  val sessions : LinkedHashMap[Client,SessionStatus[Client]] =
+    new LinkedHashMap[Client,SessionStatus[Client]]()
+  val messageLog : ListBuffer[Report[Client]] =
+    new ListBuffer[Report[Client]]()      
+  
+  // Be very careful with this interface. Essentially all interaction
+  // with a monitor must be a transaction/function-call. Otherwise,
+  // you will encounter surprising race conditions.
+  def act () {
+    receive {
+      case OpenSession( agent ) => {
+	openMonitoringSession( agent.asInstanceOf[Client] )
+	act()
+      }
+      case CloseSession( agent ) => {
+	closeMonitoringSession( agent.asInstanceOf[Client] )
+	act()
+      }
+    }
+  }
+}

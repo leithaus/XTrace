@@ -1,0 +1,110 @@
+\documentclass[12pt]{llncs}
+%\documentclass{jktr}
+
+\usepackage[pdftex]{hyperref}                   
+\usepackage {listings}
+\usepackage {mathpartir}
+\usepackage{bcprules}
+%\usepackage{listings}
+                       
+\usepackage{graphicx} 
+%\usepackage[margins=2.5cm,nohead,nofoot]{geometry}
+%\usepackage{geometry}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{color}
+
+
+%\include{myPreamble}
+\include{ChapterOne.local} 
+
+%\ifpdf
+%\usepackage[pdftex]{graphicx}
+%\else
+%\usepackage{graphicx}
+%\fi
+
+ % \ifpdf
+%  \usepackage{pdfsync}
+%  \if
+
+
+%\title{Brief Article}
+%\author{David F. Snyder}
+%\author{L.G. Meredith}
+
+%\address{Dept. of Math., Texas State University--San Marcos, San Marcos, TX 78666}
+       
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=[Objective]Caml,frame=shadowbox}
+
+\input{ChapterOne.front}
+
+% section front matter (end)
+
+\input{ChapterOne.intro} 
+ 
+% section introduction (end)
+
+% \input{ChapterOne.knotations} 
+
+% section notation (end)
+
+\input{ChapterOne.process.calculi} 
+
+% section concurrent_process_calculi_and_spatial_logics_ (end)
+    
+%\input{ChapterOne.knots2pi} 
+
+%\input{ChapterOne.trefoil} 
+
+%\input{ChapterOne.mainthm} 
+
+% subsection basic_interpretation (end)
+
+\input{ChapterOne.rho.presentation} 
+
+\input{ChapterOne.qmops} 
+
+\input{ChapterOne.sterngerlach} 
+
+\input{ChapterOne.metric} 
+
+% section concurrent_process_calculi (end)
+
+%\input{ChapterOne.proofsketch}
+
+% section proof sketch (end)
+
+%\input{ChapterOne.slviaknots} 
+
+% section spatial logic via knots (end)
+
+\input{ChapterOne.conclusion}
+
+% section conclusion (end)
+
+%\input{ChapterOne.dtcodes} 
+
+% section wiring algorithm (end)
+
+\input{ChapterOne.ack} 
+
+% section acknowledgments (end)
+
+\newpage
+
+
+\bibliographystyle{plain}   
+\bibliography{../../biblios/main.bib}
+
+\input{ChapterOne.rhodetails}
+
+\end{document}
+
