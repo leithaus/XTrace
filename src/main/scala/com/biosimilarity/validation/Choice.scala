@@ -99,9 +99,12 @@ abstract class Worker[Task, WorkManager[_]](
 trait WorkManager[Task] {
   type Mgr[_] <: WorkManager[_]
   type Wkr <: Worker[Task,Mgr]
+
   def workers : ListBuffer[Wkr]
   def winner : Option[Wkr]
-  def winner( ftw : Wkr ) : Unit
+  def monitor : WorkMonitor[Task]
+
+  def winner( ftw : Wkr ) : Unit  
   def manage( task : Task ) : Wkr
   // def manage( tasks : Stream[Task] ) : Sequence[Wkr] = {
 //     manage( tasks.force )
@@ -124,9 +127,34 @@ trait WorkManager[Task] {
     }
   }
   def showWorkerStatus : Unit = {
+    monitor.traceEvent(
+      this,
+	(
+	  "<" + "snapshot" + ">"
+	)
+      )
     for( w <- workers ) {
-      println( w + " has status " + w.status )
+      //println( w + " has status " + w.status )
+      monitor.traceEvent(
+	this,
+	(
+	  "<" + "worker " + ">"
+	  + "<" + "task" + ">"
+	  + w.task
+	  + "</" + "task" + ">"
+	  + "<" + "status" + ">"
+	  + w.status
+	  + "</" + "status" + ">"
+	  + "</" + "worker" + ">"
+	)
+      )
     }
+    monitor.traceEvent(
+      this,
+	(
+	  "</" + "snapshot" + ">"
+	)
+      )
   }
 }
 
@@ -264,9 +292,12 @@ case class ModChoice(
 ) extends Choice[Int]( cworkers ) {
   //type Wkr = Worker[Int,Choice]
   override def workers = cworkers.asInstanceOf[ListBuffer[Wkr]]
+  val monitor : WorkMonitor[Int] = new WorkMonitor[Int]()
   def manage( task : Int ) : Wkr = {
     ModWorker( task, this ).asInstanceOf[Wkr]
   }
 }
 
-case object TheModChoice extends ModChoice( new ListBuffer[Worker[Int,Choice]]() )
+case object TheModChoice
+     extends ModChoice( new ListBuffer[Worker[Int,Choice]]() ) {       
+}
