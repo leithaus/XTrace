@@ -24,6 +24,13 @@ case class Resumed( ) extends WorkStatus
 case class Complete( ) extends WorkStatus
 case class Aborted( ) extends WorkStatus
 
+trait WorkTransition
+case class Beginning( ) extends WorkTransition
+case class Pausing( ) extends WorkTransition
+case class Resuming( ) extends WorkTransition
+case class Completing( ) extends WorkTransition
+case class Aborting( ) extends WorkTransition
+
 trait WorkRelatedMsg
 case class BeginWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class DoWork( k : Unit => Unit ) extends WorkRelatedMsg
@@ -135,24 +142,44 @@ trait WorkManager[Task] {
       )
     for( w <- workers ) {
       //println( w + " has status " + w.status )
-      monitor.traceEvent(
-	this,
-	(
-	  "<" + "worker " + ">"
-	  + "<" + "task" + ">"
-	  + w.task
-	  + "</" + "task" + ">"
-	  + "<" + "status" + ">"
-	  + w.status
-	  + "</" + "status" + ">"
-	  + "</" + "worker" + ">"
-	)
-      )
+      logStatus( w )
     }
     monitor.traceEvent(
       this,
 	(
 	  "</" + "snapshot" + ">"
+	)
+      )
+  }
+  def logStatus( worker : Wkr ) : Unit = {
+    monitor.traceEvent(
+	this,
+	(
+	  "<" + "worker " + ">"
+	  + "<" + "task" + ">"
+	  + worker.task
+	  + "</" + "task" + ">"
+	  + "<" + "status" + ">"
+	  + worker.status
+	  + "</" + "status" + ">"
+	  + "</" + "worker" + ">"
+	)
+      )
+  }
+  def logTransition(
+    worker : Wkr, transition : WorkTransition
+  ) : Unit = {
+    monitor.traceEvent(
+	this,
+	(
+	  "<" + "worker " + ">"
+	  + "<" + "task" + ">"
+	  + worker.task
+	  + "</" + "task" + ">"
+	  + "<" + "transition" + ">"
+	  + transition
+	  + "</" + "transition" + ">"
+	  + "</" + "worker" + ">"
 	)
       )
   }
