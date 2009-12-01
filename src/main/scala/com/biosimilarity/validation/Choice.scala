@@ -23,9 +23,12 @@ case class Paused( ) extends WorkStatus
 case class Resumed( ) extends WorkStatus
 case class Complete( ) extends WorkStatus
 case class Aborted( ) extends WorkStatus
+case class Catastrophe( msg : String )
+     extends Exception( msg ) with WorkStatus
 
 trait WorkTransition
 case class Beginning( ) extends WorkTransition
+case class Continuing( ) extends WorkTransition
 case class Pausing( ) extends WorkTransition
 case class Resuming( ) extends WorkTransition
 case class Completing( ) extends WorkTransition
@@ -38,18 +41,114 @@ case class PauseWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class ResumeWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class StopWork( ) extends WorkRelatedMsg
 
+trait WorkLog[Task] {  
+  def monitor : WorkMonitor[Task]
+  def logStatus( worker : Handler[Task] ) : Unit = {
+    monitor.traceEvent(
+	this,
+	(
+	  "<" + "worker" + ">"
+	  + "<" + "task" + ">"
+	  + worker.task
+	  + "</" + "task" + ">"
+	  + "<" + "status" + ">"
+	  + (worker.status match {
+		case Some( s ) => s
+		case None => "none" })
+	  + "</" + "status" + ">"
+	  + "</" + "worker" + ">"
+	)
+      )
+  }
+
+  def logTransition(
+    worker     : Handler[Task],
+    transition : WorkTransition
+  ) : Unit = {
+    monitor.traceEvent(
+	this,
+	(
+	  "<" + "worker" + ">"
+	  + "<" + "task" + ">"
+	  + worker.task
+	  + "</" + "task" + ">"
+	  + "<" + "transition" + ">"
+	  + transition
+	  + "</" + "transition" + ">"
+	  + "</" + "worker" + ">"
+	)
+      )
+  }
+
+  def logError( msg : String ) : Unit = {
+    monitor.traceEvent(
+	this,
+	(
+	  "<" + "error " + ">"
+	  + msg
+	  + "</" + "error" + ">"
+	)
+      )
+  }
+  
+  def showWorkerStatus( workers : List[Handler[Task]] ) : Unit = {
+    monitor.traceEvent(
+      this,
+	(
+	  "<" + "snapshot" + ">"
+	)
+      )
+    for( w <- workers ) {
+      logStatus( w )
+    }
+    monitor.traceEvent(
+      this,
+	(
+	  "</" + "snapshot" + ">"
+	)
+      )
+  }
+}
+
+trait WorkManager[Task] {
+  type Mgr[_] <: WorkManager[_]
+  type Wkr <: Worker[Task,Mgr]
+
+  def workers : ListBuffer[Wkr]
+  def winner : Option[Wkr]  
+
+  def winner( ftw : Wkr ) : Unit  
+  def manage( task : Task ) : Wkr
+
+  def manage( tasks : Sequence[Task] ) : Sequence[Wkr] = {
+    for ( task <- tasks )
+    yield {      
+      val worker = manage( task );
+      workers += worker;
+      worker.start;
+      worker
+    }
+  }
+  def workIt( k : Unit => Unit ) : Unit = {
+    for( w <- workers ) {
+      w ! BeginWork( k )
+    }
+  }
+}
+
 trait Handler[Task] {
   def task : Task
   def status : Option[WorkStatus]
   def status( ws : WorkStatus ) : Unit
   def success : Option[Boolean]
   def success( s : Boolean ) : Unit
+  def mgr : WorkManager[Task]
   def handle( task : Task, k : Unit => Unit ) : Unit
 }
 
-abstract class Worker[Task, WorkManager[_]](
+abstract class Worker[Task, WMgr[_]](
   task : Task,
-  mgr  : WorkManager[Task]
+  mgr  : WMgr[Task] with WorkLog[Task]
 ) extends Actor with Handler[Task]
 {    
   var ws : Option[WorkStatus] = None
@@ -72,133 +171,52 @@ abstract class Worker[Task, WorkManager[_]](
       react
       {
 	case BeginWork( k ) => {
-	  println( "a new beginning..." )
 	  status( InProgress() )
+	  mgr.logTransition( this, Beginning( ) )
 	  handle( task, k )
 	  act()
 	}
 	case DoWork( k ) => {
-	  println( "working..." )
-	  Thread.sleep( 100 )
 	  status( InProgress() )
+	  mgr.logTransition( this, Continuing( ) )
+	  Thread.sleep( 100 )
 	  handle( task, k )
 	  act()
 	}
 	case PauseWork( k ) => {
-	  println( "pausing..." )
+	  mgr.logTransition( this, Pausing( ) )
 	  status( Paused() )
 	  act()
 	}
 	case ResumeWork( k ) => {
-	  println( "resuming..." )
 	  status( Resumed() )
+	  mgr.logTransition( this, Resuming( ) )	  
 	  handle( task, k )
 	  act()
 	}
 	case StopWork( ) => {
 	  status( Aborted() )
-	  println( "stopping!" )
+	  mgr.logTransition( this, Aborting( ) )
 	}
       }
     }
 }
 
-trait WorkManager[Task] {
-  type Mgr[_] <: WorkManager[_]
-  type Wkr <: Worker[Task,Mgr]
-
-  def workers : ListBuffer[Wkr]
-  def winner : Option[Wkr]
-  def monitor : WorkMonitor[Task]
-
-  def winner( ftw : Wkr ) : Unit  
-  def manage( task : Task ) : Wkr
-  // def manage( tasks : Stream[Task] ) : Sequence[Wkr] = {
-//     manage( tasks.force )
-//   }
-//   def manage( tasks : List[Task] ) : Sequence[Wkr] = {
-  def manage( tasks : List[Task] ) : Sequence[Wkr] = {
-    for ( task <- tasks )
-    yield {      
-      val worker = manage( task );
-      // println( "Wrapping " + task + " in " + worker )
-      workers += worker;
-      worker.start;
-      worker
-    }
-  }
-  def workIt( k : Unit => Unit ) : Unit = {
-    for( w <- workers ) {
-      // println( "Here we go..." )
-      w ! BeginWork( k )
-    }
-  }
-  def showWorkerStatus : Unit = {
-    monitor.traceEvent(
-      this,
-	(
-	  "<" + "snapshot" + ">"
-	)
-      )
-    for( w <- workers ) {
-      //println( w + " has status " + w.status )
-      logStatus( w )
-    }
-    monitor.traceEvent(
-      this,
-	(
-	  "</" + "snapshot" + ">"
-	)
-      )
-  }
-  def logStatus( worker : Wkr ) : Unit = {
-    monitor.traceEvent(
-	this,
-	(
-	  "<" + "worker " + ">"
-	  + "<" + "task" + ">"
-	  + worker.task
-	  + "</" + "task" + ">"
-	  + "<" + "status" + ">"
-	  + worker.status
-	  + "</" + "status" + ">"
-	  + "</" + "worker" + ">"
-	)
-      )
-  }
-  def logTransition(
-    worker : Wkr, transition : WorkTransition
-  ) : Unit = {
-    monitor.traceEvent(
-	this,
-	(
-	  "<" + "worker " + ">"
-	  + "<" + "task" + ">"
-	  + worker.task
-	  + "</" + "task" + ">"
-	  + "<" + "transition" + ">"
-	  + transition
-	  + "</" + "transition" + ">"
-	  + "</" + "worker" + ">"
-	)
-      )
-  }
-}
-
 abstract class Choice[Task](
   workers : ListBuffer[Worker[Task,Choice]]
-) extends WorkManager[Task]
+) extends WorkManager[Task] with WorkLog[Task]
 {
   var ftw : Option[Wkr] = None
   override def winner = ftw
   override def winner( wtf : Wkr ) = {
     ftw = Some( wtf )
   }
-  def select( tasks : Stream[Task] ) : Unit = {
-    select( tasks.force )
-  }
-  def select( tasks : List[Task] ) : Unit = {
-    reset{
+  // def select( tasks : Stream[Task] ) : Unit = {
+//     select( tasks.force )
+//   }
+  def select( tasks : Sequence[Task] ) : Unit = {
+    reset{      
+      monitor.openMonitoringSession( this )
       shift {
 	( k : Unit => Unit ) =>
 	  {
@@ -208,13 +226,17 @@ abstract class Choice[Task](
       }
       winner match {
 	case None => {
-	  println( "really shouldn't get here!" )
+	  logError( "No winner" )
+	  monitor.closeMonitoringSession( this );
+	  ()
 	}
 	case Some( v ) => {
-	  println( "the winner is: " + v )
-	  for( w <- workers if w != v ) { w ! StopWork() }
+	  logStatus( v )
+	  for( w <- workers if w != v ) { w ! StopWork() };
+	  monitor.closeMonitoringSession( this );
+	  ()
 	}
-      };
+      };      
     }
   }
 }
@@ -231,7 +253,7 @@ abstract class WorkCursor[Task]( size : Int )
 
 abstract class Comprehension[Task](
   workers : ListBuffer[Worker[Task,Comprehension]]
-) extends WorkManager[Task]
+) extends WorkManager[Task] with WorkLog[Task]
 {
   var ftw : Option[ListBuffer[Wkr]] = None
   def winners = ftw
@@ -326,5 +348,5 @@ case class ModChoice(
 }
 
 case object TheModChoice
-     extends ModChoice( new ListBuffer[Worker[Int,Choice]]() ) {       
+     extends ModChoice( new ListBuffer[Worker[Int,Choice]]() ) {              
 }

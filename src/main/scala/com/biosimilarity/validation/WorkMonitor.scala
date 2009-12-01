@@ -17,14 +17,14 @@ import scala.collection.mutable._
 import scala.actors._
 import Actor._
 
-case class TraceWorkEvent[Task]( agent : WorkManager[Task], msg : String )
-     extends LogAction[WorkManager[Task]]
-     with Report[WorkManager[Task]] {
+case class TraceWorkEvent[Task]( agent : WorkLog[Task], msg : String )
+     extends LogAction[WorkLog[Task]]
+     with Report[WorkLog[Task]] {
        override def message = msg
      }
 
-class WorkMonitor[Task] extends SimpleMonitor[WorkManager[Task]] {
-  def traceEvent( agent : WorkManager[Task], msg : String ) : Unit = {
+class WorkMonitor[Task] extends SimpleMonitor[WorkLog[Task]] {
+  def traceEvent( agent : WorkLog[Task], msg : String ) : Unit = {
     traceEvent( TraceWorkEvent( agent, msg ) )
   }
 }
