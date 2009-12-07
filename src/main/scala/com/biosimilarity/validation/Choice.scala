@@ -39,7 +39,7 @@ case class BeginWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class DoWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class PauseWork( k : Unit => Unit ) extends WorkRelatedMsg
 case class ResumeWork( k : Unit => Unit ) extends WorkRelatedMsg
-case class StopWork( ) extends WorkRelatedMsg
+case class StopWork( k : Unit => Unit ) extends WorkRelatedMsg
 
 trait WorkLog[Task] {  
   def monitor : WorkMonitor[Task]
@@ -114,23 +114,22 @@ trait WorkManager[Task] {
   type Mgr[_] <: WorkManager[_]
   type Wkr <: Worker[Task,Mgr]
 
-  def workers : ListBuffer[Wkr]
-  def winner : Option[Wkr]  
+  def workers : Sequence[Wkr]
+  //def winner : Option[Wkr]  
 
-  def winner( ftw : Wkr ) : Unit  
+  //def winner( ftw : Wkr ) : Unit  
   def manage( task : Task ) : Wkr
 
   def manage( tasks : Sequence[Task] ) : Sequence[Wkr] = {
     for ( task <- tasks )
     yield {      
       val worker = manage( task );
-      workers += worker;
       worker.start;
       worker
     }
   }
-  def workIt( k : Unit => Unit ) : Unit = {
-    for( w <- workers ) {
+  def workIt( workforce : Sequence[Wkr] )( k : Unit => Unit ) : Unit = {
+    for( w <- workforce ) {
       w ! BeginWork( k )
     }
   }
@@ -148,7 +147,7 @@ trait Handler[Task] {
 
 abstract class Worker[Task, WMgr[_]](
   task : Task,
-  mgr  : WMgr[Task] with WorkLog[Task]
+  mgr  : WorkManager[Task] with WorkLog[Task] with WMgr[Task]
 ) extends Actor with Handler[Task]
 {    
   var ws : Option[WorkStatus] = None
@@ -165,38 +164,90 @@ abstract class Worker[Task, WMgr[_]](
   def success( b : Boolean ) = {
     s = Some( b )
   }
+  def logStateTransitionError( msg : WorkRelatedMsg ) : Unit = {
+    mgr.logError(
+      (
+	"invalid transition request : "
+	+ " in state " + status
+	+ " requesting " + msg
+      )
+    )
+  }
 
   override def act() =
     {
       react
       {
+	// Simple worker state machine
 	case BeginWork( k ) => {
-	  status( InProgress() )
-	  mgr.logTransition( this, Beginning( ) )
-	  handle( task, k )
+	  status match {
+	    case None => {
+	      status( InProgress() )
+	      mgr.logTransition( this, Beginning( ) )
+	      handle( task, k )
+	    }
+	    case _ => {
+	      logStateTransitionError( BeginWork( k ) )
+	    }
+	  }
 	  act()
 	}
 	case DoWork( k ) => {
-	  status( InProgress() )
-	  mgr.logTransition( this, Continuing( ) )
-	  Thread.sleep( 100 )
-	  handle( task, k )
+	  status match {
+	    case Some( InProgress( ) ) => {
+	      status( InProgress() )
+	      mgr.logTransition( this, Continuing( ) )
+	      Thread.sleep( 100 )
+	      handle( task, k )
+	    }
+	    case _ => {
+	      logStateTransitionError( DoWork( k ) )
+	    }
+	  }
 	  act()
 	}
 	case PauseWork( k ) => {
-	  mgr.logTransition( this, Pausing( ) )
-	  status( Paused() )
+	  status match {
+	    case Some( InProgress( ) ) => {
+	      mgr.logTransition( this, Pausing( ) )
+	      status( Paused() )
+	    }
+	    case _ => {
+	      logStateTransitionError( PauseWork( k ) )
+	    }
+	  }
 	  act()
 	}
 	case ResumeWork( k ) => {
-	  status( Resumed() )
-	  mgr.logTransition( this, Resuming( ) )	  
-	  handle( task, k )
+	  status match {
+	    case Some( Paused( ) ) => {
+	      status( Resumed() )
+	      mgr.logTransition( this, Resuming( ) )	  
+	      handle( task, k )
+	    }
+	    case _ => {
+	      logStateTransitionError( ResumeWork( k ) )
+	    }
+	  }
 	  act()
 	}
-	case StopWork( ) => {
-	  status( Aborted() )
-	  mgr.logTransition( this, Aborting( ) )
+	case StopWork( k ) => {
+	  status match {
+	    case None => {
+	      logStateTransitionError( StopWork( k ) )
+	    }
+	    case Some( Aborted( ) ) => {
+	      logStateTransitionError( StopWork( k ) )
+	    }
+	    case Some( Complete( ) ) => {
+	      logStateTransitionError( StopWork( k ) )
+	    }
+	    case Some( _ ) => {
+	      status( Aborted() )
+	      mgr.logTransition( this, Aborting( ) )	      
+	      k( )
+	    }
+	  }
 	}
       }
     }
@@ -206,107 +257,251 @@ abstract class Choice[Task](
   workers : ListBuffer[Worker[Task,Choice]]
 ) extends WorkManager[Task] with WorkLog[Task]
 {
-  var ftw : Option[Wkr] = None
-  override def winner = ftw
-  override def winner( wtf : Wkr ) = {
-    ftw = Some( wtf )
+  class ChoiceState {
+    var ftw : Option[Wkr] = None
+    var counters : Option[Int] = None
+
+    def winner() = ftw
+    def winner( wtf : Wkr ) = {
+      ftw = Some( wtf )
+    }
+    def showTrackCount() : Unit = {
+      for( cntrs <- counters ) {
+	println( "cntrs : " + cntrs )
+      }
+    }
+    def track( s : Int ) : Unit = {
+      counters = Some( s )
+    }
+    def untrack() : Unit = {
+      counters match {
+	case Some( s ) => { counters = Some( s - 1 ); }
+	case None => { }
+      }
+    }
+    def tracking() : Option[Boolean] = {
+      for( cexes <- counters ) yield { cexes != 0 }
+    }
   }
-  // def select( tasks : Stream[Task] ) : Unit = {
-//     select( tasks.force )
-//   }
-  def select( tasks : Sequence[Task] ) : Unit = {
+
+  val cstate : ChoiceState = new ChoiceState()
+  def winner() = cstate.winner()
+  def winner( wtf : Wkr ) = cstate.winner( wtf )
+  
+  def select( tasks : Sequence[Task] ) : Option[Task] = {
     reset{      
       monitor.openMonitoringSession( this )
+      val workforce = manage( tasks )
+      cstate.track( workforce.length - 1 )
+
       shift {
 	( k : Unit => Unit ) =>
 	  {
-	    manage( tasks );
-	    workIt( k ) ;
+	    workIt( workforce )( k ) ;
 	  }
       }
-      winner match {
+
+      winner() match {
 	case None => {
+	  println( "No winner" )
 	  logError( "No winner" )
-	  monitor.closeMonitoringSession( this );
-	  ()
 	}
 	case Some( v ) => {
+	  println( "A winner" )
+	  // Note: we cannot close the monitoring session until all
+	  // the StopWork processing has completed. So, we grab a
+	  // continuation and ensure that we return to the point
+	  // before the session was closed. 
+	  // Question: does this only work because
+	  // closeMonitoringSession is idempotent?
 	  logStatus( v )
-	  for( w <- workers if w != v ) { w ! StopWork() };
-	  monitor.closeMonitoringSession( this );
-	  ()
+	  reset {
+	    shift {
+	      ( ks : Unit => Unit ) => {
+		for( w <- workforce if w != v ) {
+		  w ! StopWork( ks )
+		};
+	      }
+	    }
+	    cstate.untrack()
+	    for( trax <- cstate.tracking() if !trax ) {
+	      monitor.closeMonitoringSession( this )
+	    }
+	    ()
+	  }
 	}
-      };      
+      };          
     }
+    println( "winner : " + winner() )
+    for ( w <- winner() ) yield { w.task }
   }
 }
 
 // A comprehension
 
-trait Cursor {
-  def size : Int
-}
-
-abstract class WorkCursor[Task]( size : Int )
-	 extends Cursor with WorkManager[Task] {
-	 }
-
-abstract class Comprehension[Task](
-  workers : ListBuffer[Worker[Task,Comprehension]]
-) extends WorkManager[Task] with WorkLog[Task]
+abstract class Comprehension[A](  
+  val condition : A => Boolean,
+  val width : Int
+) extends WorkManager[A] with WorkLog[A]
 {
   var ftw : Option[ListBuffer[Wkr]] = None
-  def winners = ftw
-  def winners( wtf : ListBuffer[Wkr] ) = {
+  var ctw : Option[ListBuffer[Wkr]] = None
+  var utw : Option[ListBuffer[Wkr]] = None
+  var cursor : Int = 0
+
+  val workforce : ListBuffer[Wkr] = new ListBuffer[Wkr]()
+
+  def ~~( ltsk : A, rtsk : A ) : Boolean
+
+  def witnesses = ftw
+  def witnesses( wtf : ListBuffer[Wkr] ) = {
     ftw = Some( wtf )
   }
-  def win( wtf : Wkr ) = {
-    winners match {
-      case None => {
-	val wnrs = new ListBuffer[Wkr]()
-	wnrs += wtf
-	winners( wnrs )
+  def counterExamples = ctw
+  def counterExamples( wtf : ListBuffer[Wkr] ) = {
+    ctw = Some( wtf )
+  }
+  def undecided = utw
+  def undecided( wtf : ListBuffer[Wkr] ) = {
+    utw = Some( wtf )
+  }
+  
+  def full() : Boolean = {
+    cursor >= width
+  }
+
+  def testify( wtf : Wkr ) : Unit = {
+    val worker = wtf.asInstanceOf[PredicateWorker[A]]
+    worker match {
+      case Predicated( task, mgr, truth ) => {	
+	undecided match {
+	  case None => {
+	    val wnrs = new ListBuffer[Wkr]()
+	    wnrs += wtf
+	    undecided( wnrs )
+	  }
+	  case Some( wnrs ) => {
+	    wnrs += wtf
+	  }
+	}
       }
-      case Some( wnrs ) => {
-	wnrs += wtf
+      case Witness( task, mgr, truth ) => {
+	witnesses match {
+	  case None => {
+	    val wnrs = new ListBuffer[Wkr]()
+	    wnrs += wtf
+	    witnesses( wnrs )
+	  }
+	  case Some( wnrs ) => {
+	    wnrs += wtf
+	  }
+	}
+      }
+      case CounterExample( task, mgr, truth ) => {
+	counterExamples match {
+	  case None => {
+	    val wnrs = new ListBuffer[Wkr]()
+	    wnrs += wtf
+	    counterExamples( wnrs )
+	  }
+	  case Some( wnrs ) => {
+	    wnrs += wtf
+	  }
+	}
       }
     }
+
+    cursor += 1;
   }
-  def select( tasks : Stream[Task] ) : Unit = {
-    select( tasks.force )
+
+  def untested( task : A ) : Boolean = {    
+    (
+      (counterExamples match {
+	case None => true
+	case Some( cexes ) => {
+	  ( true /: cexes )( { ( acc : Boolean, w : Wkr ) => {
+	    acc && ~~( task, w.task )
+	  }
+				      } )
+	}
+      })
+      &&
+      (witnesses match {
+	case None => true
+	case Some( wits ) => {
+	  ( true /: wits )( { ( acc : Boolean, w : Wkr ) => {
+	    acc && ~~( task, w.task )
+	  }
+				} )
+	}
+      })
+    )
   }
-  def select( tasks : List[Task] ) : Unit = {
+
+  override def workers = {
+    workforce
+  }
+  def manage( task : A ) : Wkr = {
+    Predicated( task, this, true ).asInstanceOf[Wkr]
+  }
+  override def manage( tasks : Sequence[A] ) : Sequence[Wkr] = {
+    for ( i <- 1 to width; task = tasks( i ) if untested( task ) )
+    yield {      
+      val worker = manage( task );
+      workforce += worker;
+      worker.start;
+      worker
+    }
+  }
+  override def workIt( wrkfrc : Sequence[Wkr] )( k : Unit => Unit )
+  : Unit = {
+    for( i <- 1 to width; w = wrkfrc( i ) ) {
+      w ! BeginWork( k )
+    }
+  }
+
+  def select( tasks : Sequence[A] ) : Option[Sequence[A]] = {
     reset{
+      monitor.openMonitoringSession( this )
       shift {
 	( k : Unit => Unit ) =>
 	  {
-	    manage( tasks );
-	    workIt( k ) ;
+	    workIt( manage( tasks ) )( k ) ;
 	  }
       }
-      winners match {
+      witnesses match {
 	case None => {
-	  println( "condition was empty" )
 	}
 	case Some( v ) => {
-	  println( "the winners are: " + v )
-	  for( w <- workers if w != v ) { w ! StopWork() }
+	  reset {
+	    shift {
+	      ( ks : Unit => Unit ) => {
+		for( w <- workforce if w != v ) { w ! StopWork( ks ) };
+	      }
+	    }
+	    monitor.closeMonitoringSession( this );
+	    ()
+	  }
 	}
       };
+      ()
+    }
+    for( wits <- witnesses ) yield {
+      for( w <- wits ) yield { w.task }
     }
   }
 }
 
 abstract class PredicateWorker[A](
-  task : (A => Boolean, A), mgr : Comprehension[(A => Boolean, A)]
-) extends Worker[(A => Boolean, A),Comprehension]( task, mgr ){
+  task : A, mgr : Comprehension[A]
+) extends Worker[A,Comprehension]( task, mgr ){
   def stateless : Boolean
-  override def handle( task : (A => Boolean, A), k : Unit => Unit ) = {
-    if ((task._1)(task._2)) {
+  override def handle( task : A, k : Unit => Unit ) = {
+    if ( mgr.condition( task ) ) {
       status( Complete() )
-      println( "found a result: " + task )
-      mgr.winner( this.asInstanceOf[mgr.Wkr] )
-      k()
+      mgr.logTransition( this, Completing( ) )	  
+      mgr.testify( Witness( task, mgr, stateless ).asInstanceOf[mgr.Wkr] )
+      if ( mgr.full() ) k()
     }
     else {
       if (!stateless) {
@@ -314,10 +509,27 @@ abstract class PredicateWorker[A](
       }
       else {
 	status( Complete() )
+	mgr.logTransition( this, Completing( ) )	  
+	mgr.testify(
+	  CounterExample( task, mgr, stateless ).asInstanceOf[mgr.Wkr]
+	)
+	if ( mgr.full() ) k()
       }
     }
   }
 }
+
+case class Predicated[A](
+  task : A, mgr : Comprehension[A], stateless : Boolean
+) extends PredicateWorker[A]( task, mgr )
+
+case class Witness[A](
+  task : A, mgr : Comprehension[A], stateless : Boolean
+) extends PredicateWorker[A]( task, mgr )
+
+case class CounterExample[A](
+  task : A, mgr : Comprehension[A], stateless : Boolean
+) extends PredicateWorker[A]( task, mgr )
 
 // Unit test
 case class ModWorker(
@@ -326,7 +538,6 @@ case class ModWorker(
   override def handle( task : Int, k : Unit => Unit ) = {
     if ((task % 2) == 0) {
       status( Complete() )
-      println( "found a result: " + task )
       mgr.winner( this.asInstanceOf[mgr.Wkr] )
       k()
     }

@@ -117,9 +117,29 @@ trait TraceMonitorT[Client] extends {
 	messageLog += report
       }
       case Some( CloseSession( a ) ) => {
+	debuggingLevel match {
+	  case Naked() => {
+	    println(
+	      (
+		"logging event to console: "
+		+ "Monitoring against a closed session!"
+	      )
+	    )
+	  }
+	}
 	throw new Exception( "Monitoring against a closed session!" )
       }
       case None => {
+	debuggingLevel match {
+	  case Naked() => {
+	    println(
+	      (
+		"logging event to console: "
+		+ "Monitoring without opening a session"
+	      )
+	    )
+	  }
+	}
 	throw new Exception( "Monitoring without opening a session" )
       }
     }
