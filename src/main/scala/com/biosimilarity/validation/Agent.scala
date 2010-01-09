@@ -1039,7 +1039,7 @@ case class Messenger[ReqBody,RspBody](
   name : URI,
   requests : ListBuffer[JustifiedRequest[ReqBody,RspBody]],
   responses : ListBuffer[JustifiedResponse[ReqBody,RspBody]],
-  nameSpace : Option[LinkedHashMap[URI,Socialite[ReqBody,RspBody]]],
+  nameSpace : Option[LinkedHashMap[URI, Socialite[ReqBody,RspBody]]],
   traceMonitor : TraceMonitor[ReqBody,RspBody]
 ) extends Actor with Socialite[ReqBody,RspBody] {
   override def useBraceNotation : Boolean = false
@@ -1105,16 +1105,7 @@ case class Messenger[ReqBody,RspBody](
   }
 }
 
-trait Community[ReqBody,RspBody] {
-  // Structural relationships
-  def identity   : UUID
-  def roles      : List[URI]
-  def population : List[Socialite[ReqBody,RspBody]]
-  def hookup()   : Unit 
-  // Evaluation behavior
-  def activate() : Unit
-  def mix()      : Unit
-}
+
 
 
 
