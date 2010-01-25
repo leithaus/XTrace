@@ -7,8 +7,12 @@
 // ------------------------------------------------------------------------
 
 package com.biosimilarity.differential
+import scala.collection.mutable.HashMap
 
 trait RegularTypeCheck[Name, NSeq <: NmSeq[Name]] {
+  val _emptyTypeEnv : TypeEnvironment[Name, NSeq] =
+    TypeAssignment( new HashMap[Name, RegularType[Name, NSeq]]() )
+  def emptyTypeEnv : TypeEnvironment[Name, NSeq] = _emptyTypeEnv
   def inhabits(
     env : TypeEnvironment[Name, NSeq],
     rterm : RegularTerm[Name, NSeq],
@@ -71,7 +75,7 @@ trait RegularTypeCheck[Name, NSeq <: NmSeq[Name]] {
 	  case _ => false
 	}
       }
-      case RegularCon( s ) => {
+      case RegularContainer( s ) => {
 	rtype match {
 	  case RegularFixPt( v, e, supp ) => {
 	    inhabits( env, rterm, RegularFPEnv( v, e, rtype, supp ) )

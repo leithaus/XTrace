@@ -12,4 +12,5 @@ trait NmSeq[Name] extends Seq[Name]
 
 trait NmSeqOps[Name, NSeq <: NmSeq[Name]] {
   def support : NSeq
+  def fresh : Option[Name] = None
 }

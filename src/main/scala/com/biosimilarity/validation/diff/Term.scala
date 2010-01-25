@@ -8,8 +8,7 @@
 
 package com.biosimilarity.differential
 
-trait RegularTerm[Name, NSeq <: NmSeq[Name]] {
-}
+trait RegularTerm[Name, NSeq <: NmSeq[Name]]
 
 case class RegularInjection[Name, NSeq <: NmSeq[Name]](
   tag : Seq[Boolean],
@@ -48,6 +47,6 @@ case class RegularTuple[Name, NSeq <: NmSeq[Name]](
   s : Seq[RegularTerm[Name, NSeq]]
 ) extends RegularTerm[Name, NSeq]
 
-case class RegularCon[Name, NSeq <: NmSeq[Name]](
+case class RegularContainer[Name, NSeq <: NmSeq[Name]](
   s : RegularTerm[Name, NSeq]
 ) extends RegularTerm[Name, NSeq]
