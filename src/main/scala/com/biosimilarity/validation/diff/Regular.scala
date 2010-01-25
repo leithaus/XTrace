@@ -19,6 +19,7 @@ case class RegularMention[Name, NSeq <: NmSeq[Name]](
 case class RegularNullity[Name, NSeq <: NmSeq[Name]](
   support : NSeq
 ) extends RegularType[Name, NSeq]
+
 case class RegularUnity[Name, NSeq <: NmSeq[Name]](
   support : NSeq
 ) extends RegularType[Name, NSeq]
