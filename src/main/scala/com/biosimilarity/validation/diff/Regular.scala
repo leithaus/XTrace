@@ -44,7 +44,7 @@ case class RegularFPEnv[Name, NSeq <: NmSeq[Name]](
   e : RegularType[Name, NSeq],
   s : RegularType[Name, NSeq],
   support : NSeq
-)
+) extends RegularType[Name, NSeq]
 
 case class RegularWeakening[Name, NSeq <: NmSeq[Name]](
   v : Name,
