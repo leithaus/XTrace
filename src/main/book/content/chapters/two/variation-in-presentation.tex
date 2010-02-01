@@ -4,43 +4,43 @@ Given that we have a type constructor, $T$
 
 In Haskell a monad is presented in terms of the following data
 
-\begin{list}
-  \item a ``return'' map enjoying the signature $return : a \to T a$
-  \item a ``bind'' map enjoying the signature $>>= : T a \to a \to T
-    b \to T b$
-\end{list}
+% \begin{list}
+%   \item a ``return'' map enjoying the signature $return : a \to T a$
+%   \item a ``bind'' map enjoying the signature $>>= : T a \to a \to T
+%     b \to T b$
+% \end{list}
 
 subject to the following laws:
 
-\begin{list}
-  \item[Left identity] $return a >>= f  ≡  f a$
-  \item[Right identity] $m >>= return  ≡  m$
-  \item[Associativity] $(m >>= f) >>= g  ≡  m >>= (\x -> f x >>= g)$
-\end{list}
+% \begin{list}
+%   \item[Left identity] $return a >>= f  ≡  f a$
+%   \item[Right identity] $m >>= return  ≡  m$
+%   \item[Associativity] $(m >>= f) >>= g  ≡  m >>= (\x -> f x >>= g)$
+% \end{list}
 
 while in category theory the monad is presented in terms of the
 following data
 
-\begin{list}
-  \item a ``unit'' map enjoying the signature $unit : A \to T[A]$
-  \item a ``mult'' map enjoying the signature $mult : T[T[A]] \to T[A]$
-\end{list}
+% \begin{list}
+%   \item a ``unit'' map enjoying the signature $unit : A \to T[A]$
+%   \item a ``mult'' map enjoying the signature $mult : T[T[A]] \to T[A]$
+% \end{list}
 
 subject to the following laws:
 
-\begin{list}
-  \item[Functoriality] $T( id_A ) = id_{T[A]}$
-  \item[Naturality]
-    \begin{list}
-    \item[unit] $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$
-    \item[mult] $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$
-    \end{list}
-  \item[Coherence]
-    \begin{list}
-    \item[mult-mult] $mult \circ T mult = mult \circ mult T$
-    \item[mult-unit] $mult \circ T unit = mult unit T$
-    \end{list}
-\end{list}
+% \begin{list}
+%   \item[Functoriality] $T( id_A ) = id_{T[A]}$
+%   \item[Naturality]
+%     \begin{list}
+%     \item[unit] $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$
+%     \item[mult] $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$
+%     \end{list}
+%   \item[Coherence]
+%     \begin{list}
+%     \item[mult-mult] $mult \circ T mult = mult \circ mult T$
+%     \item[mult-unit] $mult \circ T unit = mult unit T$
+%     \end{list}
+% \end{list}
 
 These two definitions are interchangeable. That's what makes them
 ``presentations'' of the same underlying idea.

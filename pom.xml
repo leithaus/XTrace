@@ -5,8 +5,10 @@
   <version>1.0-SNAPSHOT</version>
   <inceptionYear>2008</inceptionYear>
   <properties>
-    <scala.version>2.8-SNAPSHOT</scala.version>
-    <scala.home>/Users/lgm/work/src/projex/biosimilarity/scala</scala.home>
+    <!-- scala.version>2.8-SNAPSHOT</scala.version -->
+    <scala.version>2.8.0.Beta1</scala.version>
+    <!-- scala.home>/Users/lgm/work/src/projex/biosimilarity/scala</scala.home -->
+    <scala.home>/Users/lgm/work/src/devtools/scala/scala-2.8.0.Beta1-RC8</scala.home>
     <doxiaVersion>1.1</doxiaVersion>
   </properties>
 
@@ -198,9 +200,9 @@
 	  <displayCmd>true</displayCmd>
           <args>
             <!-- arg>-target:jvm-1.5</arg -->
-	    <arg>-Xplugin:${scala.home}/src/continuations/build/pack/selectivecps-plugin.jar</arg>
+	    <arg>-Xplugin:${scala.home}/continuations/build/pack/selectivecps-plugin.jar</arg>
 	    <arg>-cp</arg>
-	    <arg>${scala.home}/src/continuations/build/build.library</arg>
+	    <arg>${scala.home}/continuations/build/build.library</arg>
           </args>
 	  <jvmArgs>
 	    <jvmArg>-Xmx128m</jvmArg> 

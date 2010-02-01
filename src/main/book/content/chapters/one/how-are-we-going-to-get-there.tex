@@ -12,12 +12,52 @@ contemplating building tomorrow.
 
 Let's illustrate this in more detail by telling a story. We imagine a
 cloud-based editor for a simple programming language, not unlike
-Mozilla's ... . A user can register with the service and then create
-an application project which allows them 
-\begin{list}
-\item to write code in a structured editor that understands the
-  language;
-\item manage files in the application project;
-\item compile the application;
-\item run the application
-\end{list}
+\texttt{Mozilla's bespin} . A user can register with the service and
+then create an application project which allows them
+% \begin{list}
+%    \item to write code in a structured editor that understands the language;
+%    \item manage files in the application project;
+%    \item compile the application;
+%    \item run the application
+% \end{list}
+
+\subsubsection{Our toy language}
+
+For our example we'll need a toy language. Fittingly for a book about
+\texttt{Scala} we'll use the $\lambda$-calculus as our toy
+language. The core \textit{abstract} syntax of the lambda calculus is
+given by the following \textit{EBNF} grammar.
+
+\begin{mathpar}
+  \inferrule* [lab=mention] {} {{M,N} ::= x}
+  \and
+  \inferrule* [lab=abstraction] {} {\;| \; \lambda x . M}
+  \and \\
+  \inferrule* [lab=application] {} {\;| \; M N}
+\end{mathpar} 
+
+To this core let us add some syntactic sugar.
+
+\begin{mathpar}
+  \inferrule* [lab=previous] {} {{M,N} ::= ...}
+  \and \\
+  \inferrule* [lab=let] {} {\;| \; let x = M}
+  \and \\
+  \inferrule* [lab=seq] {} {\;| \; M;N}
+\end{mathpar} 
+
+Now let's wrap this up in concrete syntax.
+
+\begin{mathpar}
+  \inferrule* [lab=mention] {} {{M,N} ::= x}
+  \and 
+  \inferrule* [lab=abstraction] {} {\;| \; \texttt{(} x_1 \texttt{,} ... \texttt{,} x_k \texttt{)} \texttt{=>} M}
+  \and \\
+  \inferrule* [lab=application] {} {\;| \; M\texttt{(} N_1 \texttt{,} ... \texttt{,} N_k \texttt{)}}
+  \and \\
+  \inferrule* [lab=let] {} {\;| \; \texttt{val} x \texttt{=} M}
+  \and \\
+  \inferrule* [lab=seq] {} {\;| \; M \texttt{;} N }
+  \and \\
+  \inferrule* [lab=group] {} {\;| \; \texttt{{} M \texttt{}} }
+\end{mathpar} 

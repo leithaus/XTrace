@@ -3,8 +3,8 @@
 \BOOKMARK [0][-]{chapter.1}{Motivation and Background}{}
 \BOOKMARK [1][-]{section.1.1}{Where are we}{chapter.1}
 \BOOKMARK [2][-]{subsection.1.1.1}{The concurrency squeeze: from the hardware up, from the web down}{section.1.1}
-\BOOKMARK [2][-]{subsection.1.1.2}{Advances in functional programming, monads and the awkward squad}{section.1.1}
-\BOOKMARK [2][-]{subsection.1.1.3}{Ubiquity of robust, high-performance virtual machines}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.2}{Ubiquity of robust, high-performance virtual machines}{section.1.1}
+\BOOKMARK [2][-]{subsection.1.1.3}{Advances in functional programming, monads and the awkward squad}{section.1.1}
 \BOOKMARK [1][-]{section.1.2}{Where are we going}{chapter.1}
 \BOOKMARK [2][-]{subsection.1.2.1}{A functional web}{section.1.2}
 \BOOKMARK [2][-]{subsection.1.2.2}{DSL-based design}{section.1.2}
@@ -16,6 +16,8 @@
 \BOOKMARK [1][-]{section.2.3}{Variations in presentation}{chapter.2}
 \BOOKMARK [0][-]{chapter.3}{An IO-monad for http streams}{}
 \BOOKMARK [1][-]{section.3.1}{Code first, questions later}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.1.1}{An HTTP-request processor}{section.3.1}
+\BOOKMARK [2][-]{subsection.3.1.2}{What we did}{section.3.1}
 \BOOKMARK [1][-]{section.3.2}{Synchrony, asynchrony and buffering}{chapter.3}
 \BOOKMARK [1][-]{section.3.3}{State, statelessness and continuations}{chapter.3}
 \BOOKMARK [0][-]{chapter.4}{Parsing requests, monadically}{}
