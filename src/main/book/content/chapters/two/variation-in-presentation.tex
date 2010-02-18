@@ -1,51 +1,168 @@
 \section{Variations in presentation}
 
-Given that we have a type constructor, $T$
+\subsection{A little history}
+Haskell was the first programming language to popularize the notion of
+monad as a structuring technique for functional programming. There
+were several key ideas that went into the $\Haskell$ packaging of the
+idea. One was to treat the core elements that make up a monad more or
+less \emph{directly} without appeal to category theory -- which was
+where the notion originated. This is considerably easier to do in a
+functional programming language because the ambient language can be
+thought of as a category; thus, for the average programmer there is no
+need to refer to categories, in general, but only to the ``universe''
+of programs that can be written in the language at hand. Then, because
+Haskell already has a notion of parametric polymorphism (which we can
+think of as as generics in the context of this discussion), a monad's
+most central piece of data is a parametric type constructor, say $T$.
 
-In Haskell a monad is presented in terms of the following data
+Given such a type constructor, you only need a pair of maps (one of
+which is higher order). Thus, in $\Haskell$ a monad is presented in
+terms of the following data
 
-% \begin{list}
-%   \item a ``return'' map enjoying the signature $return : a \to T a$
-%   \item a ``bind'' map enjoying the signature $>>= : T a \to a \to T
-%     b \to T b$
-% \end{list}
+\begin{itemize}
+  \item a parametric type constructor, \lstinline[language=Haskell]!T! a
+  \item a \lstinline[language=Haskell]!return! map enjoying the
+    signature \lstinline[language=Haskell]!return :: a -> T a!
+  \item a \lstinline[language=Haskell]!bind! map enjoying the
+    signature \lstinline[language=Haskell]!bind : T a -> (a -> T b) -> T b!
+\end{itemize}
 
+In $\Haskell$ these elements can be collected inside a
+\lstinline[language=Haskell]!typeclass!. Resulting in a declaration of
+the form
+
+% TODO : add typeclass
+\begin{lstlisting}[captionpos=b,language=Haskell,caption=monad typeclass]
+  typeclass Monad T a where
+   return :: a -> T a
+   bind :: T a -> (a -> T b ) -> T b
+\end{lstlisting}
+
+Now, it's not enough to simply have this collection of pieces. The
+pieces have to fit together in a certain way; that is, they are
 subject to the following laws:
 
-% \begin{list}
-%   \item[Left identity] $return a >>= f  ≡  f a$
-%   \item[Right identity] $m >>= return  ≡  m$
-%   \item[Associativity] $(m >>= f) >>= g  ≡  m >>= (\x -> f x >>= g)$
-% \end{list}
+\begin{itemize}
+  \item \lstinline[language=Haskell]!return (bind a f)! $\equiv$ \lstinline[language=Haskell]!f a! %[Left identity]
+  \item \lstinline[language=Haskell]!bind m return! $\equiv$ \lstinline[language=Haskell]!m! %[Right identity]
+  \item \lstinline[language=Haskell]!bind (bind m f) g! $\equiv$ \lstinline[language=Haskell]!bind m (\ x -> bind (f x) g)! %[Associativity]
+\end{itemize}
 
-while in category theory the monad is presented in terms of the
+Unlike $\Haskell$, $\Scala$ did not reify the notion of monad under a
+\lstinline[language=Scala]!trait!, the language's equivalent of
+$\Haskell$'s \lstinline[language=Haskell]!typeclass!. Instead the
+systematic means of de-sugaring
+\lstinline[language=Scala]!for!-notation and polymorphic
+interpretations of \lstinline[language=Scala]!flatMap!, etc are the
+effective definitions of the notion in $\Scala$.
+
+\subsection{A little more history}
+
+If one were to reify the notion in $\Scala$ there are several design
+choices -- all of which endure some desiderata. Following the original
+presentation developed in category theory, however, has some crucial
+advantages:
+
+\begin{itemize}
+  \item intuition
+  \item correspondence to previously existing structures
+  \item decomposition of the requirements 
+\end{itemize}
+
+which we explore in some detail here.
+
+\subsubsection{Intuition: Monad as container}
+
+As we will see the notion of monad maps nicely onto an appropriately
+parametric notion of container. From this point of view we can imagine
+a container ``API'' that has three basic operations. 
+\paragraph{Shape of the container} The first of these is a
+\emph{parametric} specification of the \emph{shape} of the
+container. Examples of container shapes include: \lstinline[language=Scala]!List[A]!,
+\lstinline[language=Scala]!Set[A]!, \lstinline[language=Scala]!Tree[A]!, etc. At the outset we remain
+uncommitted to the particular shape. The API just demands that
+there is some shape, say \lstinline[language=Scala]!S[A]!.
+\paragraph{Putting things into the container} The next operation is
+very basic, it says how to put things into the container. To align
+with a very long history, we will refer to this operation by the name
+\lstinline[language=Scala]!unit!. Since the operation is supposed to allow us to put
+elements of type \lstinline[language=Scala]!A! into containers of shape \lstinline[language=Scala]!S[A]!, we
+expect the signature of this operation to be \lstinline[language=Scala]!unit : A => S[A]!.
+\paragraph{Flattening nested containers} Finally, we want a generic
+way to flatten nested containers. Just like there's something
+fundamentally the same about the obvious way to flatten nested lists
+and nested sets, we ask that the container API provide a canonical way
+to flatten nested containers. If you think about it for a moment, if a
+container is of shape, \lstinline[language=Scala]!S[A]!, then a nested container will be
+of shape, \lstinline[language=Scala]!S[S[A]]!. If history demands that we call our
+flattening operation \lstinline[language=Scala]!mult!, then our generic flatten operation
+will have signature, \lstinline[language=Scala]!mult : S[S[A]] => S[A]!.
+
+\subsubsection{Preserving connection to existing structure: Monad as
+  generalization of monoid}
+
+Programmers are very aware of data structures that support a kind of
+concatenation operation. The data type of \lstinline[language=Scala]!String! is a perfect
+example. Every programmer expects that the concatenation of a given
+\lstinline[language=Scala]!String!, say \lstinline[language=Scala]!s!, with the empty \lstinline[language=Scala]!String!,
+\lstinline[language=Scala]!""! will return a result string equal to the original. In
+code, \lstinline[language=Scala]! s.equals( s + "" ) == true !. Likewise, string
+concatenation is insensitive to the order of operation. Again, in
+code, \lstinline[language=Scala]! (( s + t ) + u).equals( s + ( t + u ) ) == true !.
+
+Most programmers have noticed that these very same laws survive
+polymorphic interpretations of \lstinline[language=Scala]!+!, \lstinline[language=Scala]!equals! and the
+``empty'' element. For example, if we substituted the data type
+\lstinline[language=Scala]!Integer! as the base type and used integer addition, integer
+equality, and \lstinline[language=Scala]!0! as the empty element, these same code
+snippets (amounting assertions) would still work.
+
+Many programmers are aware that there is a very generic underlying
+data type, historically referred to as a \emph{monoid} defined by
+these operations and laws. In code, we can imagine defining a
+\lstinline[language=Scala]!trait! in $\Scala$ something like
+
+
+
+\subsubsection{Decomposition of monad requirements}
+
+The constraints on any given monad candidate are well factored into
+three different kinds of requirements -- operating at different levels
+of the ``API'': functoriality, naturality and coherence. Often these
+can be mechanically verified, and when they can't there are natural
+ways to generate spot-checks that fit well with tools such as
+$\ScalaCheck$.
+
+\subsubsection{A categorical way to look at monads}
+
+In category theory the monad is presented in terms of the
 following data
 
-% \begin{list}
-%   \item a ``unit'' map enjoying the signature $unit : A \to T[A]$
-%   \item a ``mult'' map enjoying the signature $mult : T[T[A]] \to T[A]$
-% \end{list}
+\begin{itemize}
+  \item a ``unit'' map enjoying the signature $unit : A \to T[A]$
+  \item a ``mult'' map enjoying the signature $mult : T[T[A]] \to T[A]$
+\end{itemize}
 
 subject to the following laws:
 
-% \begin{list}
-%   \item[Functoriality] $T( id_A ) = id_{T[A]}$
-%   \item[Naturality]
-%     \begin{list}
-%     \item[unit] $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$
-%     \item[mult] $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$
-%     \end{list}
-%   \item[Coherence]
-%     \begin{list}
-%     \item[mult-mult] $mult \circ T mult = mult \circ mult T$
-%     \item[mult-unit] $mult \circ T unit = mult unit T$
-%     \end{list}
-% \end{list}
+\begin{itemize}
+  \item $T( id_A ) = id_{T[A]}$ %[Functoriality]
+  \item %[Naturality]
+    \begin{itemize}
+    \item $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$ %[unit]
+    \item $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$ %[mult]
+    \end{itemize}
+  \item[Coherence]
+    \begin{itemize}
+    \item $mult \circ T mult = mult \circ mult T$ %[mult-mult]
+    \item $mult \circ T unit = mult unit T$ %[mult-unit]
+    \end{itemize}
+\end{itemize}
 
 These two definitions are interchangeable. That's what makes them
 ``presentations'' of the same underlying idea.
 
-One of the reasons for the difference in presentation is that Haskell
+One of the reasons for the difference in presentation is that $\Haskell$
 doesn't treat the Monad type class as a Functor. The refactoring of
 the $mult$ map into the $bind$ map is that it builds functoriality
 into definition. The other reason is the do notation.
@@ -63,29 +180,17 @@ into definition. The other reason is the do notation.
 % do { let <decls> ; <stmts> }
 %   = let <decls> in do { <stmts> }
 
-Scala follows Haskell, though the same notation is called
+$\Scala$ follows $\Haskell$, though the same notation is called
 for-notation. The basic construct looks like
 
 %for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
 
 and the de-sugaring looks like
 
-% TODO write down Scala for-notation desugaring
+% TODO write down $\Scala$ for-notation desugaring
 
 This means, therefore, that we have the following correspondence
 
-% TODO write down the Haskell/Scala monad correspondence
+% TODO write down the $\Haskell$/$\Scala$ monad correspondence
 
-Unlike Haskell, Scala did not reify the notion of monad under the
-language's equivalent of the Haskell type class. Instead the
-systematic means of de-sugaring for-notation and polymorphic
-interpretations of flatMap, etc are the effective definitions of
-monads in Scala.
 
-If one were to reify the notion in Scala there are several design
-choices -- all of which endure some desiderata. Following category
-theory, however, has some crucial advantages: namely, the constraints
-on any given monad candidate are well factored into functoriality,
-naturality and coherence. Often these can be mechanically verified,
-and when they can't there are natural ways to generate spot-checks
-that fit well with tools such as ScalaCheck.

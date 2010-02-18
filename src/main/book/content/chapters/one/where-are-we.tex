@@ -3,10 +3,10 @@
 \subsection{The concurrency squeeze: from the hardware up, from the web down}
 
 It used to be fashionable in academic papers or think tank reports to
-predict or bemoan the imminent demise of Moore's law, to wax on about
-the need to ``go sideways'' in hardware design from the number of
-cores per die to the number of processors per box. Those days of
-polite conversation about the on coming storm are definitely in our
+predict and then bemoan the imminent demise of Moore's law, to wax on
+about the need to ``go sideways'' in hardware design from the number
+of cores per die to the number of processors per box. Those days of
+polite conversation about the on-coming storm are definitely in our
 rear view mirror. Today's developer knows that if her program is
 commercially interesting at all then it needs to be web-accessible on
 a 24x7 basis; and if it's going to be commercially significant it will
@@ -40,24 +40,127 @@ uniform model that introduces a number of key features that
 considerably improve productivity and maintainability. Java brought
 the C/C++ programmer several steps closer to a functional paradigm,
 introducing garbage collection, type abstractions such as generics and
-other niceties. Languages like OCaml, F\# and Scala go a step further,
-bringing the modern developer into contact with higher order
-functions, the relationship between types and pattern matching and
-powerful abstractions like monads. Yet, functional programming does
-not embrace concurrency and distribution in its foundations. It is not
-based a model of computation, like the actor model or the process
-calculi that are based on a notion of execution that is fundamentally
-concurrent. That said, it meshes nicely with a variety of concurrency
-programming models. In particular, the combination of higher order
-functions (with the ability to pass functions as arguments and return
-functions as values) together with the structuring techniques of
-monads make models such as software transactional memory or data flow
-parallelism quite easy to integrate, while pattern-matching
-additionally makes message-passing style easier to incorporate.
+other niceties. Languages like \texttt{OCaml}, \texttt{F\#} and
+\texttt{Scala} go a step further, bringing the modern developer into
+contact with higher order functions, the relationship between types
+and pattern matching and powerful abstractions like monads. Yet,
+functional programming does not embrace concurrency and distribution
+in its foundations. It is not based on a model of computation, like
+the actor model or the process calculi, in which the notion of
+execution that is fundamentally concurrent. That said, it meshes
+nicely with a variety of concurrency programming models. In
+particular, the combination of higher order functions (with the
+ability to pass functions as arguments and return functions as values)
+together with the structuring techniques of monads make models such as
+software transactional memory or data flow parallelism quite easy to
+integrate, while pattern-matching additionally makes message-passing
+style easier to incorporate.
 
 \subsection{Ubiquity of robust, high-performance virtual machines}
 
-
+Another reality of the modern programmer's life is the ubiquity of
+robust, high-performance virtual machines. Both the \texttt{Java}
+Virtual Machine (\texttt{JVM}) and the Common Language Runtime
+(\texttt{CLR}) provide manage code execution environments that are not
+just competitive with their unmanaged counterparts (such as \texttt{C}
+and \texttt{C++}), but actually the dominant choice for many
+applications. This has two effects that are playing themselves out in
+terms of industry trends. Firstly, it provides some level of
+insulation between changes in hardware design (from single core per
+die to multi-core, for example) that impacts execution model and
+language level interface. To illustrate the point note that these
+changes in hardware have impacted memory models. This has a much
+greater impact on the \texttt{C/C++} family of languages than on
+\texttt{Java} because the latter is built on an abstract machine that
+hides the underlying memory model. One may, in fact, contemplate an
+ironic future in which this abstraction alone causes managed code to
+outperform \texttt{C/C++} code because of \texttt{C/C++}'s faulty
+assumptions about best use of memory. Secondly, it completely changes
+the landscape for language development. By providing a much higher
+level and more uniform target for language execution semantics it
+lowers the barrier to entry for contending language designs. It is not
+surprising, therefore, that we have seen an explosion in language
+proposals in the last several years, including \texttt{Clojure},
+\texttt{Fortress}, \texttt{Scala}, \texttt{F\#} and many others. It
+should not escape notice that all of the languages in that list and
+the majority of the proposals coming out are either functional
+languages, object-functional languages, or heavily influenced by
+functional language design concepts.
 
 \subsection{Advances in functional programming, monads and the awkward squad}
 
+One of the reasons that language design proposals have been so heavily
+influenced by functional language design principles is that functional
+language design has made demonstrable progress. Since the '80's when
+\texttt{Lisp} and it's progeny were thrown out of the industry for
+performance failures a lot of excellent work has gone on that has
+rectified many of the problems those languages faced. In particular,
+while \texttt{Lisp} implementations tried to take a practical approach
+to certain aspects of computation, chiefly having to do with
+side-effecting operations and i/o, the underlying semantic model did
+not seem well-suited to address those kinds of computations. And yet,
+not only are side-effecting computations and especially i/o
+ubiquitous, using them led (at least initially) to considerably better
+performance. Avoiding those operations (sometimes called functional
+purity) seemed to be an academic exercise not well suited to writing
+``real world'' applications.
+
+However, while many industry shops were throwing out functional
+languages, except for niche applications, work was going on that would
+reverse this trend. One of the key developments in this was an early
+bifurcation of functional language designs at a fairly fundamental
+level. The \texttt{Lisp} family of languages are untyped and
+dynamic. In the modern world the lack of typing might seem egregiously
+unmaintainable, but by comparison to \texttt{C} it was more than made
+up for by the kind of dynamic meta-programming that these languages
+made possible. Programmers enjoyed a certain kind of productivity
+because they could ``go meta'' -- writing programs to write programs
+(even dynamically modify them on the fly) -- in a uniform manner. This
+sort of feature has become mainstream, as found in \texttt{Ruby} or
+even \texttt{Java}'s reflection API, precisely because it is so
+extremely useful. Unfortunately, the productivity gains of
+meta-programming were not enough to offset the performance shortfalls
+at the time.
+
+There was, however, a statically typed branch of functional
+programming that began to have traction in certain academic circles
+with the development of the \texttt{ML} family of languages -- which
+today includes \texttt{OCaml}, which can be considered the direct
+ancestor of \texttt{Scala}. One of the very first developments in that
+line of investigation was the recognition that data description came
+in not just one but \emph{two} flavors: types and \emph{patterns}. The
+two flavors, it was recognized, are dual. Types tell the program how
+data was built up from its components while patterns tell a program
+how to take data apart in terms of its components. These are the
+origins of elements in \texttt{Scala}'s design like
+\lstinline[language=Scala]!case class!es and the
+\lstinline[language=Scala]!match! construct. The \texttt{ML} family of
+languages also gave us the first workable parametric polymorphism
+(that's generic types to you). 
+
+Still these languages suffered when it came to a compelling and
+uniform treatment of side-effecting computations. That all changed
+with Haskell. In the mid-80's a young researcher by the name of
+Eugenio Moggi observed that an idea previously discovered in a then
+obscure branch of mathematics (called category theory) offered a way
+to \emph{structure} functional programs to allow them to deal with
+side-effecting computations in uniform and compelling
+manner. Essentially, the notion of a monad (as it was called in the
+category theory literature) provided a language level abstraction for
+structuring side-effecting computations in a functional setting. In
+today's parlance, he found a domain specific language, a DSL, for
+organizing side-effecting computations in an ambient (or hosting)
+functional language. Once Moggi made this discovery another
+researcher, Phil Wadler, realized that this DSL had a couple of
+different ``presentations'' that were almost immediately
+understandable by the average programmer. One presentation, called
+comprehensions (after it's counter part in set theory), could be
+understood directly in terms of a very familiar construct
+\lstinline[language=SQL]!SELECT ... FROM ... WHERE ...!; while the
+other, dubbed \lstinline[language=Haskell]!do!-notation by the
+\texttt{Haskell} community, provided operations that behaved
+remarkably like sequencing and assignment. \texttt{Haskell} offers
+syntactic sugar to support the latter while the former has been
+adopted in both \texttt{XQuery}'s
+\lstinline[language=XML]!FLWOR!-expressions and Microsoft's
+\texttt{LINQ}

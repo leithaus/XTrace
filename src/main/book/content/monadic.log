@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  1 FEB 2010 12:40
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  18 FEB 2010 05:37
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -185,7 +185,7 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 (/opt/local/share/texmf-dist/tex/latex/base/makeidx.sty
 Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
 )
-(/opt/local/share/texmf-dist/tex/latex/listings/listings.sty
+(/opt/local/share/texmf-local/listings.sty
 \lst@mode=\count107
 \lst@gtempboxa=\box28
 \lst@token=\toks22
@@ -197,22 +197,27 @@ Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
 \lst@width=\dimen117
 \lst@newlines=\count111
 \lst@lineno=\count112
-\c@lstlisting=\count113
 \lst@maxwidth=\dimen118
 
 (/opt/local/share/texmf-dist/tex/latex/listings/lstpatch.sty
-File: lstpatch.sty 2004/10/17 1.3b (Carsten Heinz)
-)
-(/opt/local/share/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2004/09/07 1.3 (Carsten Heinz)
-\c@lstnumber=\count114
-\lst@skipnumbers=\count115
+
+***
+*** This is a patch for listings 1.3, but you're using
+*** version 1.4.
+***
+*** Patch file not loaded.
+***
+
+) (/opt/local/share/texmf-local/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count113
+\lst@skipnumbers=\count114
 \lst@framebox=\box29
 )
 (/opt/local/share/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2004/09/05 1.3 listings configuration
 ))
-Package: listings 2004/10/17 1.3b (Carsten Heinz)
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
 
 (/opt/local/share/texmf-local/mathpartir.sty
 Package: mathpartir 2003/07/10 version 1.1.1 Math Paragraph for Typesetting Inf
@@ -235,40 +240,55 @@ erence Rules
 \ruledim=\dimen122
 \labeldim=\dimen123
 )
+(/opt/local/share/texmf-local/lstlang0.sty
+File: lstlang0.sty 2009/01/01 listings language file
+)
+(/opt/local/share/texmf-local/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/opt/local/share/texmf-local/lstlang2.sty
+File: lstlang2.sty 2004/09/05 1.3 listings language file
+)
+(/opt/local/share/texmf-local/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+)
 \@input{local/local.aux}
 \openout2 = `local/local.aux'.
 
 (./local/local.tex
-\c@theorem=\count116
+\c@theorem=\count115
 )
 \@indexfile=\write4
 \openout4 = `monadic.idx'.
 
 
 Writing index file monadic.idx
-(./monadic.aux (./chapters/one/ch.aux) (./chapters/two/ch.aux))
+(./monadic.aux (./chapters/one/ch.aux) (./chapters/two/ch.aux)
+(./chapters/three/ch.aux) (./chapters/four/ch.aux) (./chapters/five/ch.aux)
+(./chapters/six/ch.aux) (./chapters/seven/ch.aux) (./chapters/eight/ch.aux)
+(./chapters/nine/ch.aux) (./chapters/ten/ch.aux) (./bibliography/monadic.aux))
 \openout1 = `monadic.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
 
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
 (/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count117
-\scratchcounter=\count118
+\protectiondepth=\count116
+\scratchcounter=\count117
 \scratchtoks=\toks25
 \scratchdimen=\dimen124
 \scratchskip=\skip49
@@ -279,54 +299,55 @@ loading : Context Support Macros / Miscellaneous (2004.10.26)
 \zeropoint=\dimen125
 \onepoint=\dimen126
 \onebasepoint=\dimen127
-\minusone=\count119
+\minusone=\count118
 \thousandpoint=\dimen128
 \onerealpoint=\dimen129
 \emptytoks=\toks26
 \nextbox=\box36
 \nextdepth=\dimen130
 \everyline=\toks27
-\!!counta=\count120
-\!!countb=\count121
-\recursecounter=\count122
+\!!counta=\count119
+\!!countb=\count120
+\recursecounter=\count121
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\MPscratchCnt=\count125
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\MPscratchCnt=\count124
 \MPscratchDim=\dimen131
-\MPnumerator=\count126
+\MPnumerator=\count125
 \everyMPtoPDFconversion=\toks28
 )
-Package hyperref Info: Link coloring OFF on input line 31.
+Package hyperref Info: Link coloring OFF on input line 33.
  (/opt/local/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
-\c@section@level=\count127
+\c@section@level=\count126
 )
-LaTeX Info: Redefining \ref on input line 31.
-LaTeX Info: Redefining \pageref on input line 31.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
  (./monadic.out)
 (./monadic.out)
 \openout3 = `monadic.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 33.
+\c@lstlisting=\count127
+LaTeX Font Info:    Try loading font information for U+msa on input line 36.
  (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 33.
+LaTeX Font Info:    Try loading font information for U+msb on input line 36.
 
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 33.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 36.
 
 (/opt/local/share/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 33.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 33.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
  [1
 
 
@@ -335,41 +356,44 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package hyperref Warning: No destination for bookmark of \addcontentsline,
-(hyperref)                destination is added on input line 33.
+(hyperref)                destination is added on input line 36.
 
-(./monadic.toc)
-\tf@toc=\write6
-\openout6 = `monadic.toc'.
+(./monadic.toc
+Underfull \vbox (badness 2689) has occurred while \output is active []
 
 
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.1}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.36 \listoffigures
-                    [1
+l.27 ... IO-monad for http streams}{15}{chapter.3}
+                                                   [1
 
-] [2
+] [2])
+\tf@toc=\write6
+\openout6 = `monadic.toc'.
 
-] (./monadic.lof)
+ [3] [4
+
+]
+(./monadic.lof)
 \tf@lof=\write7
 \openout7 = `monadic.lof'.
 
- [3] [4
+ [5] [6
 
 ] (./monadic.lot)
 \tf@lot=\write8
 \openout8 = `monadic.lot'.
 
- [5]
-[6
+ [7] [8
 
 ]
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.1}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.70 \include{chapters/one/ch}
+l.73 \include{chapters/one/ch}
                                [1]
 \openout2 = `chapters/one/ch.aux'.
 
@@ -391,72 +415,100 @@ s been already used, duplicate ignored
                    \penalty 
 l.35 
       [3]
-Overfull \hbox (2.26482pt too wide) in paragraph at lines 58--58
+Overfull \hbox (2.26482pt too wide) in paragraph at lines 59--59
 []\OT1/cmr/bx/n/14.4 Ubiquity of ro-bust, high-performance vir-tual ma-chines 
  []
-
-) (./chapters/one/where-are-we-going.tex)
-(./chapters/one/how-are-we-going-to-get-there.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.4}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.12 
+l.89 
       [4]
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.5}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.42   \inferrule
-                 * [lab=previous] {} {{M,N} ::= ...} [5])
+l.125 T
+       here was, however, a statically typed branch of functional [5])
+(./chapters/one/where-are-we-going.tex)
+(./chapters/one/how-are-we-going-to-get-there.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.6}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
+l.12 
+      [6]
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 18.
+
+! pdfTeX warning (ext4): destination with the same identifier (name{page.7}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.42   \inferrule
+                 * [lab=previous] {} {{M,N} ::= ...} [7])
+! pdfTeX warning (ext4): destination with the same identifier (name{page.8}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
 l.101 \newpage
-               [6])
+               [8])
 \openout2 = `chapters/two/ch.aux'.
 
  (./chapters/two/ch.tex
 Chapter 2.
 (./chapters/two/toolbox.tex) (./chapters/two/notation-and-terminology.tex)
 (./chapters/two/core-design-patterns.tex)
-(./chapters/two/variation-in-presentation.tex [7
+(./chapters/two/variation-in-presentation.tex [9
 
 
 
-]) [8])
+]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 25.
+
+(/opt/local/share/texmf-dist/tex/latex/base/omlcmr.fd
+File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 25.
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 35.
+ [10]
+LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <12> not available
+(Font)              Font shape `OML/cmm/b/it' tried instead on input line 90.
+ [11] [12]) [13])
 \openout2 = `chapters/three/ch.aux'.
 
 
-(./chapters/three/ch.tex
+(./chapters/three/ch.tex [14
+
+
+
+]
 Chapter 3.
 (./chapters/three/io-monad-for-http-streams.tex)
 (./chapters/three/code-first.tex)
 (./chapters/three/synchrony-asynchrony-buffering.tex)
-(./chapters/three/state-statelessness-continuations.tex) [9
-
-
-
-])
+(./chapters/three/state-statelessness-continuations.tex) [15])
 \openout2 = `chapters/four/ch.aux'.
 
 
-(./chapters/four/ch.tex [10
+(./chapters/four/ch.tex [16
 
 
 
 ]
 Chapter 4.
 (./chapters/four/parsing.tex) (./chapters/four/obligatory-parsing-monad.tex)
-(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex) [11])
+(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex) [17])
 \openout2 = `chapters/five/ch.aux'.
 
 
-(./chapters/five/ch.tex [12
+(./chapters/five/ch.tex [18
 
 
 
@@ -464,10 +516,10 @@ Chapter 4.
 Chapter 5.
 (./chapters/five/domain-model.tex) (./chapters/five/abstract-syntax.tex)
 (./chapters/five/application-domain-model.tex)
-(./chapters/five/transform-pipeline.tex) [13])
+(./chapters/five/transform-pipeline.tex) [19])
 \openout2 = `chapters/six/ch.aux'.
 
- (./chapters/six/ch.tex [14
+ (./chapters/six/ch.tex [20
 
 
 
@@ -480,21 +532,21 @@ Overfull \hbox (3.44252pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/17.28 Mapping URIs to zipper-based paths and back 
  []
 
-) [15])
+) [21])
 \openout2 = `chapters/seven/ch.aux'.
 
- (./chapters/seven/ch.tex [16
+ (./chapters/seven/ch.tex [22
 
 
 
 ]
 Chapter 7.
 (./chapters/seven/collections-as-monads.tex) (./chapters/seven/container.tex)
-(./chapters/seven/monad-and-comonad.tex) [17])
+(./chapters/seven/monad-and-comonad.tex) [23])
 \openout2 = `chapters/eight/ch.aux'.
 
  (./chapters/eight/ch.tex
-[18
+[24
 
 
 
@@ -502,11 +554,11 @@ Chapter 7.
 Chapter 8.
 (./chapters/eight/domain-state-storage.tex)
 (./chapters/eight/model-to-store.tex) (./chapters/eight/storage-LINQ.tex)
-(./chapters/eight/continuations-revisited.tex) [19])
+(./chapters/eight/continuations-revisited.tex) [25])
 \openout2 = `chapters/nine/ch.aux'.
 
  (./chapters/nine/ch.tex
-[20
+[26
 
 
 
@@ -514,17 +566,17 @@ Chapter 8.
 Chapter 9.
 (./chapters/nine/putting-it-all-together.tex) (./chapters/nine/end-to-end.tex)
 (./chapters/nine/deployment.tex) (./chapters/nine/application-to-framework.tex)
-[21])
+[27])
 \openout2 = `chapters/ten/ch.aux'.
 
- (./chapters/ten/ch.tex [22
+ (./chapters/ten/ch.tex [28
 
 
 
 ]
 Chapter 10.
 (./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex)
-(./chapters/ten/search-for-behavior.tex) [23])
+(./chapters/ten/search-for-behavior.tex) [29])
 \openout2 = `bibliography/monadic.aux'.
 
 
@@ -535,26 +587,27 @@ No file bibliography/monadic.tex.
 (./chapters/nine/ch.aux) (./chapters/ten/ch.aux) (./bibliography/monadic.aux)) 
 ) 
 Here is how much of TeX's memory you used:
- 5133 strings out of 94500
- 70835 string characters out of 1174972
- 120656 words of memory out of 1000000
- 7977 multiletter control sequences out of 10000+50000
- 16116 words of font info for 61 fonts, out of 500000 for 2000
+ 6162 strings out of 94500
+ 83672 string characters out of 1174972
+ 171747 words of memory out of 1000000
+ 8954 multiletter control sequences out of 10000+50000
+ 16474 words of font info for 62 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 27i,16n,42p,282b,320s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 31i,16n,43p,282b,1382s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 252 PDF objects out of 300000
- 77 named destinations out of 131072
- 113 words of extra memory for PDF output out of 65536
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/shar
-e/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-dist/fonts
-/type1/bluesky/cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
-cm/cmtt12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmti12.pfb></
-opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/
-texmf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></opt/local/share/texmf-dist/fonts
-/type1/bluesky/cm/cmbx12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
-m/cmti10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></o
-pt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/te
-xmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dist/fonts/ty
-pe1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (30 pages, 127639 bytes).
+ 470 PDF objects out of 300000
+ 96 named destinations out of 131072
+ 425 words of extra memory for PDF output out of 65536
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/sh
+are/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/fo
+nts/type1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
+cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt12.pfb><
+/opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmti12.pfb></opt/local/share
+/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/texmf-dist/font
+s/type1/bluesky/cm/cmsl12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
+cm/cmbx12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></
+opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/local/share/
+texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/
+type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/
+cmr17.pfb>
+Output written on monadic.pdf (38 pages, 184170 bytes).
