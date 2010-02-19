@@ -180,12 +180,12 @@ Eugenio Moggi observed that an idea previously discovered in a then
 obscure branch of mathematics (called category theory) offered a way
 to \emph{structure} functional programs to allow them to deal with
 side-effecting computations in uniform and compelling
-manner. Essentially, the notion of a monad (as it was called in the
-category theory literature) provided a language level abstraction for
-structuring side-effecting computations in a functional setting. In
-today's parlance, he found a domain specific language, a DSL, for
-organizing side-effecting computations in an ambient (or hosting)
-functional language. Once Moggi made this discovery another
+manner. Essentially, the notion of a \emph{monad} (as it was called in
+the category theory literature) provided a language level abstraction
+for structuring side-effecting computations in a functional
+setting. In today's parlance, he found a domain specific language, a
+DSL, for organizing side-effecting computations in an ambient (or
+hosting) functional language. Once Moggi made this discovery another
 researcher, Phil Wadler, realized that this DSL had a couple of
 different ``presentations'' (different concrete syntaxes for the same
 underlying abstract syntax) that were almost immediately
@@ -205,11 +205,11 @@ Of course, to say that \texttt{Haskell} offers syntactic sugar hides
 the true nature of how monads are supported in the language. There are
 actually three elements that come together to make this work. First,
 expressing the pattern at all requires support for parametric
-polymorphism, generics-style type abstraction. Second,
-\texttt{Haskell}'s \lstinline[language=Haskell]!typeclass! mechanism
-(the \texttt{Haskell} equivalent to \texttt{Scala}'s
-\lstinline[language=Scala]!trait!) another mechanism is required to
-make the pattern itself polymorphic. Then there is the
+polymorphism, generics-style type abstraction. Second, another
+mechanism, \texttt{Haskell}'s \lstinline[language=Haskell]!typeclass!
+mechanism (the \texttt{Haskell} equivalent to \texttt{Scala}'s
+\lstinline[language=Scala]!trait!) is required to make the pattern
+itself polymorphic. Then there is the
 \lstinline[language=Haskell]!do!-notation itself and the syntax-driven
 translation from that to \texttt{Haskell}'s core syntax. Taken
 together, these features allow the compiler to work out which
@@ -255,8 +255,8 @@ realistic to expect computation never to synchronize, but now this is
 seen in a different light, and is perhaps the most stark way to
 illustrate the promise of monadic structuring techniques in the
 concurrent world programmers find themselves. They allow us to write
-in a language that is largely familiar to most programmers and yet
-analyze what's written and rewrite it to optimize for the concurrent
+in a language that is at least notionally familiar to most programmers
+and yet analyze what's written and retarget it for the concurrent
 setting.
 
 In summary, functional language design improved in terms of 

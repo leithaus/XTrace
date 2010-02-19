@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  19 FEB 2010 11:37
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  19 FEB 2010 12:07
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -595,7 +595,7 @@ No file bibliography/monadic.tex.
 Here is how much of TeX's memory you used:
  6175 strings out of 94500
  83789 string characters out of 1174972
- 172981 words of memory out of 1000000
+ 171981 words of memory out of 1000000
  8958 multiletter control sequences out of 10000+50000
  17287 words of font info for 66 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
@@ -617,4 +617,4 @@ xmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/t
 ype1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/
 cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/l
 ocal/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (42 pages, 213582 bytes).
+Output written on monadic.pdf (42 pages, 213614 bytes).
