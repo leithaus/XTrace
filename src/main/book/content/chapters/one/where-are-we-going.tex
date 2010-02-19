@@ -1,4 +1,55 @@
 \section{Where are we going}
 
+With a preamble like that it doesn't take much to guess where all this
+is heading. More and more we are looking at trends that lead toward
+more functional and functionally-based web applications. The growing
+popularity of frameworks like \texttt{Lift} is really the tip of the
+iceberg.
+
 \subsection{A functional web}
+
+TBD
+
 \subsection{DSL-based design}
+
+It has become buzz-word du jour to talk about DSL-based design. So
+much so that it's becoming hard to understand what the term means. In
+the functional setting the meaning is really quite clear and since the
+writing of the Structure and Interpretation of Computer Programs (one
+of the seminal texts of functional programming and one of the first to
+pioneer the idea of DSL-based design) the meaning has gotten
+considerably clearer. In a typed functional setting the design of a
+collection of types tailor-made to model and address the operations of
+some domain is the basis is effectively the design of an abstract
+syntax of a language for computing over the domain.
+
+To see why this must be so, let's begin from the basics. If we want to
+know what DSL-based design means in practical terms, eventually we
+have to ask what goes into the specification of a language. The
+commonly received wisdom is that a language is comprised of a
+\emph{syntax} and a \emph{semantics}. The syntax carries the structure
+of the expressions of the language while the semantics says how to
+evaluate those expressions to achieve a result -- typically either to
+derive a meaning for the expression (such as this expression denotes
+that value) or perform an action or computation indicated by the
+expression (such as print this string on the console). Focusing, for
+the moment, on syntax as the more concrete of the two elements, we
+note that syntax is governed by \emph{grammar}. Whether we're building
+a concrete syntax, like the \texttt{ASCII} strings one types to
+communicate \texttt{Scala} expressions to the compiler or building an
+abstract syntax, like the expression trees of \texttt{LINQ}, syntax is
+governed by grammar.
+
+Now, think about building a parser. A parser is essentially a
+transformer from concrete syntax to abstract syntax. We know how
+describe the grammar of the concrete syntax, this is input to a parser
+generator, often a variant of \texttt{EBNF}. How do we describe the
+grammar of the abstract syntax? In a typed functional setting this is
+given by \emph{the definitions of the types of the abstract
+  syntax}. That is, in a typed functional setting the type system
+plays the role of \texttt{EBNF} providing a grammar for the
+specification of grammars governing some abstract syntax. Then the
+collection of types comprising the model of some domain is then
+nothing other than the grammar of an abstract syntax, by definition,
+and whether or not there is a concrete syntax in front of it. 
+
