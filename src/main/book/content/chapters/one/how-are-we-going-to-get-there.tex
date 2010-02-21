@@ -12,8 +12,8 @@ contemplating building tomorrow.
 
 Let's illustrate this in more detail by telling a story. We imagine a
 cloud-based editor for a simple programming language, not unlike
-\texttt{Mozilla's bespin} . A user can register with the service and
-then create an application project which allows them
+\texttt{Mozilla}'s \texttt{bespin} . A user can register with the
+service and then create an application project which allows them
 \begin{itemize}
    \item to write code in a structured editor that understands the language;
    \item manage files in the application project;
@@ -23,41 +23,220 @@ then create an application project which allows them
 
 \subsubsection{Our toy language}
 
+\paragraph{Abstract syntax}
 For our example we'll need a toy language. Fittingly for a book about
 \texttt{Scala} we'll use the $\lambda$-calculus as our toy
 language. The core \textit{abstract} syntax of the lambda calculus is
 given by the following \textit{EBNF} grammar.
 
 \begin{mathpar}
-  \inferrule* [lab=mention] {} {{M,N} ::= x}
+  \inferrule* [lab=term] {} {{M,N} ::=}
+  \and
+  \inferrule* [lab=mention] {} {x}
   \and
   \inferrule* [lab=abstraction] {} {\;| \; \lambda x . M}
-  \and \\
+  \and
   \inferrule* [lab=application] {} {\;| \; M N}
 \end{mathpar} 
 
+\paragraph{A simple-minded representation}
+At a syntactic level this has a direct representation as the following
+\texttt{Scala} code.
+
+\begin{lstlisting}[language=Scala]
+  trait Term[Identifier]
+
+  case class Mention[Identifier]( variable : Identifier )
+  extends Term[Identifier]
+
+  case class Abstraction[Identifier](
+     formal : Identifier,
+     body : Term[Identifier]
+  ) extends Term[Identifier]
+
+  case class Application[Identifier](
+     function : Term[Identifier], 
+     actual : Term[Identifier]
+  ) extends Term[Identifier]
+\end{lstlisting}
+
+In this representation each \emph{syntactic category}, TERM, MENTION,
+ABSTRACTION and APPLICATION, is represented by a
+\lstinline[language=Scala]!trait! or \lstinline[language=Scala]!case class!.
+TERM's are \lstinline[language=Scala]!trait!'s because they
+are pure placeholders. The other categories elaborate the syntactic
+form, and the elaboration is matched by the
+\lstinline[language=Scala]!case class!  structure. Thus, for example,
+an ABSTRACTION is modeled by an instance of the
+\lstinline[language=Scala]!case class! called
+\lstinline[language=Scala]!Abstraction! having members
+\lstinline[language=Scala]!formal! for the formal parameter of the
+abstraction, and \lstinline[language=Scala]!body! for the
+$\lambda$-term under the abstraction that might make use of the
+parameter. Similarly, an APPLICATION is modeled by an instance of the
+\lstinline[language=Scala]!case class! of the same name having members
+\lstinline[language=Scala]!function! for the term that will be applied
+to the actual parameter called (not surprisingly)
+\lstinline[language=Scala]!actual!.
+
+\paragraph{Generics and quotation}
+One key aspect of this representation is that we acknowledge that the
+abstract syntax is strangely silent on what the \emph{terminals}
+are. It doesn't actually say what $x$'s are. Often implementations of
+the $\lambda$-calculus will make some choice, such as
+\lstinline[language=Scala]!String!s or
+\lstinline[language=Scala]!Integers! or some other
+representation. With \texttt{Scala}'s generics we can defer this
+choice. In fact, to foreshadow some of what's to come, we illustrate
+that we never actually have to go outside of the basic grammar
+definition to come up with a supply of identifiers.
+
+\begin{lstlisting}[language=Scala]
+  trait Identifier[Mark] {
+    def contents : Mark
+  }
+
+  class BoxedIdentifier[Mark]( contents : Mark )
+  extends Identifier[Mark]
+
+  case class Quotation( code : Term[Quotation] )
+  extends Identifier[Term[Quotation]]
+\end{lstlisting}
+
+This allows us to use \emph{quoted} terms as variables in
+$lambda$-terms! The idea is very rich as it begs the question of
+whether such variables can be \emph{unquoted} and what that means for
+evaluation. Thus, \texttt{Scala}'s type system is already leading to
+some pretty interesting places! In fact, there's a much deeper design
+principle lurking here, called two-level type decomposition, that is
+enabled by generics. We'll talk more about this in upcoming chapters,
+but just want to put it on the backlog.
+
+\paragraph{Some syntactic sugar}
 To this core let us add some syntactic sugar.
 
 \begin{mathpar}
   \inferrule* [lab=previous] {} {{M,N} ::= ...}
-  \and \\
-  \inferrule* [lab=let] {} {\;| \; let x = M}
-  \and \\
+  \and
+  \inferrule* [lab=let] {} {\;| \; let \; x = M \; in \; N}
+  \and
   \inferrule* [lab=seq] {} {\;| \; M;N}
 \end{mathpar} 
 
+This is sugar because we can reduce $let \; x \; = \; M \; in \; N$ to
+$(\lambda x. M) N$ and $ M; N$ to $let \; x \; = \; M \; in \; N$ with
+$x$ not occurring in $N$.
+
+\paragraph{Digression: complexity management principle} In terms of
+our implementation, the existence of this reduction means that we can
+choose to have explicit representation of these syntactic categories
+or not. This choice is one of a those design situations that's of
+significant interest if our concern is complexity management. TBD
+
+\paragraph{Concrete syntax}
 Now let's wrap this up in concrete syntax.
 
 \begin{mathpar}
-  \inferrule* [lab=mention] {} {{M,N} ::= x}
-  \and 
-  \inferrule* [lab=abstraction] {} {\;| \; \texttt{(} x_1 \texttt{,} ... \texttt{,} x_k \texttt{)} \texttt{=>} M}
-  \and \\
+  \inferrule* [lab=term] {} {{M,N} ::=}
+  \and
+  \inferrule* [lab=mention] {} {x}
+  \and
+  \inferrule* [lab=abstraction] {} {\;| \; \texttt{(} x_1 \texttt{,} ... \texttt{,} x_k \texttt{)} \; \texttt{=>} \; M}
+  \and
   \inferrule* [lab=application] {} {\;| \; M\texttt{(} N_1 \texttt{,} ... \texttt{,} N_k \texttt{)}}
-  \and \\
-  \inferrule* [lab=let] {} {\;| \; \texttt{val} x \texttt{=} M}
-  \and \\
+  \and
+  \inferrule* [lab=let] {} {\;| \; \texttt{val} \; x \; \texttt{=} \; M \texttt{;} N}
+  \and
   \inferrule* [lab=seq] {} {\;| \; M \texttt{;} N }
-  \and \\
-  \inferrule* [lab=group] {} {\;| \; \texttt{{} M \texttt{}} }
+  \and
+  \inferrule* [lab=group] {} {\;| \; \texttt{ \{ } M \texttt{ \} } }
 \end{mathpar} 
+
+It doesn't take much squinting to see that this looks a lot like a
+subset of \texttt{Scala}, and that's because -- of course! --
+functional languages like \texttt{Scala} all share a common core that
+is essentially the $\lambda$-calculus. Once you familiarize yourself
+with the $\lambda$-calculus as a kind of design pattern you'll see it
+poking out everywhere: in \texttt{Clojure} and \texttt{OCaml} and
+\texttt{F\#} and \texttt{Scala}. In fact, as we'll see later, just
+about any DSL you design that needs a notion of variables could do
+worse than simply to crib from this existing and well understood
+design pattern.
+
+If you've been following along so far, however, you will spot that
+something is actually wrong with this grammar. We still don't have an
+actual terminal! \emph{Concrete} syntax is what ``users'' type, so as
+soon as we get to concrete syntax we can no longer defer our choices
+about identifiers. Let's leave open the door for both ordinary
+identifiers -- such as we see in \texttt{Scala} -- and our funny
+quoted terms. This means we need to add the following productions to
+our grammar.
+
+\begin{mathpar}
+  \inferrule* [lab=identifier] {} {{x,y} ::=}
+  \and
+  \inferrule* [lab=string-id] {} {\;| \; String}
+  \and
+  \inferrule* [lab=quotation] {} {\;| \; \texttt{@} \texttt{<} M \texttt{>}}
+\end{mathpar} 
+
+(The reason we use the \texttt{@} for quotation -- as will become
+clear later -- is that when we have both quote and dequote, the former
+functions a lot like asking for a \emph{pointer} to a term while the
+latter is a lot like dereferencing the pointer.)
+
+\paragraph{Translating concrete syntax to abstract syntax}
+The translation from the concrete syntax to the abstract syntax is
+compactly expressed as follows. Perhaps the best way to understand
+this presentation is in terms of a \texttt{Scala} implementation.
+
+\paragraph{Structural equivalence and Relations or What makes abstract syntax abstract}
+
+Apart from the fact that concrete syntax forces commitment to explicit
+representation of terminals, you might be wondering if there are any
+other differences between concrete and abstract syntax. It turns out
+there are. One of the key properties of abstract syntax is that it
+encodes a notion of equality of terms that is not generally
+represented in concrete syntax.
+
+It's easier to illustrate the idea in terms of our example. We know
+that programs that differ only by a change of bound variable are
+essentially the same. Concretely, the program
+\lstinline[language=Scala]!( x ) => x + 5! is essentially the same as
+the program \lstinline[language=Scala]!( y ) => y + 5!. By
+``essentially the same'' we mean that in every evaluation context
+where we might put the former if we substitute the latter we will get
+the same answer. 
+
+However, this sort of equivalence doesn't have to be all intertwined
+with evaluation to be expressed. A little forethought shows we can
+achieve some separation of concerns by separating out certain kinds of
+\emph{structural} equivalences. Abstract syntax is where we express
+structural equivalence. In terms of our example we can actually
+calculate when two $\lambda$-terms differ only by a change of
+\emph{bound} variable, where by bound variable we just mean a variable
+mention in a term also using the variable as formal parameter of an
+abstraction. 
+
+Since we'll need that notion to express this structural equivalence,
+let's write a function that calculates the bound variables of a
+$\lambda$-term.
+
+\begin{lstlisting}[language=Scala]
+  trait AlphaEquivalence[Identifier] {
+    def freeVariables( term : Term[Identifier] )
+    : Set[Mention[Identifier]] = {
+      term match {
+        case Mention( x ) => x
+        case Abstraction( formal, body ) =>
+          freeVariables( body ).remove( formal )
+        case Application( function, actual ) =>
+          freeVariables( function ) union freeVariables( actual )
+      }
+    }
+  }
+\end{lstlisting}
+
+\paragraph{Evaluation -- aka operational semantics}
+
+TBD

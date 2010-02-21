@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  19 FEB 2010 12:07
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  21 FEB 2010 01:40
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -366,7 +366,7 @@ Underfull \vbox (badness 2689) has occurred while \output is active []
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.28 ... IO-monad for http streams}{19}{chapter.3}
+l.37 ... IO-monad for http streams}{23}{chapter.3}
                                                    [1
 
 ] [2])
@@ -435,7 +435,7 @@ l.92
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.143 
+l.145 
        [6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -444,7 +444,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.203 
+l.205 
        [7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -453,44 +453,61 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.261 
+l.263 
        [8]
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 265.
-) (./chapters/one/where-are-we-going.tex
-Underfull \vbox (badness 1622) has occurred while \output is active []
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 267.
+) (./chapters/one/where-are-we-going.tex [9] [10])
+(./chapters/one/how-are-we-going-to-get-there.tex [11]
+Overfull \hbox (0.78412pt too wide) in paragraph at lines 63--81
+[]\OT1/cmr/m/n/12 In this rep-re-sen-ta-tion each \OT1/cmr/m/it/12 syn-tac-tic 
+cat-e-gory\OT1/cmr/m/n/12 , TERM, MEN-TION, AB-STRAC-
+ []
 
- [9]
-[10]) (./chapters/one/how-are-we-going-to-get-there.tex [11]) [12])
+[12]
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 152
+.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 152.
+
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 152.
+
+[13]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 205.
+
+ (/opt/local/share/texmf-dist/tex/latex/base/omlcmr.fd
+File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <12> not available
+(Font)              Font shape `OML/cmm/b/it' tried instead on input line 205.
+ [14]
+Overfull \hbox (31.45787pt too wide) in paragraph at lines 234--235
+[][][][][][][][][][][][][][][][][][][] 
+ []
+
+) [15])
 \openout2 = `chapters/two/ch.aux'.
 
-
-(./chapters/two/ch.tex
-Chapter 2.
-(./chapters/two/toolbox.tex) (./chapters/two/notation-and-terminology.tex)
-(./chapters/two/core-design-patterns.tex)
-(./chapters/two/variation-in-presentation.tex [13
+ (./chapters/two/ch.tex [16
 
 
 
 ]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 25.
-
-(/opt/local/share/texmf-dist/tex/latex/base/omlcmr.fd
-File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
+Chapter 2.
+(./chapters/two/toolbox.tex) (./chapters/two/notation-and-terminology.tex)
+(./chapters/two/core-design-patterns.tex)
+(./chapters/two/variation-in-presentation.tex [17]
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 25.
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 35.
- [14]
-LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <12> not available
-(Font)              Font shape `OML/cmm/b/it' tried instead on input line 90.
- [15] [16]) [17])
+ [18] [19] [20]) [21])
 \openout2 = `chapters/three/ch.aux'.
 
 
-(./chapters/three/ch.tex [18
+(./chapters/three/ch.tex [22
 
 
 
@@ -499,22 +516,22 @@ Chapter 3.
 (./chapters/three/io-monad-for-http-streams.tex)
 (./chapters/three/code-first.tex)
 (./chapters/three/synchrony-asynchrony-buffering.tex)
-(./chapters/three/state-statelessness-continuations.tex) [19])
+(./chapters/three/state-statelessness-continuations.tex) [23])
 \openout2 = `chapters/four/ch.aux'.
 
 
-(./chapters/four/ch.tex [20
+(./chapters/four/ch.tex [24
 
 
 
 ]
 Chapter 4.
 (./chapters/four/parsing.tex) (./chapters/four/obligatory-parsing-monad.tex)
-(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex) [21])
+(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex) [25])
 \openout2 = `chapters/five/ch.aux'.
 
 
-(./chapters/five/ch.tex [22
+(./chapters/five/ch.tex [26
 
 
 
@@ -522,10 +539,10 @@ Chapter 4.
 Chapter 5.
 (./chapters/five/domain-model.tex) (./chapters/five/abstract-syntax.tex)
 (./chapters/five/application-domain-model.tex)
-(./chapters/five/transform-pipeline.tex) [23])
+(./chapters/five/transform-pipeline.tex) [27])
 \openout2 = `chapters/six/ch.aux'.
 
- (./chapters/six/ch.tex [24
+ (./chapters/six/ch.tex [28
 
 
 
@@ -538,21 +555,21 @@ Overfull \hbox (3.44252pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/17.28 Mapping URIs to zipper-based paths and back 
  []
 
-) [25])
+) [29])
 \openout2 = `chapters/seven/ch.aux'.
 
- (./chapters/seven/ch.tex [26
+ (./chapters/seven/ch.tex [30
 
 
 
 ]
 Chapter 7.
 (./chapters/seven/collections-as-monads.tex) (./chapters/seven/container.tex)
-(./chapters/seven/monad-and-comonad.tex) [27])
+(./chapters/seven/monad-and-comonad.tex) [31])
 \openout2 = `chapters/eight/ch.aux'.
 
  (./chapters/eight/ch.tex
-[28
+[32
 
 
 
@@ -560,11 +577,11 @@ Chapter 7.
 Chapter 8.
 (./chapters/eight/domain-state-storage.tex)
 (./chapters/eight/model-to-store.tex) (./chapters/eight/storage-LINQ.tex)
-(./chapters/eight/continuations-revisited.tex) [29])
+(./chapters/eight/continuations-revisited.tex) [33])
 \openout2 = `chapters/nine/ch.aux'.
 
  (./chapters/nine/ch.tex
-[30
+[34
 
 
 
@@ -572,17 +589,17 @@ Chapter 8.
 Chapter 9.
 (./chapters/nine/putting-it-all-together.tex) (./chapters/nine/end-to-end.tex)
 (./chapters/nine/deployment.tex) (./chapters/nine/application-to-framework.tex)
-[31])
+[35])
 \openout2 = `chapters/ten/ch.aux'.
 
- (./chapters/ten/ch.tex [32
+ (./chapters/ten/ch.tex [36
 
 
 
 ]
 Chapter 10.
 (./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex)
-(./chapters/ten/search-for-behavior.tex) [33])
+(./chapters/ten/search-for-behavior.tex) [37])
 \openout2 = `bibliography/monadic.aux'.
 
 
@@ -590,31 +607,34 @@ No file bibliography/monadic.tex.
 (./monadic.aux (./chapters/one/ch.aux) (./chapters/two/ch.aux)
 (./chapters/three/ch.aux) (./chapters/four/ch.aux) (./chapters/five/ch.aux)
 (./chapters/six/ch.aux) (./chapters/seven/ch.aux) (./chapters/eight/ch.aux)
-(./chapters/nine/ch.aux) (./chapters/ten/ch.aux) (./bibliography/monadic.aux)) 
-) 
+(./chapters/nine/ch.aux) (./chapters/ten/ch.aux) (./bibliography/monadic.aux))
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
 Here is how much of TeX's memory you used:
- 6175 strings out of 94500
- 83789 string characters out of 1174972
- 171981 words of memory out of 1000000
- 8958 multiletter control sequences out of 10000+50000
+ 6256 strings out of 94500
+ 84839 string characters out of 1174972
+ 176090 words of memory out of 1000000
+ 8986 multiletter control sequences out of 10000+50000
  17287 words of font info for 66 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 31i,16n,43p,282b,1382s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 31i,16n,43p,282b,1545s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 495 PDF objects out of 300000
- 102 named destinations out of 131072
+ 559 PDF objects out of 300000
+ 153 named destinations out of 131072
  425 words of extra memory for PDF output out of 65536
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/sh
-are/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/fo
-nts/type1/bluesky/cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/blues
-ky/cm/cmtt10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb><
-/opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/t
-exmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/texmf-dist/fonts/
-type1/bluesky/cm/cmti12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
-/cmtt12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></op
-t/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb></opt/local/share/te
-xmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/t
-ype1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/
-cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/l
-ocal/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (42 pages, 213614 bytes).
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/s
+hare/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/f
+onts/type1/bluesky/cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/blue
+sky/cm/cmtt10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb>
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/
+texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/texmf-dist/fonts
+/type1/bluesky/cm/cmti12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
+m/cmtt12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></o
+pt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb></opt/local/share/t
+exmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/
+type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
+/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/
+local/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on monadic.pdf (46 pages, 233678 bytes).

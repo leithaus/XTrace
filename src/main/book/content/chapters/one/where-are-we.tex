@@ -109,17 +109,19 @@ so heavily influenced by functional language design principles is
 easily understood by even the most impatient of pragmatic of
 programmers: functional language design has made significant and
 demonstrable progress addressing performance issues that plagued it at
-the beginning.
+the beginning. Moreover, these developments have significant
+applicability to the situation related to concurrent execution that
+the modern programmer finds herself now.
 
 Since the mid '80's when \texttt{Lisp} and it's progeny were thrown
 out of the industry for performance failures a lot of excellent work
 has gone on that has rectified many of the problems those languages
 faced. In particular, while \texttt{Lisp} implementations tried to
 take a practical approach to certain aspects of computation, chiefly
-having to do with side-effecting operations and i/o, the underlying
+having to do with side-effecting operations and I/O, the underlying
 semantic model did not seem well-suited to address those kinds of
 computations. And yet, not only are side-effecting computations and
-especially i/o ubiquitous, using them led (at least initially) to
+especially I/O ubiquitous, using them led (at least initially) to
 considerably better performance. Avoiding those operations (sometimes
 called functional purity) seemed to be an academic exercise not well
 suited to writing ``real world'' applications.

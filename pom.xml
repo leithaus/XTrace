@@ -178,12 +178,40 @@
       <artifactId>icu4j</artifactId>
       <version>local</version>
     </dependency> 
+    <dependency>
+	<groupId>jlex</groupId>
+	<artifactId>JLex-local</artifactId>
+	<version>local</version>
+    </dependency>
+    <dependency>
+      <groupId>cup</groupId>
+      <artifactId>java-cup-11a</artifactId>
+      <version>local</version>
+    </dependency>
+    <dependency>
+      <groupId>cup</groupId>
+      <artifactId>java-cup-11a-runtime</artifactId>
+      <version>local</version>
+    </dependency>    
+    <dependency>
+      <groupId>com.googlecode</groupId>
+      <artifactId>kiama</artifactId>
+      <version>0.9.0</version>
+    </dependency>    
   </dependencies>
 
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
@@ -225,6 +253,70 @@
             <classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
           </classpathContainers>
         </configuration>
+      </plugin>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-antrun-plugin</artifactId>
+	<executions>
+	  <execution>
+	    <id>bnfc-generation</id>
+	    <phase>generate-sources</phase>
+	    <configuration>
+	      <tasks>
+		<property name="target.dir" value="${basedir}/target"/>
+		<property name="scala.dir" value="${basedir}/src/main/scala"/>
+		<property name="bnfc.dir" value="${basedir}/src/main/bnfc"/>
+		<property name="bnfc.package" value="${groupId}"/>
+		<property name="bnfc.artifact" value="${artifactId}"/>
+		<property name="compile_classpath"
+			  refid="maven.compile.classpath"/>
+
+                <ant antfile="${basedir}/src/main/bnfc/build.xml">
+                  <target name="bnfc-generate"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+	  <execution>
+	    <id>bnfc-processing</id>
+	    <phase>process-sources</phase>
+	    <configuration>
+	      <tasks>
+		<property name="target.dir" value="${basedir}/target"/>
+		<property name="scala.dir" value="${basedir}/src/main/scala"/>
+		<property name="bnfc.dir" value="${basedir}/src/main/bnfc"/>
+		<property name="bnfc.package" value="${groupId}"/>
+		<property name="bnfc.artifact" value="${artifactId}"/>
+                <ant antfile="${basedir}/src/main/bnfc/build.xml">
+                  <target name="bnfc-process"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+	  <execution>
+	    <id>bnfc-cleansing</id>
+	    <phase>clean</phase>
+	    <configuration>
+	      <tasks>
+		<property name="bnfc.dir" value="${basedir}/src/main/bnfc"/>
+		<property name="bnfc.package" value="${groupId}"/>
+		<property name="bnfc.artifact" value="${artifactId}"/>
+                <ant antfile="${basedir}/src/main/bnfc/build.xml">
+                  <target name="bnfc-clean"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
