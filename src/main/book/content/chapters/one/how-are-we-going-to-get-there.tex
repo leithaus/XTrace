@@ -30,7 +30,7 @@ language. The core \textit{abstract} syntax of the lambda calculus is
 given by the following \textit{EBNF} grammar.
 
 \begin{mathpar}
-  \inferrule* [lab=term] {} {{M,N} ::=}
+  \inferrule* [lab=expression] {} {{M,N} ::=}
   \and
   \inferrule* [lab=mention] {} {x}
   \and
@@ -44,26 +44,29 @@ At a syntactic level this has a direct representation as the following
 \texttt{Scala} code.
 
 \begin{lstlisting}[language=Scala]
-  trait Term[Identifier]
+  trait Expressions {
+    type Nominal    
+    abstract class Expression
 
-  case class Mention[Identifier]( variable : Identifier )
-  extends Term[Identifier]
+    case class Mention( reference : Nominal )
+       extends Expression
 
-  case class Abstraction[Identifier](
-     formal : Identifier,
-     body : Term[Identifier]
-  ) extends Term[Identifier]
+    case class Abstraction(
+       formals : List[Nominal],
+       body : Expression
+    )  extends Expression
 
-  case class Application[Identifier](
-     function : Term[Identifier], 
-     actual : Term[Identifier]
-  ) extends Term[Identifier]
+    case class Application(
+       operation : Expression,
+       actuals : List[Expression]
+    )  extends Expression        
+  }
 \end{lstlisting}
 
-In this representation each \emph{syntactic category}, TERM, MENTION,
+In this representation each \emph{syntactic category}, EXPRESSION, MENTION,
 ABSTRACTION and APPLICATION, is represented by a
 \lstinline[language=Scala]!trait! or \lstinline[language=Scala]!case class!.
-TERM's are \lstinline[language=Scala]!trait!'s because they
+EXPRESSION's are \lstinline[language=Scala]!trait!'s because they
 are pure placeholders. The other categories elaborate the syntactic
 form, and the elaboration is matched by the
 \lstinline[language=Scala]!case class!  structure. Thus, for example,
@@ -75,42 +78,61 @@ abstraction, and \lstinline[language=Scala]!body! for the
 $\lambda$-term under the abstraction that might make use of the
 parameter. Similarly, an APPLICATION is modeled by an instance of the
 \lstinline[language=Scala]!case class! of the same name having members
-\lstinline[language=Scala]!function! for the term that will be applied
+\lstinline[language=Scala]!operation! for the expression that will be applied
 to the actual parameter called (not surprisingly)
 \lstinline[language=Scala]!actual!.
 
-\paragraph{Generics and quotation}
+\paragraph{Type parametrization and quotation}
 One key aspect of this representation is that we acknowledge that the
 abstract syntax is strangely silent on what the \emph{terminals}
 are. It doesn't actually say what $x$'s are. Often implementations of
 the $\lambda$-calculus will make some choice, such as
 \lstinline[language=Scala]!String!s or
 \lstinline[language=Scala]!Integers! or some other
-representation. With \texttt{Scala}'s generics we can defer this
-choice. In fact, to foreshadow some of what's to come, we illustrate
-that we never actually have to go outside of the basic grammar
-definition to come up with a supply of identifiers.
+representation. With \texttt{Scala}'s type parametrization we can
+defer this choice. In fact, to foreshadow some of what's to come, we
+illustrate that we never actually have to go outside of the basic
+grammar definition to come up with a supply of identifiers.
+
+In the code above we have deferred the choice of identifier. In the
+code below we provide several different kinds of identifiers (the term
+of art in this context is ``name''), but defer the notion of an
+expression by the same trick used to defer the choice of identifiers.
 
 \begin{lstlisting}[language=Scala]
-  trait Identifier[Mark] {
-    def contents : Mark
+  trait Nominals {
+    type Term
+    abstract class Name
+    case class Transcription( expression : Term )
+       extends Name
+    case class StringLiteral( str : String )
+       extends Name
+    case class DeBruijn( outerIndex : Int, innerIndex : Int )
+       extends Name
+    case class URLLiteral( url : java.net.URL )
+       extends Name
   }
+\end{lstlisting}
 
-  class BoxedIdentifier[Mark]( contents : Mark )
-  extends Identifier[Mark]
+Now we wire the two types together.
 
-  case class Quotation( code : Term[Quotation] )
-  extends Identifier[Term[Quotation]]
+\begin{lstlisting}[language=Scala]
+  trait ReflectiveGenerators
+  extends Expressions with Nominals {
+    type Nominal = Name
+    type Term = Expression
+  }
 \end{lstlisting}
 
 This allows us to use \emph{quoted} terms as variables in
 $lambda$-terms! The idea is very rich as it begs the question of
 whether such variables can be \emph{unquoted} and what that means for
-evaluation. Thus, \texttt{Scala}'s type system is already leading to
-some pretty interesting places! In fact, there's a much deeper design
-principle lurking here, called two-level type decomposition, that is
-enabled by generics. We'll talk more about this in upcoming chapters,
-but just want to put it on the backlog.
+evaluation. Thus, \texttt{Scala}'s type system is already leading
+to some pretty interesting places! In fact, this is an instance of a
+much deeper design principle lurking here, called two-level type
+decomposition, that is enabled by type-level parametricity. We'll talk
+more about this in upcoming chapters, but just want to put it on the
+backlog.
 
 \paragraph{Some syntactic sugar}
 To this core let us add some syntactic sugar.
@@ -137,7 +159,7 @@ significant interest if our concern is complexity management. TBD
 Now let's wrap this up in concrete syntax.
 
 \begin{mathpar}
-  \inferrule* [lab=term] {} {{M,N} ::=}
+  \inferrule* [lab=expression] {} {{M,N} ::=}
   \and
   \inferrule* [lab=mention] {} {x}
   \and
@@ -223,19 +245,21 @@ let's write some code to clarify the idea, but because it will be more
 convenient, let's calculate the variables not occurring bound,
 i.e. the \emph{free} variables of a $\lambda$-term.
 
+\break
 \begin{lstlisting}[language=Scala]
-  trait AlphaEquivalence[Identifier] {
-    def freeVariables( term : Term[Identifier] )
-    : Set[Mention[Identifier]] = {
+  trait Expressions {
+    ...
+    def freeVariables( term : Expression ) : Set[Nominal] = {
       term match {
-        case Mention( x ) => x
-        case Abstraction( formal, body ) =>
-          freeVariables( body ).remove( formal )
-        case Application( function, actual ) =>
-          freeVariables( function ) union freeVariables( actual )
+        case Mention( reference ) => Set( reference )
+        case Abstraction( formals, body ) =>
+	   freeVariables( body ) &~ formals.toSet
+        case Application( operation, actuals ) =>
+	   ( freeVariables( operation ) /: actuals )(
+           { ( acc, elem ) => acc ++ freeVariables( elem ) } 
+           )
       }
     }
-  }
 \end{lstlisting}
 
 If you've been paying attention, you will note that there's something
@@ -249,4 +273,73 @@ variables. Now, this works fine for
 
 \paragraph{Evaluation -- aka operational semantics}
 
-TBD
+Here's the code
+
+\begin{lstlisting}[language=Scala]
+  trait Values {
+    type Environment
+    type Expression
+    abstract class Value
+    case class Closure(
+       fn : List[Value] => Value
+    ) extends Value
+    case class Quantity( quantity : Int )
+      extends Value
+ }
+
+ trait Reduction extends Expressions with Values {
+   type Dereferencer = {def apply( m : Mention ) : Value }
+   type Expansionist =
+      {def extend( fmls : List[Mention], actls : List[Value] ) : Dereferencer}
+   type Environment <: (Dereferencer with Expansionist)
+   type Applicator = Expression => List[Value] => Value
+
+   val initialApplicator : Applicator =
+   { ( xpr : Expression ) => {
+       ( actls : List[Value] ) => {
+         xpr match {
+           case IntegerExpression( i ) => Quantity( i )
+           case _ => throw new Exception( "why are we here?" )
+         }
+       }
+     }
+   }
+   
+   def reduce(
+      applicator : Applicator,
+      environment : Environment
+   ) : Expression => Value = { 
+     case IntegerExpression( i ) => Quantity( i )
+     case Mention( v ) => environment( Mention( v ) )
+     case Abstraction( fmls, body ) =>
+     Closure(
+        { ( actuals : List[Value] ) => {
+            val keys : List[Mention] =
+ 	    fmls.map( { ( fml : Nominal ) => Mention( fml ) });
+            reduce(
+	       applicator,
+               environment.extend( keys, actuals ).asInstanceOf[Environment]
+            )( body )
+	  }
+        }
+     )
+     case Application(
+        operator : Expression,
+        actuals : List[Expression]
+     ) => {
+	reduce( applicator, environment )( operator ) match {
+	  case Closure( fn ) => {
+	    fn.apply(
+	      (actuals
+	       map
+	       {( actual : Expression) =>
+		 (reduce( applicator, environment ))( actual )})
+	    )
+	  }
+	  case _ => throw new Exception( "attempt to apply non function" )
+	}
+      }
+    case _ => throw new Exception( "not implemented, yet" )
+  }
+}
+\end{lstlisting}
