@@ -11,13 +11,13 @@
 \contentsline {subsection}{\numberline {1.2.2}DSL-based design}{10}{subsection.1.2.2}
 \contentsline {section}{\numberline {1.3}How are we going to get there}{11}{section.1.3}
 \contentsline {subsection}{\numberline {1.3.1}Leading by example}{11}{subsection.1.3.1}
-\contentsline {subsubsection}{Our toy language}{11}{section*.7}
-\contentsline {paragraph}{Abstract syntax}{11}{section*.8}
+\contentsline {subsubsection}{Our toy language}{12}{section*.7}
+\contentsline {paragraph}{Abstract syntax}{12}{section*.8}
 \contentsline {paragraph}{A simple-minded representation}{12}{section*.9}
-\contentsline {paragraph}{Generics and quotation}{12}{section*.10}
+\contentsline {paragraph}{Generics and quotation}{13}{section*.10}
 \contentsline {paragraph}{Some syntactic sugar}{13}{section*.11}
 \contentsline {paragraph}{Digression: complexity management principle}{13}{section*.12}
-\contentsline {paragraph}{Concrete syntax}{13}{section*.13}
+\contentsline {paragraph}{Concrete syntax}{14}{section*.13}
 \contentsline {paragraph}{Translating concrete syntax to abstract syntax}{14}{section*.14}
 \contentsline {paragraph}{Structural equivalence and Relations or What makes abstract syntax abstract}{14}{section*.15}
 \contentsline {paragraph}{Evaluation -- aka operational semantics}{15}{section*.16}

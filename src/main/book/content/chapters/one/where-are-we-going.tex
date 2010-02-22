@@ -23,33 +23,52 @@ collection of types tailor-made to model and address the operations of
 some domain is the basis is effectively the design of an abstract
 syntax of a language for computing over the domain.
 
-To see why this must be so, let's begin from the basics. If we want to
-know what DSL-based design means in practical terms, eventually we
-have to ask what goes into the specification of a language. The
-commonly received wisdom is that a language is comprised of a
-\emph{syntax} and a \emph{semantics}. The syntax carries the structure
-of the expressions of the language while the semantics says how to
-evaluate those expressions to achieve a result -- typically either to
-derive a meaning for the expression (such as this expression denotes
-that value) or perform an action or computation indicated by the
-expression (such as print this string on the console). Focusing, for
-the moment, on syntax as the more concrete of the two elements, we
-note that syntax is governed by \emph{grammar}. Whether we're building
-a concrete syntax, like the \texttt{ASCII} strings one types to
-communicate \texttt{Scala} expressions to the compiler or building an
-abstract syntax, like the expression trees of \texttt{LINQ}, syntax is
-governed by grammar.
+To see why this must be so, let's begin from the basics. Informally,
+DSL-based design means we express our design in terms of a little
+mini-language, tailor-made for our application domain. When push
+comes to shove, though, if we want to know what DSL-based design means
+in practical terms, eventually we have to ask what goes into the
+specification of a language. The commonly received wisdom is that a
+language is comprised of a \emph{syntax} and a \emph{semantics}. The
+syntax carries the structure of the expressions of the language while
+the semantics says how to evaluate those expressions to achieve a
+result -- typically either to derive a meaning for the expression
+(such as this expression denotes that value) or perform an action or
+computation indicated by the expression (such as print this string on
+the console). Focusing, for the moment, on syntax as the more concrete
+of the two elements, we note that syntax is governed by
+\emph{grammar}. Whether we're building a concrete syntax, like the
+\texttt{ASCII} strings one types to communicate \texttt{Scala}
+expressions to the compiler or building an abstract syntax, like the
+expression trees of \texttt{LINQ}, syntax is governed by grammar.
 
-Now, think about building a parser. A parser is essentially a
-transformer from concrete syntax to abstract syntax. We know how
-describe the grammar of the concrete syntax, this is input to a parser
-generator, often a variant of \texttt{EBNF}. How do we describe the
-grammar of the abstract syntax? In a typed functional setting this is
-given by \emph{the definitions of the types of the abstract
-  syntax}. That is, in a typed functional setting the type system
-plays the role of \texttt{EBNF} providing a grammar for the
-specification of grammars governing some abstract syntax. Then the
-collection of types comprising the model of some domain is then
-nothing other than the grammar of an abstract syntax, by definition,
-and whether or not there is a concrete syntax in front of it. 
+What we really want to call out in this discussion is that a
+collection of types forming a model of some domain is actually a
+grammar for an abstract syntax. This is most readily seen by comparing
+the core of the type definition language of modern functional
+languages with something like \texttt{EBNF}, the most prevalent
+language for defining context-free grammars. At their heart the two
+structures are nearly the same. When one is defining a grammar one is
+defining a collection of types that model some domain and vice
+versa. This is blindingly obvious in \texttt{Haskell}, and is the
+essence of techniques like the application of two-level type
+decomposition to model grammars. Moreover, while a little harder to
+see in \texttt{Scala} it is still there. It is in this sense that
+typed functional languages like \texttt{Scala} are very well suited
+for DSL-based design. To the extent that the use of \texttt{Scala}
+relies on the functional core of the language (not the object-oriented
+bits) virtually every domain model is already a kind of DSL in that
+it's types define a kind of abstract syntax.
 
+Taking this idea a step further, in most cases such collections of
+types are actually representable as a monad. Monads effectively
+encapsulate the notion of an algebra -- which in this context is a
+category theorist's way of saying a certain kind of collection of
+types. If you are at all familiar with parser combinators and perhaps
+have heard that these too are facilitated with monadic composition
+then the suggestion that there is a deeper link between parsing,
+grammars, types and monads might make some sense. On the other hand,
+if this seems a little too abstract it will be made much more concrete
+in the following sections. For now, we are simply planting the seed of
+the idea that monads are not just for structuring side-effecting
+computations.

@@ -219,8 +219,9 @@ mention in a term also using the variable as formal parameter of an
 abstraction. 
 
 Since we'll need that notion to express this structural equivalence,
-let's write a function that calculates the bound variables of a
-$\lambda$-term.
+let's write some code to clarify the idea, but because it will be more
+convenient, let's calculate the variables not occurring bound,
+i.e. the \emph{free} variables of a $\lambda$-term.
 
 \begin{lstlisting}[language=Scala]
   trait AlphaEquivalence[Identifier] {
@@ -236,6 +237,15 @@ $\lambda$-term.
     }
   }
 \end{lstlisting}
+
+If you've been paying attention, you will note that there's something
+very funny going on in the calculation of
+\lstinline[language=Scala]!freeVariables!. To actually perform the
+\lstinline[language=Scala]!remove! or the
+\lstinline[language=Scala]!union! we have to have equality defined on
+variables. Now, this works fine for
+\lstinline[language=Scala]!Strings!, but what about
+\lstinline[language=Scala]!Quotations!?
 
 \paragraph{Evaluation -- aka operational semantics}
 

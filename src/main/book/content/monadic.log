@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  21 FEB 2010 01:40
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  21 FEB 2010 02:46
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -464,7 +464,7 @@ Overfull \hbox (0.78412pt too wide) in paragraph at lines 63--81
 cat-e-gory\OT1/cmr/m/n/12 , TERM, MEN-TION, AB-STRAC-
  []
 
-[12]
+[12] [13]
 LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 152
 .
 LaTeX Font Info:    No file OMScmtt.fd. on input line 152.
@@ -474,16 +474,15 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbraceleft' on input line 152.
 
-[13]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 205.
 
- (/opt/local/share/texmf-dist/tex/latex/base/omlcmr.fd
+(/opt/local/share/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <12> not available
 (Font)              Font shape `OML/cmm/b/it' tried instead on input line 205.
  [14]
-Overfull \hbox (31.45787pt too wide) in paragraph at lines 234--235
+Overfull \hbox (31.45787pt too wide) in paragraph at lines 235--236
 [][][][][][][][][][][][][][][][][][][] 
  []
 
@@ -613,13 +612,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6256 strings out of 94500
- 84839 string characters out of 1174972
- 176090 words of memory out of 1000000
- 8986 multiletter control sequences out of 10000+50000
+ 6258 strings out of 94500
+ 84866 string characters out of 1174972
+ 174089 words of memory out of 1000000
+ 8988 multiletter control sequences out of 10000+50000
  17287 words of font info for 66 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 31i,16n,43p,282b,1545s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 31i,16n,43p,282b,1382s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
  559 PDF objects out of 300000
  153 named destinations out of 131072
@@ -637,4 +636,4 @@ exmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/
 type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
 /cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/
 local/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (46 pages, 233678 bytes).
+Output written on monadic.pdf (46 pages, 235404 bytes).
