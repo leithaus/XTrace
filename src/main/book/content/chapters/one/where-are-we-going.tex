@@ -2,13 +2,92 @@
 
 With a preamble like that it doesn't take much to guess where all this
 is heading. More and more we are looking at trends that lead toward
-more functional and functionally-based web applications. The growing
-popularity of frameworks like \texttt{Lift} is really the tip of the
-iceberg.
+more functional and functionally-based web applications. We need not
+look to the growing popularity of cutting-edge frameworks like
+\texttt{Lift} to see this trend. Both Javascript (with it's origins in
+Self) and Rails must be counted amongst the functionally influenced.
 
 \subsection{A functional web}
 
-TBD
+Because there are already plenty of excellent functional web
+frameworks in the open source community our aim is not to build
+another. Rather our aim is to supply a set of design patterns that
+will work with most -- in fact are already implicitly at work in many
+-- but that when used correctly will reduce complexity.
+
+Specifically, we will look at the organization of the pipeline of a
+web-application from the pipeline of HTTP requests through the
+application logic to the store and back. We will see how in each case
+judicious use of the monadic design pattern provides for significant
+leverage in structuring code, making it both simpler, more
+maintainable and more robust in the face of change.
+
+To that end we will be looking at
+
+\begin{itemize}
+  \item processing HTTP-streams using presence of \emph{delimited}
+  continuations to allow for a sophisticated state management
+  \item parser combinators for parsing HTTP-requests and higher-level
+    application protocols using HTTP as a transport
+  \item application domain model as an abstract syntax
+  \item zippers as a means of automatically generating navigation
+  \item collections and containers in memory
+  \item storage, including a new way to approach query and search
+\end{itemize}
+
+In each case there is an underlying organization to the computation
+that solves the problem. In each case we find an instance of the
+monadic design pattern. Whether this apparent universal applicability
+is an instance of finding a hammer that turns everything it encounters
+into nails or that structuring computation in terms of monads has a
+genuine depth remains to be seen. What can be said even at this early
+stage of the game is that object-oriented design patterns were
+certainly proposed for each of these situations and many others. It
+was commonly held that such techniques were not merely universally
+applicable, but of genuine utility in every domain of application. The
+failure of object-oriented design methods to make good on these claims
+might be an argument for caution. Sober assessment of the situation,
+however, gives cause for hope.
+
+Unlike the notion monad, objects began as ``folk'' tradition. It was
+many years into proposals for object-oriented design methods before
+there were commonly accepted formal or mathematical accounts. By
+contrast monads began as a mathematical entity. Sequestered away in
+category theory the idea was one of a whole zoology of generalizations
+of common mathematical entities. It took some time to understand that
+both set comprehensions and algebraic data types were instances monads
+and that the former was a universal language for the notion. It took
+even more time to see the application to structuring
+computations. Progress was slow and steady and built from a solid
+foundation. This gave the notion an unprecedented level of quality
+assurance testing. The category theoretic definition is nearly fifty
+years old. If we include the investigation of set comprehensions as a
+part of the QA process we add another one hundred years. If we include
+the forty years of vigorous use of relational databases and the
+\lstinline[language=SQL]!SELECT-FROM-WHERE! construct in the industry,
+we see that this was hardly just an academic exercise.
+
+Perhaps more importantly than any of those is the fact that while
+object-oriented techniques ultimately failed to be compositional in
+any useful way -- inheritance, in fact being at positively at odds
+with concurrent composition -- the notion of monad is actually an
+attempt to capture the meaning of composition. As we will see in the
+upcoming sections, it defines an powerful notion of parametric
+composition. This is crucial because in the real world
+\emph{composition is the primary means to scaling} -- both in the
+sense of performance and in the sense of complexity. As pragmatic
+engineers we manage complexity of scale by building larger systems out
+of smaller ones. As pragmatic engineers we understand that each time
+components are required to interface or synchronize we have the
+potential for introducing performance concerns. The parametric form of
+composition encapsulated in the notion of monad gives us a language
+for talking about both kinds of scaling and connecting the two
+ideas. It provides a language for talking about the interplay between
+the composition of structure and the composition of the flow of
+control. It encapsulates stateful computation. It encapsulates data
+structure. In this sense the notion of monad is poised to be the
+rational reconstruction of the notion of object. Telling this story
+was my motivation for writing this book.
 
 \subsection{DSL-based design}
 
