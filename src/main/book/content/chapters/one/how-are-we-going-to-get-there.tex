@@ -153,7 +153,8 @@ $x$ not occurring in $N$.
 our implementation, the existence of this reduction means that we can
 choose to have explicit representation of these syntactic categories
 or not. This choice is one of a those design situations that's of
-significant interest if our concern is complexity management. TBD
+significant interest if our concern is complexity management. [Note:
+brief discussion of the relevance of super combinators.]
 
 \paragraph{Concrete syntax}
 Now let's wrap this up in concrete syntax.
@@ -262,14 +263,91 @@ i.e. the \emph{free} variables of a $\lambda$-term.
     }
 \end{lstlisting}
 
+With this code in hand we have what we need to express the structural
+equivalence of terms.
+
+\begin{lstlisting}[language=Scala]
+  trait Expressions {
+    ...
+    def substitute(
+        term : Expression,
+        actuals : List[Expression],
+        formals : List[Nominal]
+        ) : Expression
+
+   def fresh( terms : List[Expression] ) : Nominal
+  
+   def `=a=`(
+       term1 : Expression,
+       term2 : Expression
+   ) : Boolean = {
+   ( term1, term2 ) match {
+      case (
+	Mention( ref1 ),
+	Mention( ref2 )
+      ) => {
+	ref1 == ref2
+      }
+      case (
+	Abstraction( fmls1, body1 ), Abstraction( fmls2, body2 )
+      ) => {
+	if ( fmls1.length == fmls2.length ) {
+	  val freshFmls =
+	    fmls1.map(
+	      { ( fml ) => Mention( fresh( List( body1, body2 ) ) ) }
+	    )
+	  `=a=`(
+	    substitute( body1, freshFmls, fmls1 ),
+	    substitute( body2, freshFmls, fmls2 )
+	  )
+	}
+	else false
+      }      
+      case (
+	Application( op1, actls1 ),
+	Application( op2, actls2 )
+      ) => {
+	( `=a=`( op1, op2 ) /: actls1.zip actls2 )(
+	  { ( acc, actlPair ) =>
+	    acc && `=a=`( actlPair._1, actlPair._2 )
+	 }
+	)
+      }
+    }
+  }
+\end{lstlisting}
+
+\paragraph{Digression: the internal structure of the type of variables}
 If you've been paying attention, you will note that there's something
 very funny going on in the calculation of
 \lstinline[language=Scala]!freeVariables!. To actually perform the
 \lstinline[language=Scala]!remove! or the
 \lstinline[language=Scala]!union! we have to have equality defined on
 variables. Now, this works fine for
-\lstinline[language=Scala]!Strings!, but what about
+\lstinline[language=Scala]!String!s, but what about
 \lstinline[language=Scala]!Quotations!?
+
+The question reveals something quite startling about the types of
+variables. Clearly, the type has to include a definition of
+equality. Now, if we want to have an inexhaustible supply of
+variables, then the definition of equality of variables must make use
+of the ``internal'' structure of the variables. For example, checking
+equality of \lstinline[language=Scala]!String!s means checking the
+equality of the respective sequences of characters. There are a finite
+set of characters out of which all \lstinline[language=Scala]!String!s
+are built and so eventually the calculation of equality grounds
+out. The same would be true if we used
+\lstinline[language=Scala]!Integer!s as ``variables''. If our type of
+variables didn't have some evident internal structure (like a
+\lstinline[language=Scala]!String! has characters or an
+\lstinline[language=Scala]!Integer! has arithmetic structure) and yet
+it was to provide an endless supply of variables, then the equality
+check could only be an \emph{infinite} table -- which wouldn't fit
+inside a computer. So, the type of variables must also support some
+internal structure, i.e. it must be a container type!
+
+Fortunately, our \lstinline[language=Scala]!Quotation!s are
+containers, by definition. However, they face another challenge. 
 
 \paragraph{Evaluation -- aka operational semantics}
 
@@ -290,7 +368,10 @@ Here's the code
  trait Reduction extends Expressions with Values {
    type Dereferencer = {def apply( m : Mention ) : Value }
    type Expansionist =
-      {def extend( fmls : List[Mention], actls : List[Value] ) : Dereferencer}
+   {def extend(
+     fmls : List[Mention],
+     actls : List[Value]
+     ) : Dereferencer}
    type Environment <: (Dereferencer with Expansionist)
    type Applicator = Expression => List[Value] => Value
 
@@ -318,7 +399,9 @@ Here's the code
  	    fmls.map( { ( fml : Nominal ) => Mention( fml ) });
             reduce(
 	       applicator,
-               environment.extend( keys, actuals ).asInstanceOf[Environment]
+               environment.extend(
+                  keys,
+                  actuals ).asInstanceOf[Environment]
             )( body )
 	  }
         }
@@ -336,7 +419,8 @@ Here's the code
 		 (reduce( applicator, environment ))( actual )})
 	    )
 	  }
-	  case _ => throw new Exception( "attempt to apply non function" )
+	  case _ =>
+             throw new Exception( "attempt to apply non function" )
 	}
       }
     case _ => throw new Exception( "not implemented, yet" )
