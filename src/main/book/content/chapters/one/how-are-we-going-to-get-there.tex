@@ -266,15 +266,56 @@ i.e. the \emph{free} variables of a $\lambda$-term.
 With this code in hand we have what we need to express the structural
 equivalence of terms.
 
-\begin{lstlisting}[language=Scala]
-  trait Expressions {
-    ...
-    def substitute(
-        term : Expression,
-        actuals : List[Expression],
-        formals : List[Nominal]
-        ) : Expression
+\break
 
+\begin{lstlisting}[language=Scala]
+  ...
+   def substitute(
+    term : Expression,
+    actuals : List[Expression],
+    formals : List[Nominal]
+  ) : Expression = {
+    term match {
+      case Mention( ref ) => {
+	formals.indexOf( ref ) match {
+	  case -1 => term
+	  case i => actuals( i )
+	}
+      }
+      case Abstraction( fmls, body ) => {
+	val fmlsN = fmls.map(
+	  {
+	    ( fml ) => {
+	      formals.indexOf( fml ) match {
+		case -1 => fml
+		case i => fresh( List( body ) )
+	      }
+	    }
+	  }	      
+	)
+	val bodyN =
+	  substitute(
+	    body,
+	    fmlsN.map( _ => Mention( _ ) ),
+	    fmlsN
+	  )
+	Abstraction(
+	  fmlsN,
+	  substitute( bodyN, actuals, formals )
+	)
+      }
+      case Application( op, actls ) => {
+	Application(
+	  substitute( op, actuals, formals ),
+	  actls.map( _ => substitute( _, actuals, formals ) )
+	)
+      }
+    }
+  }
+
+  \end{lstlisting}
+
+  \begin{lstlisting}[language=Scala]
    def fresh( terms : List[Expression] ) : Nominal
   
    def `=a=`(
@@ -347,7 +388,16 @@ inside a computer. So, the type of variables must also support some
 internal structure, i.e. it must be a container type!
 
 Fortunately, our \lstinline[language=Scala]!Quotation!s are
-containers, by definition. However, they face another challenge. 
+containers, by definition. However, they face another challenge: are
+the \lstinline[language=Scala]!Quotation!s of two structurally
+equivalent terms equal as variables? If they are then there is a
+mutual recursion! Equivalence of terms depends on equality of
+\lstinline[language=Scala]!Quotation!s which depends on equivalence of
+terms. It turns out that we have cleverly arranged things so that this
+recursion will bottom out. The key property of the structure of the
+abstract syntax that makes this work is that there is an alternation:
+quotation, term constructor, quotation, ... . Each recursive call will
+lower the number of quotes, until we reach 0.
 
 \paragraph{Evaluation -- aka operational semantics}
 

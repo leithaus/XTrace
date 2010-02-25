@@ -68,11 +68,14 @@ the forty years of vigorous use of relational databases and the
 we see that this was hardly just an academic exercise.
 
 Perhaps more importantly than any of those is the fact that while
-object-oriented techniques ultimately failed to be compositional in
-any useful way -- inheritance, in fact being at positively at odds
-with concurrent composition -- the notion of monad is actually an
-attempt to capture the meaning of composition. As we will see in the
-upcoming sections, it defines an powerful notion of parametric
+object-oriented techniques \emph{as realized in mainstream language
+  designs} \footnote{To be clear, message-passing and delegation are
+  certainly compositional. Very few mainstream languages support these
+  concepts directly} ultimately failed to be compositional in any
+useful way -- inheritance, in fact, being positively at odds with
+concurrent composition -- the notion of monad is actually an attempt
+to capture the meaning of composition. As we will see in the upcoming
+sections, it defines an powerful notion of parametric
 composition. This is crucial because in the real world
 \emph{composition is the primary means to scaling} -- both in the
 sense of performance and in the sense of complexity. As pragmatic
