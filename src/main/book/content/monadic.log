@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  26 FEB 2010 05:15
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  26 FEB 2010 11:03
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -435,16 +435,16 @@ l.92
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.145 
+l.128 
        [6]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1755) has occurred while \output is active []
 
 
 ! pdfTeX warning (ext4): destination with the same identifier (name{page.7}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.205 
+l.206 
        [7]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -453,24 +453,20 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.263 
+l.238 
        [8]
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 267.
-) (./chapters/one/where-are-we-going.tex [9] [10]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11])
-(./chapters/one/how-are-we-going-to-get-there.tex
-Underfull \vbox (badness 5771) has occurred while \output is active []
-
- [12]
-[13] [14]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 268.
+) (./chapters/one/where-are-we-going.tex [9] [10] [11] [12])
+(./chapters/one/how-are-we-going-to-get-there.tex [13] [14]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 110--111
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[15]
+
+Underfull \vbox (badness 2197) has occurred while \output is active []
+
+ [15]
 LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 175
 .
 LaTeX Font Info:    No file OMScmtt.fd. on input line 175.
@@ -572,7 +568,11 @@ Overfull \hbox (59.65782pt too wide) in paragraph at lines 130--131
 ][][][][][][] 
  []
 
-[28] [29] [30] [31]) [32])
+[28] [29] [30]
+
+LaTeX Warning: Command \texttrademark invalid in math mode on input line 315.
+
+[31]) [32])
 \openout2 = `chapters/three/ch.aux'.
 
  (./chapters/three/ch.tex
@@ -794,28 +794,28 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6998 strings out of 94500
- 95697 string characters out of 1174972
+ 7001 strings out of 94500
+ 95736 string characters out of 1174972
  184308 words of memory out of 1000000
- 9184 multiletter control sequences out of 10000+50000
+ 9185 multiletter control sequences out of 10000+50000
  17287 words of font info for 66 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  31i,16n,43p,282b,1553s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 1155 PDF objects out of 300000
- 697 named destinations out of 131072
+ 1159 PDF objects out of 300000
+ 699 named destinations out of 131072
  425 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/s
 hare/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/f
 onts/type1/bluesky/cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/blue
-sky/cm/cmtt10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb>
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/
-texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/texmf-dist/fonts
-/type1/bluesky/cm/cmti12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
+sky/cm/cmtt10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pf
+b></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmti12.pfb></opt/local/sh
+are/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
 m/cmtt12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></o
 pt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb></opt/local/share/t
 exmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/
 type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
 /cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/
 local/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (62 pages, 351084 bytes).
+Output written on monadic.pdf (62 pages, 358528 bytes).
