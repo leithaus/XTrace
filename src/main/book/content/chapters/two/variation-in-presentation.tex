@@ -5,15 +5,15 @@ Haskell was the first programming language to popularize the notion of
 monad as a structuring technique for functional programming. There
 were several key ideas that went into the $\Haskell$ packaging of the
 idea. One was to treat the core elements that make up a monad more or
-less \emph{directly} without appeal to category theory -- which was
-where the notion originated. This is considerably easier to do in a
-functional programming language because the ambient language can be
-thought of as a category; thus, for the average programmer there is no
-need to refer to categories, in general, but only to the ``universe''
-of programs that can be written in the language at hand. Then, because
-Haskell already has a notion of parametric polymorphism (which we can
-think of as as generics in the context of this discussion), a monad's
-most central piece of data is a parametric type constructor, say $T$.
+less \emph{directly} without appeal to category theory -- the branch
+of mathematics where the notion originated. This is considerably
+easier to do in a functional programming language because the ambient
+language can be thought of as a category; thus, for the average
+programmer there is no need to refer to categories, in general, but
+only to the ``universe'' of programs that can be written in the
+language at hand. Then, because Haskell already has a notion of
+parametric polymorphism, a monad's most central piece of data is a
+parametric type constructor, say $T$.
 
 Given such a type constructor, you only need a pair of maps (one of
 which is higher order). Thus, in $\Haskell$ a monad is presented in
@@ -48,13 +48,113 @@ subject to the following laws:
   \item \lstinline[language=Haskell]!bind (bind m f) g! $\equiv$ \lstinline[language=Haskell]!bind m (\ x -> bind (f x) g)! %[Associativity]
 \end{itemize}
 
-Unlike $\Haskell$, $\Scala$ did not reify the notion of monad under a
+One of the driving motivations for this particular formulation of the
+concept is that it makes it very easy to host a little DSL inside the
+language. The syntax and semantics of the DSL is simultaneously given
+by the following procedure for de-sugaring, i.e. translating
+expressions in the DSL back to core \texttt{Haskell}.
+
+\begin{lstlisting}[language=Haskell,mathescape=true]
+do { x } $=$ x
+ 
+do { x ; <stmts> }
+  $=$ bind x (\_ -> do { <stmts> })
+ 
+do { v <- x ; <stmts> }
+  $=$ bind x (\v -> do { <stmts> }) 
+
+do { let <decls> ; <stmts> }
+  $=$ let <decls> in do { <stmts> }
+\end{lstlisting} 
+
+The assignment-like operation extends to full pattern matching with
+
+\begin{lstlisting}[language=Haskell,mathescape=true]
+  do { p <- x ; <stmts> }
+  $=$ let f p = do { <stmts> }
+              f _     = fail "..."
+      in bind x f
+\end{lstlisting}
+
+On the face of it, the notation provides both a syntax and a semantics
+reminiscent of the standard side-effecting operations of mainstream
+imperative languages. In presence of polymorphism, however, these
+instruments are much more powerful. These operations can be
+\emph{systematically} ``overloaded'' (meaning the overloaded
+definitions satisfy the laws above). This allows to systematically use
+the notation for a wide variety of computations that all have some
+underlying commonality. Typical examples include I/O, state
+management, control flow (all three of which all bundle up in
+parsing), and also container navigation and manipulation. It gets
+better for many of the tools of mathematics that are regularly the
+subject of computer programs such probability distributions,
+integration, etc., also have presentations as monads. Thus, innocent
+examples like this one
+
+\begin{lstlisting}[language=Haskell]
+  do { putStrLn "Enter a line of text:";
+       x <- getLine;
+       putStrLn ("you wrote: " ++ x) }
+\end{lstlisting}
+
+as might be found in some on-line tutorial on monads belie the potency
+of this combination of ideas.
+
+Unlike $\Haskell$, $\Scala$ does not reify the notion of monad under a
 \lstinline[language=Scala]!trait!, the language's equivalent of
 $\Haskell$'s \lstinline[language=Haskell]!typeclass!. Instead the
 systematic means of de-sugaring
 \lstinline[language=Scala]!for!-notation and polymorphic
 interpretations of \lstinline[language=Scala]!flatMap!, etc are the
 effective definitions of the notion in $\Scala$.
+
+The basic \texttt{Scala} construct looks like
+
+\begin{lstlisting}[language=Scala]
+  for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
+\end{lstlisting}
+
+and the de-sugaring looks like
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( x <- expr_1 ; y <- expr_2 ; <stmts> ) yield expr_3
+
+  $=$
+
+  expr_1 flatMap( x => for( y <- expr_2; <stmts> ) yield expr_3 )
+
+  for( x <- expr_1 ; y = expr_2 ; <stmts> ) yield expr_3
+  
+  $=$
+
+  for( ( x, y ) <- for ( x <- expr_1 ) yield ( x, expr_2 ); <stmts> )
+  yield expr_3
+
+  for( x <- expr_1 if pred ) yield expr_2 
+
+  $=$
+
+  expr_1 filter ( x => pred ) map ( x => expr_2 )    
+\end{lstlisting}
+
+Again, general pattern matching is supported in assignment-like statements.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( p <- expr_1 ; <stmts> ) yield expr_2 
+
+  $=$
+
+  expr_1 filter {
+    case p => true
+    case _ => false
+  } flatMap {
+    p => for( <stmts> ) yield expr2
+  }
+\end{lstlisting}
+
+This means, therefore, that we have the following correspondence
+
+% TODO write down the $\Haskell$/$\Scala$ monad correspondence
 
 \subsection{A little more history}
 
@@ -122,7 +222,89 @@ data type, historically referred to as a \emph{monoid} defined by
 these operations and laws. In code, we can imagine defining a
 \lstinline[language=Scala]!trait! in $\Scala$ something like
 
+\begin{lstlisting}[language=Scala]
+  trait Monoid {
+    def unit : Monoid
+    def mult( that : Monoid ) 
+  }
+\end{lstlisting}
 
+This might allow \emph{views} of \lstinline[language=Scala]!Int! as a monoid as in
+
+\begin{lstlisting}[language=Scala]
+  class MMultInt extends Int with Monoid {
+    override def unit = 1
+    override def mult( that : Monoid ) = this * that
+    }
+\end{lstlisting}
+
+except for the small problem that \lstinline[language=Scala]!Int! is
+\lstinline[language=Scala]!final! (illustrating an important
+difference between the adhoc polymorphism of \texttt{Haskell}'s
+\lstinline[language=Haskell]!typeclass! and \texttt{Scala}'s
+\lstinline[language=Scala]!trait!).
+
+Any solution will depend on type parametrization. For example
+
+\begin{lstlisting}[language=Scala]
+  trait Monoid[Element] {
+    def unit : Element
+    def mult( a : Element, b : Element ) 
+  }
+\end{lstlisting}
+
+and corresponding view of \lstinline[language=Scala]!Int! as a monoid.
+
+\begin{lstlisting}[language=Scala]
+  class MMultInt extends Monoid[Int] {
+    override def unit : Int = 1
+    override def mult( a : Int , b : Int ) = a * b
+  }
+\end{lstlisting}
+
+This parametric way of viewing some underlying data structure is
+natural both to the modern programmer and the modern
+mathematician. Both are quite familiar with and make extensive use of
+overloading of this kind. Both are very happy to find higher levels of
+abstraction that allow them to remain DRY when the programming demands
+might cause some perspiration. One of the obvious places where
+repetition is happening is in the construction of view. Consider
+another view of \lstinline[language=Scala]!Int!
+
+\begin{lstlisting}[language=Scala]
+  class MAddInt extends Monoid[Int] {
+    override def unit : Int = 0
+    override def mult( a : Int , b : Int ) = a + b
+  }
+\end{lstlisting}
+
+It turns out that there is a lot of machinery that is common to
+defining a view like this for any given data type. Category theorists
+realized this and recognized that you could reify the view which not
+only provides a place to refactor the common machinery, but also to
+give it another level of polymorphism. Thus, a category theorist's
+view of the monad API might look something like this.
+
+\begin{lstlisting}[language=Scala]
+  trait Monad[Element,M[_]] {
+    def unit( e : Element ) : M[Element]
+    def mult( mme : M[M[Element]] ) : M[Element] 
+  }
+\end{lstlisting}
+
+The family resemblance to the \lstinline[language=Scala]!Monoid! API
+is not accidental. The trick is to bring syntax back into the picture. Here's an example.
+
+\begin{lstlisting}[language=Scala]
+  case class MonoidExpr[Element]( val e : Element )
+  class MMInt extends Monad[Int,MonoidExpr] {
+    override def unit( e : Int ) = MonoidExpr( e )
+    override def mult( mme : MonoidExpr[MonoidExpr[Int]] ) =
+    mme match {
+      case MonoidExpr( MonoidExpr( e ) ) => MonoidExpr( e )
+    }
+  }
+\end{lstlisting}
 
 \subsubsection{Decomposition of monad requirements}
 
@@ -155,7 +337,7 @@ subject to the following laws:
   \item %[Coherence]
     \begin{itemize}
     \item $mult \circ T mult = mult \circ mult T$ %[mult-mult]
-    \item $mult \circ T unit = mult unit T$ %[mult-unit]
+    \item $mult \circ T unit = mult \circ unit T$ %[mult-unit]
     \end{itemize}
 \end{itemize}
 
@@ -167,46 +349,6 @@ doesn't treat the Monad type class as a Functor. The refactoring of
 the $mult$ map into the $bind$ map is that it builds functoriality
 into definition. The other reason is the do notation.
 
-\begin{lstlisting}[language=Haskell]
-do { x } = x
- 
-do { x ; <stmts> }
-  = x >> do { <stmts> }
- 
-do { v <- x ; <stmts> }
-  = x >>= \v -> do { <stmts> }
- 
-do { let <decls> ; <stmts> }
-  = let <decls> in do { <stmts> }
-\end{lstlisting}
 
-$\Scala$ follows $\Haskell$, though the same notation is called
-for-notation. The basic construct looks like
-
-\begin{lstlisting}[language=Scala]
-  for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
-\end{lstlisting}
-
-and the de-sugaring looks like
-
-% TODO write down $\Scala$ for-notation desugaring
-\begin{lstlisting}[language=Scala,mathescape=true]
-  for( p <- expr_1 ) yield expr_2 
-\end{lstlisting}
-
-becomes
-
-\begin{lstlisting}[language=Scala,mathescape=true]
-  expr_1 filter {
-    case p => true
-    case _ => false
-  } map {
-    p => expr2
-  }
-\end{lstlisting}
-
-This means, therefore, that we have the following correspondence
-
-% TODO write down the $\Haskell$/$\Scala$ monad correspondence
 
 
