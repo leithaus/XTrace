@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  25 FEB 2010 05:07
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  25 FEB 2010 19:16
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -784,16 +784,16 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6887 strings out of 94500
- 93868 string characters out of 1174972
+ 6917 strings out of 94500
+ 94525 string characters out of 1174972
  184108 words of memory out of 1000000
- 9166 multiletter control sequences out of 10000+50000
+ 9174 multiletter control sequences out of 10000+50000
  17287 words of font info for 66 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  31i,16n,43p,282b,1553s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 1055 PDF objects out of 300000
- 604 named destinations out of 131072
+ 1077 PDF objects out of 300000
+ 626 named destinations out of 131072
  425 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/s
 hare/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/f
@@ -808,4 +808,4 @@ exmf-dist/fonts/type1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/
 type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
 /cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/
 local/share/texmf-dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (60 pages, 330582 bytes).
+Output written on monadic.pdf (60 pages, 334459 bytes).

@@ -152,7 +152,7 @@ subject to the following laws:
     \item $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$ %[unit]
     \item $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$ %[mult]
     \end{itemize}
-  \item[Coherence]
+  \item %[Coherence]
     \begin{itemize}
     \item $mult \circ T mult = mult \circ mult T$ %[mult-mult]
     \item $mult \circ T unit = mult unit T$ %[mult-unit]
@@ -167,27 +167,43 @@ doesn't treat the Monad type class as a Functor. The refactoring of
 the $mult$ map into the $bind$ map is that it builds functoriality
 into definition. The other reason is the do notation.
 
-% TODO: wrap this in listing tags
-
-% do { x } = x
+\begin{lstlisting}[language=Haskell]
+do { x } = x
  
-% do { x ; <stmts> }
-%   = x >> do { <stmts> }
+do { x ; <stmts> }
+  = x >> do { <stmts> }
  
-% do { v <- x ; <stmts> }
-%   = x >>= \v -> do { <stmts> }
+do { v <- x ; <stmts> }
+  = x >>= \v -> do { <stmts> }
  
-% do { let <decls> ; <stmts> }
-%   = let <decls> in do { <stmts> }
+do { let <decls> ; <stmts> }
+  = let <decls> in do { <stmts> }
+\end{lstlisting}
 
 $\Scala$ follows $\Haskell$, though the same notation is called
 for-notation. The basic construct looks like
 
-%for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
+\begin{lstlisting}[language=Scala]
+  for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
+\end{lstlisting}
 
 and the de-sugaring looks like
 
 % TODO write down $\Scala$ for-notation desugaring
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( p <- expr_1 ) yield expr_2 
+\end{lstlisting}
+
+becomes
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  expr_1 filter {
+    case p => true
+    case _ => false
+  } map {
+    p => expr2
+  }
+\end{lstlisting}
 
 This means, therefore, that we have the following correspondence
 
