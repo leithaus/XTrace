@@ -21,6 +21,13 @@ service and then create an application project which allows them
    \item run the application
 \end{itemize}
 
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/RLambdaSignupPageScreenShot.pdf} }
+\caption{ Example sign up page }
+\end{center}
+\end{figure}
+
 % Thus, at broad strokes requests from the client app to the server break down into the following categories
 % \begin{itemize}
 %   \item edits to code
@@ -38,6 +45,20 @@ to be driven from that language spec to the extent that changes to the
 language spec ought to result in changes to the behavior of the
 highlighting and validation. Thus, at the center of our application is
 the specification of our toy language.
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/RLambdaREPLPageScreenShot.pdf} }
+\caption{ Example REPL page }
+\end{center}
+\end{figure}
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/RLambdaSampleEvaluationResultPage.pdf} }
+\caption{ Example evaluation result page }
+\end{center}
+\end{figure}
 
 \subsubsection{Our toy language}
 
@@ -249,7 +270,7 @@ The translation from the concrete syntax to the abstract syntax is
 compactly expressed as follows. Perhaps the best way to understand
 this presentation is in terms of a \texttt{Scala} implementation.
 
-[TBD]
+
 
 \paragraph{Structural equivalence and Relations or What makes abstract syntax abstract}
 
@@ -325,9 +346,8 @@ Now we can write in \texttt{Scala} our definition of substitution.
 \break
 \begin{lstlisting}[language=Scala]
    def substitute(
-    term : Expression,
-    actuals : List[Expression],
-    formals : List[Nominal]
+   term : Expression,
+   actuals : List[Expression], formals : List[Nominal]
   ) : Expression = {
     term match {
       case Mention( ref ) => {
@@ -373,8 +393,7 @@ equivalence of terms.
 
 \begin{lstlisting}[language=Scala]  
   def `=a=`(
-       term1 : Expression,
-       term2 : Expression
+       term1 : Expression, term2 : Expression
    ) : Boolean = {
    ( term1, term2 ) match {
       case (
