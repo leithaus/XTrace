@@ -15,6 +15,7 @@ language at hand. Then, because Haskell already has a notion of
 parametric polymorphism, a monad's most central piece of data is a
 parametric type constructor, say $T$.
 
+\paragraph{Haskell's monad API}
 Given such a type constructor, you only need a pair of maps (one of
 which is higher order). Thus, in $\Haskell$ a monad is presented in
 terms of the following data
@@ -48,6 +49,7 @@ subject to the following laws:
   \item \lstinline[language=Haskell]!bind (bind m f) g! $\equiv$ \lstinline[language=Haskell]!bind m (\ x -> bind (f x) g)! %[Associativity]
 \end{itemize}
 
+\paragraph{Do-notation}
 One of the driving motivations for this particular formulation of the
 concept is that it makes it very easy to host a little DSL inside the
 language. The syntax and semantics of the DSL is simultaneously given
@@ -100,6 +102,7 @@ examples like this one
 as might be found in some on-line tutorial on monads belie the potency
 of this combination of ideas.
 
+\paragraph{for-comprehensions}
 Unlike $\Haskell$, $\Scala$ does not reify the notion of monad under a
 \lstinline[language=Scala]!trait!, the language's equivalent of
 $\Haskell$'s \lstinline[language=Haskell]!typeclass!. Instead the
@@ -117,38 +120,38 @@ The basic \texttt{Scala} construct looks like
 and the de-sugaring looks like
 
 \begin{lstlisting}[language=Scala,mathescape=true]
-  for( x <- expr_1 ; y <- expr_2 ; <stmts> ) yield expr_3
+  for( x <- expr$_1$ ; y <- expr$_2$ ; <stmts> ) yield expr$_3$
 
   $=$
 
-  expr_1 flatMap( x => for( y <- expr_2; <stmts> ) yield expr_3 )
+  expr$_1$ flatMap( x => for( y <- expr$_2$; <stmts> ) yield expr$_3$ )
 
-  for( x <- expr_1 ; y = expr_2 ; <stmts> ) yield expr_3
+  for( x <- expr$_1$ ; y = expr$_2$ ; <stmts> ) yield expr$_3$
   
   $=$
 
-  for( ( x, y ) <- for ( x <- expr_1 ) yield ( x, expr_2 ); <stmts> )
-  yield expr_3
+  for( ( x, y ) <- for ( x <- expr$_1$ ) yield ( x, expr$_2$ ); <stmts> )
+  yield expr$_3$
 
-  for( x <- expr_1 if pred ) yield expr_2 
+  for( x <- expr$_1$ if pred ) yield expr$_2$ 
 
   $=$
 
-  expr_1 filter ( x => pred ) map ( x => expr_2 )    
+  expr$_1$ filter ( x => pred ) map ( x => expr$_2$ )    
 \end{lstlisting}
 
 Again, general pattern matching is supported in assignment-like statements.
 
 \begin{lstlisting}[language=Scala,mathescape=true]
-  for( p <- expr_1 ; <stmts> ) yield expr_2 
+  for( p <- expr$_1$ ; <stmts> ) yield expr$_2$ 
 
   $=$
 
-  expr_1 filter {
+  expr$_1$ filter {
     case p => true
     case _ => false
   } flatMap {
-    p => for( <stmts> ) yield expr2
+    p => for( <stmts> ) yield expr$_2$
   }
 \end{lstlisting}
 
@@ -280,10 +283,10 @@ another view of \lstinline[language=Scala]!Int!
 
 It turns out that there is a lot of machinery that is common to
 defining a view like this for any given data type. Category theorists
-realized this and recognized that you could reify the view which not
-only provides a place to refactor the common machinery, but also to
-give it another level of polymorphism. Thus, a category theorist's
-view of the monad API might look something like this.
+realized this and recognized that you could reify the \emph{view}
+which not only provides a place to refactor the common machinery, but
+also to give it another level of polymorphism. Thus, a category
+theorist's view of the monad API might look something like this.
 
 \begin{lstlisting}[language=Scala]
   trait Monad[Element,M[_]] {
@@ -296,25 +299,137 @@ The family resemblance to the \lstinline[language=Scala]!Monoid! API
 is not accidental. The trick is to bring syntax back into the picture. Here's an example.
 
 \begin{lstlisting}[language=Scala]
-  case class MonoidExpr[Element]( val e : Element )
+  case class MonoidExpr[Element]( val e : List[Element] )
   class MMInt extends Monad[Int,MonoidExpr] {
-    override def unit( e : Int ) = MonoidExpr( e )
+    override def unit( e : Int ) = MonoidExpr( List( e ) )
     override def mult( mme : MonoidExpr[MonoidExpr[Int]] ) =
     mme match {
-      case MonoidExpr( MonoidExpr( e ) ) => MonoidExpr( e )
+      case MonoidExpr( Nil ) =>
+         MonoidExpr( Nil )
+      case MonoidExpr( mes ) => 
+         MonoidExpr(
+            ( Nil /: mes)( 
+               { ( acc, me ) => me match { 
+                   case MonoidExpr( es ) => acc +++ es 
+                 } 
+               } 
+             )
+         )
     }
   }
 \end{lstlisting}
 
-[Further discussion forthcoming...]
+While it's clear that \lstinline[language=Scala]!unit! turns
+\lstinline[language=Scala]!Int!s into integer expressions, what the
+operation \lstinline[language=Scala]!mult! is doing is canonically
+flattening nested expressions in a way the exactly parallels the
+flattening of nest arithmetic addition expressions. For a broad class
+of monads, this is the paradigmatic behavior of
+\lstinline[language=Scala]!mult!. The fact that monads are
+characterized by a generic interpretation of flattening of nested
+structure, by the way, makes the choice of the term
+\lstinline[language=Scala]!flatMap! particularly appropriate.
 
+\paragraph{Associativity as flattening}
+Looking at it from the other way around, one of the properties of a
+monoid is that it's binary operation, it's
+\lstinline[language=Scala]!mult! is associative. The actual content of
+the notion of associativity is that order of grouping doesn't make any
+difference. In symbols, a binary operation, $*$, is associative when
+$a*(b*c) = (a*b)*c$. This fact gives us the right to erase the parens
+and simply write $a*b*c$. In other words, associativity is
+flattening. A similar connection can be made for
+\lstinline[language=Scala]!unit! and the identity of a monoid. One
+quick and dirty way to see this is that since we know that $a*e=a$
+(when $e$ is the unit of the monoid) then the expression $a*e$
+effectively nests $a$ in a
+\lstinline[language=Scala]!MonoidExpr!. That's the ``moral'' content
+of the connection between the two notions of unit.
+
+\paragraph{Syntax and containers}
 The crucial point in all of this is that \emph{syntax is the only
-  container we have for computation}. Computation as a phenomenon is
-both dynamic and (potentially) infinitary. At least as we understand
-it today, it's not in the category of widgets we can hold in our hand
-like an apple or an Apple $\texttrademark$ computer. All we can do is \emph{point}
-to it, indicate it in some way; and syntax is our primary means of
-signifying computation.
+  container we have for computation}. What do we mean by this? Back
+when Moggi was crafting his story about the application of the notion
+of monad to computing he referred to monads as ``notions of
+computation''. What he meant by that was that monads reify computation
+(such as I/O or flow of control or constructing data structures) into
+``objects''. Computation as a phenomenon, however, is both dynamic and
+(potentially) infinitary. At least as we understand it today, it's not
+in the category of widgets we can hold in our hand like an apple or an
+Apple $\texttrademark$ computer. All we can do is \emph{point} to it,
+indicate it in some way. Syntax, it turns out, is our primary means of
+signifying computation. 
+
+\paragraph{Bracing for \texttt{XML}}
+In this connection it is useful to make yet another connection to a
+ubiquitous technology, namely \texttt{XML}. As a segue, notice that we
+can always write a binary operation in prefix notation as well as
+infix. That is, whatever we could write at $a*b$ we could just as
+easily write as $*(a,b)$. The flattening property of associativity
+says we can drop nesting such as $*(a,*(b,c))$ in favor of
+$*(a,b,c)$. In this sense, the syntax of braces is a kind of generic
+syntax for monoids and monads. If we introduce the notion of
+``colored'' braces, this becomes even more clear at the lexicographic
+or notational level. So, instead of $*(a,b,c)$ we'll mark the
+``color'' of the braces like so: $(*| ... |*)$, where $*$ can be any
+color. Then, at the level of monoid the unit is the empty braces, $(*|
+|*)$, while at the level of the monad the unit places the element, say
+$a$, in between the braces: $(*| a |*)$. The conceptual connection
+between the two variations of the operation now becomes clear: writing
+$a*e$ is the same as writing $*(a,e)$ which is the same as writing
+$(*| a , (*| |*) |*)$, which canonically flattens into $(*| a |*)$.
+
+Now, anyone who's spent any time around \texttt{XML} can see where
+this is headed. At a purely syntactic, lexicographic level we replace
+round brackets with angle brackets and we have exactly \texttt{XML}
+notation for elements. In this sense, \texttt{XML} is a kind of
+universal notation for monads. The only thing missing from the
+framework is a means to associate operations to unit and mult, i.e. to
+inserting content into elements and flattening nested
+elements. \texttt{Scala}'s specific support for \texttt{XML} puts it
+in an interesting position to rectify this situation.
+
+\paragraph{The connection with set-comprehensions}
+Finally, since we've gone this far into it, we might as well make the
+connection to comprehensions. Again, let's let notation support our
+intuitions. The above discussion should make it clear that its not the
+particular shape of the brace that matters, but the action of
+``embracing'' a collection of elements that lies at the heart of the
+notion. So, it's fine if we shift to curly braces to be
+suggestive. Thus, we are looking at a formalism that allows us to
+polymorphically ``collect'' elements between braces, like $\{*| a, b, c |*\}$.
+
+This is fine for finite collections, but what about infinitary
+collections or coollections of elements selected programmatically,
+rather than given explicitly. The set theoretic notation was designed
+specifically for this purpose. When we have an extant set of elements
+that we can give explicitly, we simply write $\{ a_1, a_2, a_3, ... \}$.
+
+When we have a potentially infinitary collection of elements, or
+elements that are selected on the basis of a condition, then we write
+$\{ pattern \in S | condition \}$. The idea of monad as comprehension
+recognizes that these operations of collecting, pattern matching and
+selection on the basis of a condition can be made \emph{polymorphic}
+using monads. Notationally, we can denote the different polymorphic
+interpretations by the ``color'' of the brace. In other words, we are
+looking at a shift of the form
+\begin{itemize}
+  \item $\{ a_1, a_2, a_3, ... \} \mapsto \{*| a_1, a_2, a_3, ... |*\}$
+  \item $\{ pattern \; \in \; S \;|\; condition |\} \mapsto \{*| pattern \in S \; | \; condition |*\}$
+\end{itemize}
+to build into our notation an explicit representation of the fact that
+the operation of collection, pattern matching and filtering on the
+basis of predicate are polymorphic.
+
+Often times, good mathematics, like good programmings is really about
+the design of good notation -- it's about DSLs! In this case, the
+notation is particularly useful because it begs the question of the
+language of patterns and the language of conditions -- something that
+Wadler's original paper on monads as generalized comprehensions did
+not address. This is a theme to which we will return at the end of the
+book. For now, the central point is to understand how monad as
+container and monad as generalization of monoid are actually views of
+the same underlying idea.
 
 \subsubsection{Decomposition of monad requirements}
 
