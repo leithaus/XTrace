@@ -100,19 +100,23 @@ At a syntactic level this has a direct representation as the following
 \texttt{Scala} code.
 
 \break
-\begin{lstlisting}[language=Scala]
+\begin{lstlisting}[language=Scala,mathescape=true]
   trait Expressions {
     type Nominal    
+    // $M,N ::=$
     abstract class Expression
 
+    // $x$
     case class Mention( reference : Nominal )
        extends Expression
 
+    // $\lambda \; x_1,...,x_n.M$
     case class Abstraction(
        formals : List[Nominal],
        body : Expression
     )  extends Expression
 
+    // $M N_1 ... N_n$
     case class Application(
        operation : Expression,
        actuals : List[Expression]
@@ -267,10 +271,116 @@ latter is a lot like dereferencing the pointer.)
 
 \paragraph{Translating concrete syntax to abstract syntax}
 The translation from the concrete syntax to the abstract syntax is
-compactly expressed as follows. Perhaps the best way to understand
-this presentation is in terms of a \texttt{Scala} implementation.
+compactly expressed as follows. Even if the form of the translation is
+unfamiliar, it should still leave you with the impression that some
+core of \texttt{Scala} is really the $\lambda$-calculus.
 
+% \begin{mathpar}
+%   \inferrule* {} {\meaningof{\lstinline[language=Scala,mathescape=true]!x!} = x}
+%   \and
+%   \inferrule* {} {\meaningof{\lstinline[language=Scala,mathescape=true]!(x) $\Rightarrow$! expr } = \lambda \; x . \meaningof{expr} }
+%   \inferrule* {} {\meaningof{\lstinline[language=Scala,mathescape=true]!val x!} = let \; x = \meaningof{expr_1} in \meaningof{expr_2} }
+% \end{mathpar}
 
+\begin{lstlisting}[language=Scala,mathescape=true]
+  $\ldb$ x $\rdb$ $=$ $x$
+  $\ldb$ (x) => expr $\rdb$ $=$ $\lambda \; x . \ldb$ expr $\rdb$ 
+  $\ldb$ expr( expr$_1$, ..., expr$_n$ ) $\rdb$ $=$ $\ldb$ expr $\rdb$ $\ldb$ expr$_1$ $\rdb$ ... $\ldb$ expr$n$ $\rdb$
+  $\ldb$ val x = expr$_1$ ; expr$_2$ $\rdb$ $=$ $let$ $\ldb$ x $\rdb$ $=$ $\ldb$ expr$_1$ $\rdb$ $in$ $\ldb$ expr$_2$ $\rdb$
+  $\ldb$ expr$_1$ ; expr$_2$ $\rdb$ $=$ $x$ $\ldb$ expr$_1$ $\rdb$ $;$ $\ldb$ expr$_2$ $\rdb$
+  $\ldb$ { expr } $\rdb$ $=$ ( $\ldb$ expr $\rdb$ )
+\end{lstlisting}
+
+Further, the value of the explicit representation of sugar in terms of
+structuring the translation should be clear. Of course, in a book
+entitled \emph{Pro Scala} the best way to unpack this presentation
+is in terms of a \texttt{Scala} implementation.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  trait Compiler extends Expressions with Nominals {
+    // Abstract away interning variables
+    type Internist =
+    {def intern( varExpr : Absyn.VariableExpr ) : Nominal}
+    def internist() : Internist
+
+    def intern( varExpr : Absyn.VariableExpr )
+    : Nominal = { internist().intern( varExpr ) }
+    def compileExpr( numericExpr : Absyn.Numeric )
+    : Expression = {
+      new IntegerExpression(
+          numericExpr.integer_.asInstanceOf[Int]
+      )
+    }
+    
+    // $\ldb$ x $\rdb$ $=$ $x$
+    def compileExpr( mentionExpr : Absyn.Mention )
+    : Expression = {
+      new Mention( intern( mentionExpr.variableexpr_ ) )
+    }
+    // $\ldb$ (x) => expr $\rdb$ $=$ $\lambda \; x . \ldb$ expr $\rdb$ 
+    def compileExpr( abstractionExpr : Absyn.Abstraction )
+    : Expression = {
+      val fmls : List[Nominal] =
+      abstractionExpr.listvariableexpr_.map(
+      { ( vExpr : Absyn.VariableExpr ) => intern( vExpr )  }
+      ).toList
+      new Abstraction( fmls, compile( abstractionExpr.expression_ ) )	    
+    }
+    // $\ldb$ expr( expr$_1$, ..., expr$_n$ ) $\rdb$
+    // $=$ $\ldb$ expr $\rdb$ $\ldb$ expr$_1$ $\rdb$ ... $\ldb$ expr$n$ $\rdb$
+    def compileExpr( applicationExpr : Absyn.Application )
+    : Expression = {
+      new Application(
+         compile( applicationExpr.expression_1 ),
+         List( compile( applicationExpr.expression_2 ) )
+      )
+    }
+
+    def compile( expr : Absyn.Expression )
+    : Expression = {
+      expr match {
+        case value : Absyn.Value => {
+          value.valueexpr_ match {
+            case numericExpr : Absyn.Numeric =>
+	    compileExpr( numericExpr )
+          }
+        }
+        case numericExpr : Absyn.Numeric => {
+          compileExpr( numericExpr )
+        }
+        case mentionExpr : Absyn.Mention => {
+          compileExpr( mentionExpr )
+        }
+        case abstractionExpr : Absyn.Abstraction => {
+          compileExpr( abstractionExpr )	    
+        }
+        case applicationExpr : Absyn.Application => {
+          compileExpr( applicationExpr )
+        }
+      }
+    }
+    
+    def parse( str : String ) : Absyn.Expression = {
+      (new parser(
+           new Yylex( new StringReader( str ) )
+           ) ).pExpression()
+    }
+    
+    def compile( str : String ) : Expression = {
+      try {
+        compile( parse( str ) )
+      }
+      catch {
+        case e => { // log error 
+          throw e
+        }
+      }
+    }
+  }
+\end{lstlisting}
+
+The first thing to notice about this translation is how faithfully it
+follows the equational specification.
 
 \paragraph{Structural equivalence and Relations or What makes abstract syntax abstract}
 
@@ -449,7 +559,7 @@ variables. Now, this works fine for
 \lstinline[language=Scala]!String!s, but what about
 \lstinline[language=Scala]!Quotations!?
 
-The question reveals something quite startling about the types of
+The question reveals something quite startling about the types\footnote{Note that here we mean the type of the entity in the model that represents variables -- not a typing for variables in the language we're modeling.} of
 variables. Clearly, the type has to include a definition of
 equality. Now, if we want to have an inexhaustible supply of
 variables, then the definition of equality of variables must make use

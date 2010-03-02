@@ -332,8 +332,8 @@ structure, by the way, makes the choice of the term
 
 \paragraph{Associativity as flattening}
 Looking at it from the other way around, one of the properties of a
-monoid is that it's binary operation, it's
-\lstinline[language=Scala]!mult! is associative. The actual content of
+monoid is that it's binary operation, its
+\lstinline[language=Scala]!mult!, is associative. The actual content of
 the notion of associativity is that order of grouping doesn't make any
 difference. In symbols, a binary operation, $*$, is associative when
 $a*(b*c) = (a*b)*c$. This fact gives us the right to erase the parens
@@ -400,14 +400,13 @@ suggestive. Thus, we are looking at a formalism that allows us to
 polymorphically ``collect'' elements between braces, like $\{*| a, b, c |*\}$.
 
 This is fine for finite collections, but what about infinitary
-collections or coollections of elements selected programmatically,
+collections or collections of elements selected programmatically,
 rather than given explicitly. The set theoretic notation was designed
 specifically for this purpose. When we have an extant set of elements
 that we can give explicitly, we simply write $\{ a_1, a_2, a_3, ... \}$.
-
 When we have a potentially infinitary collection of elements, or
 elements that are selected on the basis of a condition, then we write
-$\{ pattern \in S | condition \}$. The idea of monad as comprehension
+$\{ pattern \in S \; | \; condition \}$. The idea of monad as comprehension
 recognizes that these operations of collecting, pattern matching and
 selection on the basis of a condition can be made \emph{polymorphic}
 using monads. Notationally, we can denote the different polymorphic
@@ -419,26 +418,46 @@ looking at a shift of the form
 \end{itemize}
 to build into our notation an explicit representation of the fact that
 the operation of collection, pattern matching and filtering on the
-basis of predicate are polymorphic.
+basis of predicate are polymorphic. Now, just to make sure the
+connection is absolutely explicit, there is a one-for-one
+correspondence between the polymorphic set-comprehension notation and
+the \lstinline[language=Scala]!for!-comprehension notation of
+\texttt{Scala}. The correspondence takes $\{*| pattern \in S \; | \; condition |*\}$ to
 
-Often times, good mathematics, like good programmings is really about
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( x <- $S$ if $condition$ ) yield {
+    x match { case $pattern$ => x }
+  }
+\end{lstlisting}
+
+As the \texttt{Scala} type checker will explain, this translation is
+only approximate. If the pattern is refutable, then we need to handle
+the \lstinline[language=Scala]!case! when the match is not
+possible. Obviously, we just want to throw those away, so a
+\lstinline[language=Scala]!fold! might be a better a better choice,
+but then that obscures the correspondence.
+
+
+Often times, good mathematics, like good programming is really about
 the design of good notation -- it's about DSLs! In this case, the
 notation is particularly useful because it begs the question of the
 language of patterns and the language of conditions -- something that
 Wadler's original paper on monads as generalized comprehensions did
 not address. This is a theme to which we will return at the end of the
-book. For now, the central point is to understand how monad as
-container and monad as generalization of monoid are actually views of
-the same underlying idea.
+book when we address search on a semantics basis. For now, the central
+point is to understand how monad as container and monad as
+generalization of monoid are actually views of the same underlying
+idea.
 
 \subsubsection{Decomposition of monad requirements}
 
-The constraints on any given monad candidate are well factored into
-three different kinds of requirements -- operating at different levels
-of the ``API'': functoriality, naturality and coherence. Often these
-can be mechanically verified, and when they can't there are natural
-ways to generate spot-checks that fit well with tools such as
-$\ScalaCheck$.
+In the presentation of the monad API that we've discussed here the
+constraints on any given monad candidate are well factored into three
+different kinds of requirements -- operating at different levels of
+the ``API'', dubbed in order of abstraction: functoriality, naturality
+and coherence. Often these can be mechanically verified, and when they
+can't there are natural ways to generate spot-checks that fit well
+with tools such as $\ScalaCheck$.
 
 \subsubsection{A categorical way to look at monads}
 
@@ -446,33 +465,42 @@ In category theory the monad is presented in terms of the
 following data
 
 \begin{itemize}
-  \item a ``unit'' map enjoying the signature $unit : A \to T[A]$
-  \item a ``mult'' map enjoying the signature $mult : T[T[A]] \to T[A]$
+  \item a ``unit'' map enjoying the signature $unit : A \to S[A]$
+  \item a ``mult'' map enjoying the signature $mult : S[S[A]] \to S[A]$
 \end{itemize}
 
 subject to the following laws:
 
 \begin{itemize}
-  \item $T( id_A ) = id_{T[A]}$ %[Functoriality]
-  \item %[Naturality]
+  \item Functoriality
+    \begin{itemize}
+    \item $S( id_A ) = id_{S[A]}$ 
+    \item $S( f \circ g ) = S( f ) \circ S( g )$
+    \end{itemize}
+  \item Naturality
     \begin{itemize}
     \item $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$ %[unit]
-    \item $mult(f) \circ mult_{T[A]} = mult_{T[B]} \circ mult(B)$ %[mult]
+    \item $mult(f) \circ mult_{S[A]} = mult_{S[B]} \circ mult(B)$ %[mult]
     \end{itemize}
-  \item %[Coherence]
+  \item Coherence
     \begin{itemize}
-    \item $mult \circ T mult = mult \circ mult T$ %[mult-mult]
-    \item $mult \circ T unit = mult \circ unit T$ %[mult-unit]
+    \item $mult \circ S mult = mult \circ mult \; S$ %[mult-mult]
+    \item $mult \circ S unit = mult \circ unit \; S$ %[mult-unit]
     \end{itemize}
 \end{itemize}
 
-These two definitions are interchangeable. That's what makes them
-``presentations'' of the same underlying idea.
+\texttt{Scala} programmers can certainly understand these laws with a
+little unpacking.
 
-One of the reasons for the difference in presentation is that $\Haskell$
-doesn't treat the Monad type class as a Functor. The refactoring of
-the $mult$ map into the $bind$ map is that it builds functoriality
-into definition. The other reason is the do notation.
+% These two definitions are interchangeable. That's what makes them
+% ``presentations'' of the same underlying idea.
+
+% One of the reasons for the difference in presentation is that $\Haskell$
+% doesn't treat the Monad type class as a Functor. The refactoring of
+% the $mult$ map into the $bind$ map is that it builds functoriality
+% into definition. The other reason is the do notation.
+
+
 
 
 
