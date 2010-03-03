@@ -418,11 +418,24 @@ looking at a shift of the form
 \end{itemize}
 to build into our notation an explicit representation of the fact that
 the operation of collection, pattern matching and filtering on the
-basis of predicate are polymorphic. Now, just to make sure the
-connection is absolutely explicit, there is a one-for-one
-correspondence between the polymorphic set-comprehension notation and
-the \lstinline[language=Scala]!for!-comprehension notation of
-\texttt{Scala}. The correspondence takes $\{*| pattern \in S \; | \; condition |*\}$ to
+basis of predicate are polymorphic.
+
+Often times, good mathematics, like good programming is really about
+the design of good notation -- it's about DSLs! In this case, the
+notation is particularly useful because it begs the question of the
+language of patterns and the language of conditions -- something that
+Wadler's original paper on monads as generalized comprehensions did
+not address. This is a theme to which we will return at the end of the
+book when we address search on a semantics basis. For now, the central
+point is to understand how monad as container and monad as
+generalization of monoid are actually views of the same underlying
+idea.
+
+Now, just to make sure the connection is absolutely explicit, there is
+a one-for-one correspondence between the polymorphic set-comprehension
+notation and the \lstinline[language=Scala]!for!-comprehension
+notation of \texttt{Scala}. The correspondence takes
+$\{*| pattern \in S \; | \; condition |*\}$ to
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   for( x <- $S$ if $condition$ ) yield {
@@ -438,17 +451,6 @@ possible. Obviously, we just want to throw those away, so a
 but then that obscures the correspondence.
 
 
-Often times, good mathematics, like good programming is really about
-the design of good notation -- it's about DSLs! In this case, the
-notation is particularly useful because it begs the question of the
-language of patterns and the language of conditions -- something that
-Wadler's original paper on monads as generalized comprehensions did
-not address. This is a theme to which we will return at the end of the
-book when we address search on a semantics basis. For now, the central
-point is to understand how monad as container and monad as
-generalization of monoid are actually views of the same underlying
-idea.
-
 \subsubsection{Decomposition of monad requirements}
 
 In the presentation of the monad API that we've discussed here the
@@ -461,36 +463,139 @@ with tools such as $\ScalaCheck$.
 
 \subsubsection{A categorical way to look at monads}
 
-In category theory the monad is presented in terms of the
-following data
+One of the principle challenges of presenting the categorical view of
+monads is the dependencies on the ambient theory. In some sense the
+categorical view of the monad API is like a useful piece of software
+that drags in a bunch of other libraries. A complete specification of
+monad from the categorical point of view requires providing
+definitions for
 
 \begin{itemize}
-  \item a ``unit'' map enjoying the signature $unit : A \to S[A]$
-  \item a ``mult'' map enjoying the signature $mult : S[S[A]] \to S[A]$
+  \item category
+  \item functor
+  \item natural transformation
 \end{itemize}
 
-subject to the following laws:
+This book is not intended to be a tutorial on category theory. There
+are lots of those and Google and Wikipedia are your friends. Rather,
+this book is about a certain design pattern that can be expressed, and
+originally was expressed within that theory, but is to a great extent
+an independent notion. \footnote{In point of fact, at present writing,
+  i suspect that there is a way to turn category theory on its head
+  and make the notion of monad the fundamental building block out of
+  which the rest of category may be defined.} On the other hand, for
+the diligent and/or curious reader a pointer to that body of work has
+the potential to be quite rewarding. There are many treasures there
+waiting to be found. For our purposes, we strike a compromise. We take
+the notion of category to be given in terms of the definable types
+within the \texttt{Scala} type system and the definable programs
+(sometimes called maps) between those types. Then a functor, say
+\lstinline[language=Scala,mathescape=true]!F$_T$! is a parametric type
+constructor, together with a corresponding action, say
+\lstinline[language=Scala,mathescape=true]!F$_M$!, on programs, that
+respects certain invariants. Specifically,
 
 \begin{itemize}
-  \item Functoriality
-    \begin{itemize}
-    \item $S( id_A ) = id_{S[A]}$ 
-    \item $S( f \circ g ) = S( f ) \circ S( g )$
-    \end{itemize}
-  \item Naturality
-    \begin{itemize}
-    \item $unit(f) \circ unit_{A} = unit_{B} \circ unit(B)$ %[unit]
-    \item $mult(f) \circ mult_{S[A]} = mult_{S[B]} \circ mult(B)$ %[mult]
-    \end{itemize}
-  \item Coherence
-    \begin{itemize}
-    \item $mult \circ S mult = mult \circ mult \; S$ %[mult-mult]
-    \item $mult \circ S unit = mult \circ unit \; S$ %[mult-unit]
-    \end{itemize}
+\item A functor must preserve identity. That is, for any type,
+  \lstinline[language=Scala,mathescape=true]!A!, we can define an
+  identity map, given canonically by the program
+  \lstinline[language=Scala,mathescape=true]!( x : A ) => x!. Then
+  \lstinline[language=Scala,mathescape=true]!F$_M$( ( x : A ) => x ) = ( x : F$_T$[A] ) => x!
+  \item A functor must preserve composition. That is, given two programs, \lstinline[language=Scala,mathescape=true]!f : A => B! and \lstinline[language=Scala,mathescape=true]!g : B => C!, \lstinline[language=Scala,mathescape=true]!F$_M$( f $\circ$ g ) = F$_M$( f ) $\circ$ F$_M$( g )! where \lstinline[language=Scala,mathescape=true]! ( f $\circ$ g )( x ) = g( f( x ) )!
 \end{itemize}
+
+In \texttt{Scala}-land this is what it means for
+\lstinline[language=Scala,mathescape=true]!F = (F$_T$,F$_M$)! to be
+\emph{functorial}. The constraint itself is called
+\emph{functoriality}. Sometimes we will refer to the tuple
+\lstinline[language=Scala,mathescape=true]!(F$_T$,F$_M$)! just by
+\lstinline[language=Scala,mathescape=true]!F! when there is little
+risk of confusion.
+
+From these operational definitions, it follows that a natural
+transformation is map between functors! We expect it to be give in
+terms of component maps. That is, at a type, say
+\lstinline[language=Scala,mathescape=true]!A! a natural
+transformation, \lstinline[language=Scala,mathescape=true]!n! from a
+functor \lstinline[language=Scala,mathescape=true]!F! to a functor
+\lstinline[language=Scala,mathescape=true]!G! should have a map
+\lstinline[language=Scala,mathescape=true]!n$_A$ : F[A] => G[A]!.
+These component maps need to satisfy some constraints. To wit,
+
+\begin{itemize}
+  \item Suppose we have a map \lstinline[language=Scala,mathescape=true]!f : A => B!. Then we want \lstinline[language=Scala,mathescape=true]!n$_A$ $\circ$ G( f ) = F( f ) $\circ$ n$_B$!.
+\end{itemize}
+
+As you might have guessed, this constraint is dubbed
+\emph{naturality}. Category theorists have developed a nice
+methodology for reasoning about such constraints. They draw them as
+diagrams.
+
+\begin{diagram}
+  F[A] & \rTo^{n_A} & G[A] \\
+  \dTo^{F(f)} & & \dTo_{G(f)} \\
+  F[B] & \rTo_{n_B} & G[B]
+\end{diagram}
+
+Then a monad is really given by a triple, \lstinline[language=Scala,mathescape=true]!(S, unit, mult)! where 
+
+\begin{itemize}
+  \item \lstinline[language=Scala,mathescape=true]!S! is a functor, 
+  \item \lstinline[language=Scala,mathescape=true]!unit! is a natural transformation from the identity functor to \lstinline[language=Scala,mathescape=true]!S!, 
+  \item \lstinline[language=Scala,mathescape=true]!mult! is a natural transformation from \lstinline[language=Scala,mathescape=true]!S$^2$! to \lstinline[language=Scala,mathescape=true]!S!.
+\end{itemize}
+
+subject to the following constraints.
+
+\begin{itemize}
+\item \lstinline[language=Scala,mathescape=true]!mult $\circ$ S mult = mult $\circ$ mult S! %[mult-mult]
+\item \lstinline[language=Scala,mathescape=true]!mult $\circ$ S unit = mult $\circ$ unit S! %[mult-unit]
+\end{itemize}
+
+Or in pictures
+
+\begin{diagram}
+  S^3 & \rTo^{S \; mult} & S^2 \\
+  \dTo^{mult \; S} & & \dTo_{mult} \\
+  S^2 & \rTo_{mult} & S
+\end{diagram}
+
+\begin{diagram}
+  S & \rTo^{unit \; S} & S^2 \\
+  \dTo^{S \; unit} & & \dTo_{mult} \\
+  S^2 & \rTo_{mult} & S
+\end{diagram}
+
+which are really shorthand for
+
+\begin{diagram}
+  S[S[S[A]] & \rTo^{S( mult_A )} & S[S[A]] \\
+  \dTo^{mult_{S[A]}} & & \dTo_{mult_A} \\
+  S[S[A]] & \rTo_{mult_A} & S[A]
+\end{diagram}
+
+\begin{diagram}
+  S[A] & \rTo^{unit_{S[A]}} & S[S[A]] \\
+  \dTo^{S(unit_A)} & & \dTo_{mult_A} \\
+  S[S[A]] & \rTo_{mult_A} & S[A]
+\end{diagram}
 
 \texttt{Scala} programmers can certainly understand these laws with a
-little unpacking.
+little unpacking. [TBD]
+
+Despite the apparent complexity the presentation has a certain
+organization to it that is very natural once it becomes clear. There
+are actually three different levels of constraints that follow a kind
+of food-chain. At the level of \texttt{Scala}, which is our ambient
+category, we find types and maps between them. Though this is harder
+to see because we have restricted our view to just \emph{one}
+category, at the level of functors, categories play in the role of
+types, while functors play in the role of maps between them. At the
+level of natural transformations, functors play in the role of types
+while natural transformations play in the role of maps between
+them. Monads bring all three levels together into one package. Monads
+operate on a category via a functor and pair of natural
+transformations.
 
 % These two definitions are interchangeable. That's what makes them
 % ``presentations'' of the same underlying idea.
