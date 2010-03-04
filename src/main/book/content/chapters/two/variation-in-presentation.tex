@@ -56,16 +56,17 @@ language. The syntax and semantics of the DSL is simultaneously given
 by the following procedure for de-sugaring, i.e. translating
 expressions in the DSL back to core \texttt{Haskell}.
 
-\begin{lstlisting}[language=Haskell,mathescape=true]
-do { x } $=$ x
+\break
+\begin{lstlisting}[language=Haskell,mathescape=true,frame=single,caption={do-notation de-sugaring},captionpos=b]
+  do { x } $=$ x
  
-do { x ; <stmts> }
+  do { x ; <stmts> }
   $=$ bind x (\_ -> do { <stmts> })
  
-do { v <- x ; <stmts> }
+  do { v <- x ; <stmts> }
   $=$ bind x (\v -> do { <stmts> }) 
 
-do { let <decls> ; <stmts> }
+  do { let <decls> ; <stmts> }
   $=$ let <decls> in do { <stmts> }
 \end{lstlisting} 
 
@@ -119,24 +120,24 @@ The basic \texttt{Scala} construct looks like
 
 and the de-sugaring looks like
 
-\begin{lstlisting}[language=Scala,mathescape=true]
-  for( x <- expr$_1$ ; y <- expr$_2$ ; <stmts> ) yield expr$_3$
-
+\break
+\begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={for-comprehension de-sugaring},captionpos=b]
+  for( x <- expr$_1$ ; y <- expr$_2$ ; <stmts> )
+  yield expr$_3$
   $=$
+  expr$_1$ flatMap(
+             x => for( y <- expr$_2$; <stmts> ) yield expr$_3$
+           )
 
-  expr$_1$ flatMap( x => for( y <- expr$_2$; <stmts> ) yield expr$_3$ )
-
-  for( x <- expr$_1$ ; y = expr$_2$ ; <stmts> ) yield expr$_3$
-  
+  for( x <- expr$_1$ ; y = expr$_2$ ; <stmts> ) 
+  yield expr$_3$
   $=$
-
-  for( ( x, y ) <- for ( x <- expr$_1$ ) yield ( x, expr$_2$ ); <stmts> )
+  for( ( x, y ) <- for ( x <- expr$_1$ ) yield ( x, expr$_2$ );
+       <stmts> )
   yield expr$_3$
 
   for( x <- expr$_1$ if pred ) yield expr$_2$ 
-
   $=$
-
   expr$_1$ filter ( x => pred ) map ( x => expr$_2$ )    
 \end{lstlisting}
 
@@ -155,9 +156,32 @@ Again, general pattern matching is supported in assignment-like statements.
   }
 \end{lstlisting}
 
-This means, therefore, that we have the following correspondence
+This means, therefore, inside the appropriate code context (i.e., a
+\lstinline[language=Haskell]!do!-block or a
+\lstinline[language=Scala]!for!-comprehension, respectively) we have
+the following correspondence
 
-% TODO write down the $\Haskell$/$\Scala$ monad correspondence
+\begin{center}
+%
+%\fbox{ % \frame{ fail here..
+\begin{minipage}{2.1764in}
+\begin{lstlisting}[language=Haskell,mathescape=true]
+  ptn <- expr
+  expr$_1$ $<<$ expr$_2$
+  return expr
+\end{lstlisting}
+\end{minipage}
+%}
+%
+\begin{minipage}{2.1764in}
+\begin{lstlisting}[language=Scala,mathescape=true]
+  ptn <- expr
+  expr$_1$ ; expr$_2$
+  yield expr
+\end{lstlisting}
+\end{minipage}
+%
+\end{center}
 
 \subsection{A little more history}
 
@@ -482,16 +506,18 @@ this book is about a certain design pattern that can be expressed, and
 originally was expressed within that theory, but is to a great extent
 an independent notion. \footnote{In point of fact, at present writing,
   i suspect that there is a way to turn category theory on its head
-  and make the notion of monad the fundamental building block out of
-  which the rest of category may be defined.} On the other hand, for
-the diligent and/or curious reader a pointer to that body of work has
-the potential to be quite rewarding. There are many treasures there
-waiting to be found. For our purposes, we strike a compromise. We take
-the notion of category to be given in terms of the definable types
-within the \texttt{Scala} type system and the definable programs
-(sometimes called maps) between those types. Then a functor, say
-\lstinline[language=Scala,mathescape=true]!F$_T$! is a parametric type
-constructor, together with a corresponding action, say
+  and make the notion of monad as the fundamental building block out
+  of which the rest of category may be defined.} On the other hand,
+for the diligent and/or curious reader a pointer to that body of work
+has the potential to be quite rewarding. There are many treasures
+there waiting to be found. For our purposes, we strike a
+compromise. We take the notion of category to be given in terms of the
+definable types within the \texttt{Scala} type system and the
+definable programs (sometimes called maps) between those types. Then a
+functor, say \lstinline[language=Scala,mathescape=true]!F!, is a pair
+consisting of a parametric type constructor,
+\lstinline[language=Scala,mathescape=true]!F$_T$!, together with a
+corresponding action, say
 \lstinline[language=Scala,mathescape=true]!F$_M$!, on programs, that
 respects certain invariants. Specifically,
 
@@ -513,31 +539,91 @@ In \texttt{Scala}-land this is what it means for
 risk of confusion.
 
 From these operational definitions, it follows that a natural
-transformation is map between functors! We expect it to be give in
+transformation is map between functors! We expect it to be given in
 terms of component maps. That is, at a type, say
-\lstinline[language=Scala,mathescape=true]!A! a natural
+\lstinline[language=Scala,mathescape=true]!A!, a natural
 transformation, \lstinline[language=Scala,mathescape=true]!n! from a
 functor \lstinline[language=Scala,mathescape=true]!F! to a functor
 \lstinline[language=Scala,mathescape=true]!G! should have a map
-\lstinline[language=Scala,mathescape=true]!n$_A$ : F[A] => G[A]!.
+\lstinline[language=Scala,mathescape=true]!n$_A$ : F$_T$[A] => G$_T$[A]!.
 These component maps need to satisfy some constraints. To wit,
 
 \begin{itemize}
-  \item Suppose we have a map \lstinline[language=Scala,mathescape=true]!f : A => B!. Then we want \lstinline[language=Scala,mathescape=true]!n$_A$ $\circ$ G( f ) = F( f ) $\circ$ n$_B$!.
+  \item Suppose we have a map \lstinline[language=Scala,mathescape=true]!f : A => B!. Then we want \lstinline[language=Scala,mathescape=true]!n$_A$ $\circ$ G$_M$( f ) = F$_M$( f ) $\circ$ n$_B$!.
 \end{itemize}
 
 As you might have guessed, this constraint is dubbed
 \emph{naturality}. Category theorists have developed a nice
 methodology for reasoning about such constraints. They draw them as
-diagrams.
+diagrams. For example, the diagram below represents the naturality
+equation.
 
 \begin{diagram}
-  F[A] & \rTo^{n_A} & G[A] \\
-  \dTo^{F(f)} & & \dTo_{G(f)} \\
-  F[B] & \rTo_{n_B} & G[B]
+  F_T[A] & \rTo^{n_A} & G_T[A] \\
+  \dTo^{F_M(f)} & & \dTo_{G_M(f)} \\
+  F_T[B] & \rTo_{n_B} & G_T[B]
 \end{diagram}
 
-Then a monad is really given by a triple, \lstinline[language=Scala,mathescape=true]!(S, unit, mult)! where 
+You can read the diagram as stating that the two paths from the upper left
+corner of the diagram to the lower right corner (one along the top and
+down the right and the other down the left and along the bottom) must
+be equal as functions. In general, when all the path between two
+vertices in such a diagram are equal as functions, the diagram is said
+to commute. This sort of tool is really invaluable for people doing
+systems-level design.
+
+\paragraph{Quick digression about design by diagram-chasing}
+In preparation for this book i was looking at the open source
+\texttt{Scala} library, \texttt{kiama}. This package provides support
+for rewrite systems, making it possible to give a specification of
+systems like the $lambda$-calculus at a level more closely resembling
+its original specification. That system makes the choice of using
+\texttt{Scala} \lstinline[language=Scala,mathescape=true]!case!
+classes as the input language for the terms in rewrite clauses. i
+wanted to use it over the \texttt{Java} classes generated from a
+parser written in \texttt{BNFC}. This meant i needed a
+\lstinline[language=Scala,mathescape=true]!case! class shadow of the
+\texttt{BNFC}-generated \texttt{Java}-based abstract syntax model. It
+just turns out that \texttt{BNFC} also generates a \texttt{DTD}-driven
+\texttt{XML} parser for element structure that is isomorphic to the
+input grammar. There are open source tools that will generate an
+\texttt{XSD} schema from the \texttt{DTD}. This can then be fed into
+the open source tool \texttt{scalaxb} which will generate
+\lstinline[language=Scala,mathescape=true]!case! classes. In pictures
+
+
+\begin{diagram}
+  EBNF & \rTo^{BNFC} & DTD & \rTo^{trang} & XSD & \rTo^{scalaxb} case \; classes
+%  \dTo^{F_M(f)} & & \dTo_{G_M(f)} \\
+%  F_T[B] & \rTo_{n_B} & G_T[B]
+\end{diagram}
+
+Chaining through the open source components (maps in our category) to
+find a way to wire in the \texttt{kiama} functionality is a lot like
+diagram chasing, which feels like it was made for an open source
+world. Moreover, when \texttt{BNFC} eventually targets \texttt{Scala}
+directly, we have a quality assurance constraint. Up to some accepted
+variance in output format we want
+
+\begin{diagram}[tight]
+  EBNF & \rTo^{BNFC}    & DTD & \rTo^{trang} & XSD \\
+       & \rdTo^{BNFC++}(3,2) &     &              & \dTo_{scalaxb} \\
+       &                &     &              & case \; classes \\
+\end{diagram}
+
+Often developers will draw similar diagrams, intuitively attempting to
+convey similar information; but, just as often, because of their
+informality, these diagrams are just as much a source of
+mis-communication. It is possible, however, in a language such as
+\texttt{Scala} to get both more formal and more intuitive (by
+appealing to a higher level of abstraction, like diagram-chasing) at
+the same time.
+
+\paragraph{Monads are triples}
+Returning to the topic at hand, a monad is really given by a
+triple\footnote{In fact, in the early days of category theory they
+  were actually give the imaginative moniker: triple.},
+\lstinline[language=Scala,mathescape=true]!(S, unit, mult)! where
 
 \begin{itemize}
   \item \lstinline[language=Scala,mathescape=true]!S! is a functor, 
@@ -554,48 +640,109 @@ subject to the following constraints.
 
 Or in pictures
 
+\begin{tabular}{cc}
 \begin{diagram}
   S^3 & \rTo^{S \; mult} & S^2 \\
   \dTo^{mult \; S} & & \dTo_{mult} \\
   S^2 & \rTo_{mult} & S
-\end{diagram}
-
+\end{diagram} &
 \begin{diagram}
   S & \rTo^{unit \; S} & S^2 \\
   \dTo^{S \; unit} & & \dTo_{mult} \\
   S^2 & \rTo_{mult} & S
 \end{diagram}
+\end{tabular}
 
 which are really shorthand for
 
+\begin{tabular}{cc}
 \begin{diagram}
   S[S[S[A]] & \rTo^{S( mult_A )} & S[S[A]] \\
   \dTo^{mult_{S[A]}} & & \dTo_{mult_A} \\
   S[S[A]] & \rTo_{mult_A} & S[A]
-\end{diagram}
-
+\end{diagram} &
 \begin{diagram}
   S[A] & \rTo^{unit_{S[A]}} & S[S[A]] \\
   \dTo^{S(unit_A)} & & \dTo_{mult_A} \\
   S[S[A]] & \rTo_{mult_A} & S[A]
 \end{diagram}
+\end{tabular}
 
-\texttt{Scala} programmers can certainly understand these laws with a
-little unpacking. [TBD]
+These constraints are called coherence constraints because they ensure
+that \lstinline[language=Scala,mathescape=true]!unit! and
+\lstinline[language=Scala,mathescape=true]!mult! interact coherently
+(and, in fact, that \lstinline[language=Scala,mathescape=true]!mult!
+interacts coherently with itself).
 
-Despite the apparent complexity the presentation has a certain
+\texttt{Scala} programmers can certainly understand these laws. Once
+you observe that nesting of containers corresponds to iterated
+invocation of the functor associated with a monad, then it's easy to
+see that the first diagram merely expresses that there is a canonical
+way to flatten nested monadic structure. The second diagram says that
+whichever way you try to nest with the
+\lstinline[language=Scala,mathescape=true]!unit! transform,
+applying the \lstinline[language=Scala,mathescape=true]!mult! after
+results in the same flattened structure.
+
+Despite the apparent complexity, the presentation has a certain
 organization to it that is very natural once it becomes clear. There
-are actually three different levels of constraints that follow a kind
-of food-chain. At the level of \texttt{Scala}, which is our ambient
-category, we find types and maps between them. Though this is harder
-to see because we have restricted our view to just \emph{one}
-category, at the level of functors, categories play in the role of
-types, while functors play in the role of maps between them. At the
-level of natural transformations, functors play in the role of types
-while natural transformations play in the role of maps between
-them. Monads bring all three levels together into one package. Monads
+are actually three different levels in operation here, following a kind
+of food-chain. 
+\begin{itemize}
+\item At the level of \texttt{Scala}, which -- if you recall
+-- is our ambient category, we find types and maps between
+them. 
+\item Though this is harder to see because we have restricted our view
+to just \emph{one} category, at the level of functors,
+\emph{categories} play in the role of types, while \emph{functors}
+play in the role of maps between them.
+\item At the level of natural
+transformations, functors play in the role of types while natural
+transformations play in the role of maps between them.
+\end{itemize}
+
+Correspondingly, we have three different levels of constraints.
+\begin{itemize}
+  \item functoriality
+  \item naturality
+  \item coherence
+\end{itemize}
+
+Monads bring all three levels together into one package. Monads
 operate on a category via a functor and pair of natural
-transformations.
+transformations that interact coherently. This food chain arrangement
+points the way toward an extremely promising reconstruction of the
+notion of interface. One way to think about it is in terms of the
+recent trend away from inheritance and towards composition. In this
+trend the notion of interface is still widely supported, but it really
+begs the question: what is an interface? What makes a collection of
+functions cohere enough to be tied together under an interface?
+
+One way to go about answering that question is to assume there's
+nothing but the interface name that collects the functions it gathers
+together. In that case, how many interfaces are there? One way to see
+that is just to consider all the sub interfaces of a single interface
+with $n$ methods on it: that's $2^n$ interfaces. That's a
+lot. Does that give us any confidence that any one way of carving up
+functionality via interfaces is going to be sane? Further, in
+practice, do we see random distribution through this very large space?
+
+What we see over and over again in practice is that the answer to
+these questions is ``no!'' Good programmers invariably pick out just a
+few factorizations of possible interfaces -- from the giant sea of
+factorizations. That means that there is something in the mind of a
+good programmer that binds a collection of methods together. What
+might that something be? i submit that in their minds there are some
+constraints they know or at least intuit must hold across these
+functions. The evidence from category theory is that these are not
+just arbitrary constraints, but that the space of constraints that
+bind together well factored interfaces is organized along the lines of
+functoriality, naturality and coherence. There may yet be higher-order
+levels of organization beyond that, but these -- at least -- provide a
+well-vetted and practical approach to addressing the question of what
+makes a good interface. If monad is the new object, then these sorts
+of categorical situations (of which monad is but one instance) are the
+basis for a re-thinking what we mean when we say ``interface''.
 
 % These two definitions are interchangeable. That's what makes them
 % ``presentations'' of the same underlying idea.
