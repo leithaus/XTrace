@@ -1,188 +1,5 @@
 \section{Variations in presentation}
 
-\subsection{A little history}
-Haskell was the first programming language to popularize the notion of
-monad as a structuring technique for functional programming. There
-were several key ideas that went into the $\Haskell$ packaging of the
-idea. One was to treat the core elements that make up a monad more or
-less \emph{directly} without appeal to category theory -- the branch
-of mathematics where the notion originated. This is considerably
-easier to do in a functional programming language because the ambient
-language can be thought of as a category; thus, for the average
-programmer there is no need to refer to categories, in general, but
-only to the ``universe'' of programs that can be written in the
-language at hand. Then, because Haskell already has a notion of
-parametric polymorphism, a monad's most central piece of data is a
-parametric type constructor, say $T$.
-
-\paragraph{Haskell's monad API}
-Given such a type constructor, you only need a pair of maps (one of
-which is higher order). Thus, in $\Haskell$ a monad is presented in
-terms of the following data
-
-\begin{itemize}
-  \item a parametric type constructor, \lstinline[language=Haskell]!T! a
-  \item a \lstinline[language=Haskell]!return! map enjoying the
-    signature \lstinline[language=Haskell]!return :: a -> T a!
-  \item a \lstinline[language=Haskell]!bind! map enjoying the
-    signature \lstinline[language=Haskell]!bind : T a -> (a -> T b) -> T b!
-\end{itemize}
-
-In $\Haskell$ these elements can be collected inside a
-\lstinline[language=Haskell]!typeclass!. Resulting in a declaration of
-the form
-
-% TODO : add typeclass
-\begin{lstlisting}[captionpos=b,language=Haskell,caption=monad typeclass]
-  typeclass Monad T a where
-   return :: a -> T a
-   bind :: T a -> (a -> T b ) -> T b
-\end{lstlisting}
-
-Now, it's not enough to simply have this collection of pieces. The
-pieces have to fit together in a certain way; that is, they are
-subject to the following laws:
-
-\begin{itemize}
-  \item \lstinline[language=Haskell]!return (bind a f)! $\equiv$ \lstinline[language=Haskell]!f a! %[Left identity]
-  \item \lstinline[language=Haskell]!bind m return! $\equiv$ \lstinline[language=Haskell]!m! %[Right identity]
-  \item \lstinline[language=Haskell]!bind (bind m f) g! $\equiv$ \lstinline[language=Haskell]!bind m (\ x -> bind (f x) g)! %[Associativity]
-\end{itemize}
-
-\paragraph{Do-notation}
-One of the driving motivations for this particular formulation of the
-concept is that it makes it very easy to host a little DSL inside the
-language. The syntax and semantics of the DSL is simultaneously given
-by the following procedure for de-sugaring, i.e. translating
-expressions in the DSL back to core \texttt{Haskell}.
-
-\break
-\begin{lstlisting}[language=Haskell,mathescape=true,frame=single,caption={do-notation de-sugaring},captionpos=b]
-  do { x } $=$ x
- 
-  do { x ; <stmts> }
-  $=$ bind x (\_ -> do { <stmts> })
- 
-  do { v <- x ; <stmts> }
-  $=$ bind x (\v -> do { <stmts> }) 
-
-  do { let <decls> ; <stmts> }
-  $=$ let <decls> in do { <stmts> }
-\end{lstlisting} 
-
-The assignment-like operation extends to full pattern matching with
-
-\begin{lstlisting}[language=Haskell,mathescape=true]
-  do { p <- x ; <stmts> }
-  $=$ let f p = do { <stmts> }
-              f _     = fail "..."
-      in bind x f
-\end{lstlisting}
-
-On the face of it, the notation provides both a syntax and a semantics
-reminiscent of the standard side-effecting operations of mainstream
-imperative languages. In presence of polymorphism, however, these
-instruments are much more powerful. These operations can be
-\emph{systematically} ``overloaded'' (meaning the overloaded
-definitions satisfy the laws above). This allows to systematically use
-the notation for a wide variety of computations that all have some
-underlying commonality. Typical examples include I/O, state
-management, control flow (all three of which all bundle up in
-parsing), and also container navigation and manipulation. It gets
-better for many of the tools of mathematics that are regularly the
-subject of computer programs such probability distributions,
-integration, etc., also have presentations as monads. Thus, innocent
-examples like this one
-
-\begin{lstlisting}[language=Haskell]
-  do { putStrLn "Enter a line of text:";
-       x <- getLine;
-       putStrLn ("you wrote: " ++ x) }
-\end{lstlisting}
-
-as might be found in some on-line tutorial on monads belie the potency
-of this combination of ideas.
-
-\paragraph{for-comprehensions}
-Unlike $\Haskell$, $\Scala$ does not reify the notion of monad under a
-\lstinline[language=Scala]!trait!, the language's equivalent of
-$\Haskell$'s \lstinline[language=Haskell]!typeclass!. Instead the
-systematic means of de-sugaring
-\lstinline[language=Scala]!for!-notation and polymorphic
-interpretations of \lstinline[language=Scala]!flatMap!, etc are the
-effective definitions of the notion in $\Scala$.
-
-The basic \texttt{Scala} construct looks like
-
-\begin{lstlisting}[language=Scala]
-  for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
-\end{lstlisting}
-
-and the de-sugaring looks like
-
-\break
-\begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={for-comprehension de-sugaring},captionpos=b]
-  for( x <- expr$_1$ ; y <- expr$_2$ ; <stmts> )
-  yield expr$_3$
-  $=$
-  expr$_1$ flatMap(
-             x => for( y <- expr$_2$; <stmts> ) yield expr$_3$
-           )
-
-  for( x <- expr$_1$ ; y = expr$_2$ ; <stmts> ) 
-  yield expr$_3$
-  $=$
-  for( ( x, y ) <- for ( x <- expr$_1$ ) yield ( x, expr$_2$ );
-       <stmts> )
-  yield expr$_3$
-
-  for( x <- expr$_1$ if pred ) yield expr$_2$ 
-  $=$
-  expr$_1$ filter ( x => pred ) map ( x => expr$_2$ )    
-\end{lstlisting}
-
-Again, general pattern matching is supported in assignment-like statements.
-
-\begin{lstlisting}[language=Scala,mathescape=true]
-  for( p <- expr$_1$ ; <stmts> ) yield expr$_2$ 
-
-  $=$
-
-  expr$_1$ filter {
-    case p => true
-    case _ => false
-  } flatMap {
-    p => for( <stmts> ) yield expr$_2$
-  }
-\end{lstlisting}
-
-This means, therefore, inside the appropriate code context (i.e., a
-\lstinline[language=Haskell]!do!-block or a
-\lstinline[language=Scala]!for!-comprehension, respectively) we have
-the following correspondence
-
-\begin{center}
-%
-%\fbox{ % \frame{ fail here..
-\begin{minipage}{2.1764in}
-\begin{lstlisting}[language=Haskell,mathescape=true]
-  ptn <- expr
-  expr$_1$ $<<$ expr$_2$
-  return expr
-\end{lstlisting}
-\end{minipage}
-%}
-%
-\begin{minipage}{2.1764in}
-\begin{lstlisting}[language=Scala,mathescape=true]
-  ptn <- expr
-  expr$_1$ ; expr$_2$
-  yield expr
-\end{lstlisting}
-\end{minipage}
-%
-\end{center}
-
 \subsection{A little more history}
 
 If one were to reify the notion in $\Scala$ there are several design
@@ -370,20 +187,6 @@ effectively nests $a$ in a
 \lstinline[language=Scala]!MonoidExpr!. That's the ``moral'' content
 of the connection between the two notions of unit.
 
-\paragraph{Syntax and containers}
-The crucial point in all of this is that \emph{syntax is the only
-  container we have for computation}. What do we mean by this? Back
-when Moggi was crafting his story about the application of the notion
-of monad to computing he referred to monads as ``notions of
-computation''. What he meant by that was that monads reify computation
-(such as I/O or flow of control or constructing data structures) into
-``objects''. Computation as a phenomenon, however, is both dynamic and
-(potentially) infinitary. At least as we understand it today, it's not
-in the category of widgets we can hold in our hand like an apple or an
-Apple $\texttrademark$ computer. All we can do is \emph{point} to it,
-indicate it in some way. Syntax, it turns out, is our primary means of
-signifying computation. 
-
 \paragraph{Bracing for \texttt{XML}}
 In this connection it is useful to make yet another connection to a
 ubiquitous technology, namely \texttt{XML}. As a segue, notice that we
@@ -437,16 +240,23 @@ using monads. Notationally, we can denote the different polymorphic
 interpretations by the ``color'' of the brace. In other words, we are
 looking at a shift of the form
 \begin{itemize}
-  \item $\{ a_1, a_2, a_3, ... \} \mapsto \{*| a_1, a_2, a_3, ... |*\}$
-  \item $\{ pattern \; \in \; S \;|\; condition |\} \mapsto \{*| pattern \in S \; | \; condition |*\}$
+  \item $\{ a_1, a_2, a_3, ... \} \mapsto \{*| \; a_1, a_2, a_3, ... \; |*\}$
+  \item $\{ pattern \; \in \; S \;|\; condition \} \mapsto \{*| \; pattern \in S \; | \; condition \; |*\}$
 \end{itemize}
 to build into our notation an explicit representation of the fact that
 the operation of collection, pattern matching and filtering on the
-basis of predicate are polymorphic.
+basis of predicate are polymorphic. \footnote{ This demarcation
+  between extensionally and intensionally given expressions is also
+  reflected in the notation used for arithmetic or monoids, more
+  generally. When we have a finite number and/or explicitly given set
+  of operands, we can write expressions like $a_1 + a_2 + ... + a_n$,
+  but when we have an infinite expression (like and infinite series)
+  or an expression whose operands are given programmatically we write
+  expressions like $\displaystyle\sum\limits_{i \in S}^{} e( i )$. }
 
 Often times, good mathematics, like good programming is really about
 the design of good notation -- it's about DSLs! In this case, the
-notation is particularly useful because it begs the question of the
+notation is particularly useful \emph{because} it begs the question of the
 language of patterns and the language of conditions -- something that
 Wadler's original paper on monads as generalized comprehensions did
 not address. This is a theme to which we will return at the end of the
@@ -474,6 +284,20 @@ possible. Obviously, we just want to throw those away, so a
 \lstinline[language=Scala]!fold! might be a better a better choice,
 but then that obscures the correspondence.
 
+\paragraph{Syntax and containers}
+The crucial point in all of this is that \emph{syntax is the only
+  container we have for computation}. What do we mean by this? Back
+when Moggi was crafting his story about the application of the notion
+of monad to computing he referred to monads as ``notions of
+computation''. What he meant by that was that monads reify computation
+(such as I/O or flow of control or constructing data structures) into
+``objects''. Computation as a phenomenon, however, is both dynamic and
+(potentially) infinitary. At least as we understand it today, it's not
+in the category of widgets we can hold in our hand like an apple or an
+Apple $\texttrademark$ computer. All we can do is \emph{point} to it,
+indicate it in some way. Syntax, it turns out, is our primary means of
+signifying computation. That's why many monads factor out as a
+reification of syntax, and why they are so key to DSL-based design.
 
 \subsubsection{Decomposition of monad requirements}
 
@@ -507,9 +331,9 @@ originally was expressed within that theory, but is to a great extent
 an independent notion. \footnote{In point of fact, at present writing,
   i suspect that there is a way to turn category theory on its head
   and make the notion of monad as the fundamental building block out
-  of which the rest of category may be defined.} On the other hand,
-for the diligent and/or curious reader a pointer to that body of work
-has the potential to be quite rewarding. There are many treasures
+  of which the rest of category theory may be defined.} On the other
+hand, for the diligent and/or curious reader a pointer to that body of
+work has the potential to be quite rewarding. There are many treasures
 there waiting to be found. For our purposes, we strike a
 compromise. We take the notion of category to be given in terms of the
 definable types within the \texttt{Scala} type system and the
@@ -728,7 +552,7 @@ functionality via interfaces is going to be sane? Further, in
 practice, do we see random distribution through this very large space?
 
 What we see over and over again in practice is that the answer to
-these questions is ``no!'' Good programmers invariably pick out just a
+the latter question is ``no!'' Good programmers invariably pick out just a
 few factorizations of possible interfaces -- from the giant sea of
 factorizations. That means that there is something in the mind of a
 good programmer that binds a collection of methods together. What
@@ -743,6 +567,10 @@ well-vetted and practical approach to addressing the question of what
 makes a good interface. If monad is the new object, then these sorts
 of categorical situations (of which monad is but one instance) are the
 basis for a re-thinking what we mean when we say ``interface''.
+
+All of this is discussion leads up to the context in which to
+understand the correspondence between the \texttt{Haskell} variation
+of the monad laws and their original presentation. 
 
 % These two definitions are interchangeable. That's what makes them
 % ``presentations'' of the same underlying idea.

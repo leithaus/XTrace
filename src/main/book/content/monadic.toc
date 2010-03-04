@@ -30,23 +30,23 @@
 \contentsline {chapter}{\numberline {2}Toolbox}{31}{chapter.2}
 \contentsline {section}{\numberline {2.1}Introduction to notation and terminology}{31}{section.2.1}
 \contentsline {section}{\numberline {2.2}Introduction to core design patterns}{31}{section.2.2}
-\contentsline {section}{\numberline {2.3}Variations in presentation}{31}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}A little history}{31}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.2.1}A little history}{31}{subsection.2.2.1}
 \contentsline {paragraph}{Haskell's monad API}{32}{section*.23}
 \contentsline {paragraph}{Do-notation}{32}{section*.24}
 \contentsline {paragraph}{for-comprehensions}{33}{section*.25}
-\contentsline {subsection}{\numberline {2.3.2}A little more history}{36}{subsection.2.3.2}
+\contentsline {section}{\numberline {2.3}Variations in presentation}{36}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}A little more history}{36}{subsection.2.3.1}
 \contentsline {subsubsection}{Intuition: Monad as container}{36}{section*.26}
 \contentsline {paragraph}{Shape of the container}{36}{section*.27}
 \contentsline {paragraph}{Putting things into the container}{36}{section*.28}
 \contentsline {paragraph}{Flattening nested containers}{36}{section*.29}
 \contentsline {subsubsection}{Preserving connection to existing structure: Monad as generalization of monoid}{37}{section*.30}
 \contentsline {paragraph}{Associativity as flattening}{39}{section*.31}
-\contentsline {paragraph}{Syntax and containers}{39}{section*.32}
-\contentsline {paragraph}{Bracing for \texttt {XML}}{39}{section*.33}
-\contentsline {paragraph}{The connection with set-comprehensions}{40}{section*.34}
+\contentsline {paragraph}{Bracing for \texttt {XML}}{39}{section*.32}
+\contentsline {paragraph}{The connection with set-comprehensions}{40}{section*.33}
+\contentsline {paragraph}{Syntax and containers}{41}{section*.34}
 \contentsline {subsubsection}{Decomposition of monad requirements}{41}{section*.35}
-\contentsline {subsubsection}{A categorical way to look at monads}{41}{section*.36}
+\contentsline {subsubsection}{A categorical way to look at monads}{42}{section*.36}
 \contentsline {paragraph}{Quick digression about design by diagram-chasing}{43}{section*.37}
 \contentsline {paragraph}{Monads are triples}{44}{section*.38}
 \contentsline {chapter}{\numberline {3}An IO-monad for http streams}{47}{chapter.3}

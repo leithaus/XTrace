@@ -287,7 +287,7 @@ core of \texttt{Scala} is really the $\lambda$-calculus.
   $\ldb$ (x) => expr $\rdb$ $=$ $\lambda \; x . \ldb$ expr $\rdb$ 
   $\ldb$ expr( expr$_1$, ..., expr$_n$ ) $\rdb$ $=$ $\ldb$ expr $\rdb$ $\ldb$ expr$_1$ $\rdb$ ... $\ldb$ expr$n$ $\rdb$
   $\ldb$ val x = expr$_1$ ; expr$_2$ $\rdb$ $=$ $let$ $\ldb$ x $\rdb$ $=$ $\ldb$ expr$_1$ $\rdb$ $in$ $\ldb$ expr$_2$ $\rdb$
-  $\ldb$ expr$_1$ ; expr$_2$ $\rdb$ $=$ $x$ $\ldb$ expr$_1$ $\rdb$ $;$ $\ldb$ expr$_2$ $\rdb$
+  $\ldb$ expr$_1$ ; expr$_2$ $\rdb$ $=$ $\ldb$ expr$_1$ $\rdb$ $;$ $\ldb$ expr$_2$ $\rdb$
   $\ldb$ { expr } $\rdb$ $=$ ( $\ldb$ expr $\rdb$ )
 \end{lstlisting}
 

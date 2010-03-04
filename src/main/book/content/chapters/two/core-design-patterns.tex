@@ -1,2 +1,186 @@
 \section{Introduction to core design patterns}
 
+\subsection{A little history}
+Haskell was the first programming language to popularize the notion of
+monad as a structuring technique for functional programming. There
+were several key ideas that went into the $\Haskell$ packaging of the
+idea. One was to treat the core elements that make up a monad more or
+less \emph{directly} without appeal to category theory -- the branch
+of mathematics where the notion originated. This is considerably
+easier to do in a functional programming language because the ambient
+language can be thought of as a category; thus, for the average
+programmer there is no need to refer to categories, in general, but
+only to the ``universe'' of programs that can be written in the
+language at hand. Then, because Haskell already has a notion of
+parametric polymorphism, a monad's most central piece of data is a
+parametric type constructor, say $T$.
+
+\paragraph{Haskell's monad API}
+Given such a type constructor, you only need a pair of maps (one of
+which is higher order). Thus, in $\Haskell$ a monad is presented in
+terms of the following data
+
+\begin{itemize}
+  \item a parametric type constructor, \lstinline[language=Haskell]!T! a
+  \item a \lstinline[language=Haskell]!return! map enjoying the
+    signature \lstinline[language=Haskell]!return :: a -> T a!
+  \item a \lstinline[language=Haskell]!bind! map enjoying the
+    signature \lstinline[language=Haskell]!bind : T a -> (a -> T b) -> T b!
+\end{itemize}
+
+In $\Haskell$ these elements can be collected inside a
+\lstinline[language=Haskell]!typeclass!. Resulting in a declaration of
+the form
+
+% TODO : add typeclass
+\begin{lstlisting}[captionpos=b,language=Haskell,caption=monad typeclass]
+  typeclass Monad T a where
+   return :: a -> T a
+   bind :: T a -> (a -> T b ) -> T b
+\end{lstlisting}
+
+Now, it's not enough to simply have this collection of pieces. The
+pieces have to fit together in a certain way; that is, they are
+subject to the following laws:
+
+\begin{itemize}
+  \item \lstinline[language=Haskell]!return (bind a f)! $\equiv$ \lstinline[language=Haskell]!f a! %[Left identity]
+  \item \lstinline[language=Haskell]!bind m return! $\equiv$ \lstinline[language=Haskell]!m! %[Right identity]
+  \item \lstinline[language=Haskell]!bind (bind m f) g! $\equiv$ \lstinline[language=Haskell]!bind m (\ x -> bind (f x) g)! %[Associativity]
+\end{itemize}
+
+\paragraph{Do-notation}
+One of the driving motivations for this particular formulation of the
+concept is that it makes it very easy to host a little DSL inside the
+language. The syntax and semantics of the DSL is simultaneously given
+by the following procedure for de-sugaring, i.e. translating
+expressions in the DSL back to core \texttt{Haskell}.
+
+\break
+\begin{lstlisting}[language=Haskell,mathescape=true,frame=single,caption={do-notation de-sugaring},captionpos=b]
+  do { x } $=$ x
+ 
+  do { x ; <stmts> }
+  $=$ bind x (\_ -> do { <stmts> })
+ 
+  do { v <- x ; <stmts> }
+  $=$ bind x (\v -> do { <stmts> }) 
+
+  do { let <decls> ; <stmts> }
+  $=$ let <decls> in do { <stmts> }
+\end{lstlisting} 
+
+The assignment-like operation extends to full pattern matching with
+
+\begin{lstlisting}[language=Haskell,mathescape=true]
+  do { p <- x ; <stmts> }
+  $=$ let f p = do { <stmts> }
+              f _     = fail "..."
+      in bind x f
+\end{lstlisting}
+
+On the face of it, the notation provides both a syntax and a semantics
+reminiscent of the standard side-effecting operations of mainstream
+imperative languages. In presence of polymorphism, however, these
+instruments are much more powerful. These operations can be
+\emph{systematically} ``overloaded'' (meaning the overloaded
+definitions satisfy the laws above). This allows to systematically use
+the notation for a wide variety of computations that all have some
+underlying commonality. Typical examples include I/O, state
+management, control flow (all three of which all bundle up in
+parsing), and also container navigation and manipulation. It gets
+better for many of the tools of mathematics that are regularly the
+subject of computer programs such probability distributions,
+integration, etc., also have presentations as monads. Thus, innocent
+examples like this one
+
+\begin{lstlisting}[language=Haskell]
+  do { putStrLn "Enter a line of text:";
+       x <- getLine;
+       putStrLn ("you wrote: " ++ x) }
+\end{lstlisting}
+
+as might be found in some on-line tutorial on monads belie the potency
+of this combination of ideas.
+
+\paragraph{for-comprehensions}
+Unlike $\Haskell$, $\Scala$ does not reify the notion of monad under a
+\lstinline[language=Scala]!trait!, the language's equivalent of
+$\Haskell$'s \lstinline[language=Haskell]!typeclass!. Instead the
+systematic means of de-sugaring
+\lstinline[language=Scala]!for!-notation and polymorphic
+interpretations of \lstinline[language=Scala]!flatMap!, etc are the
+effective definitions of the notion in $\Scala$.
+
+The basic \texttt{Scala} construct looks like
+
+\begin{lstlisting}[language=Scala]
+  for( p <- e [; p <- e] [p = e] [if t] ) yield { e }
+\end{lstlisting}
+
+and the de-sugaring looks like
+
+\break
+\begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={for-comprehension de-sugaring},captionpos=b]
+  for( x <- expr$_1$ ; y <- expr$_2$ ; <stmts> )
+  yield expr$_3$
+  $=$
+  expr$_1$ flatMap(
+             x => for( y <- expr$_2$; <stmts> ) yield expr$_3$
+           )
+
+  for( x <- expr$_1$ ; y = expr$_2$ ; <stmts> ) 
+  yield expr$_3$
+  $=$
+  for( ( x, y ) <- for ( x <- expr$_1$ ) yield ( x, expr$_2$ );
+       <stmts> )
+  yield expr$_3$
+
+  for( x <- expr$_1$ if pred ) yield expr$_2$ 
+  $=$
+  expr$_1$ filter ( x => pred ) map ( x => expr$_2$ )    
+\end{lstlisting}
+
+Again, general pattern matching is supported in assignment-like statements.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( p <- expr$_1$ ; <stmts> ) yield expr$_2$ 
+
+  $=$
+
+  expr$_1$ filter {
+    case p => true
+    case _ => false
+  } flatMap {
+    p => for( <stmts> ) yield expr$_2$
+  }
+\end{lstlisting}
+
+This means, therefore, inside the appropriate code context (i.e., a
+\lstinline[language=Haskell]!do!-block or a
+\lstinline[language=Scala]!for!-comprehension, respectively) we have
+the following correspondence
+
+\begin{center}
+%
+%\fbox{ % \frame{ fail here..
+\begin{minipage}{2.1764in}
+\begin{lstlisting}[language=Haskell,mathescape=true]
+  ptn <- expr
+  return expr
+\end{lstlisting}
+\end{minipage}
+%}
+%
+\begin{minipage}{2.1764in}
+\begin{lstlisting}[language=Scala,mathescape=true]
+  ptn <- expr
+  yield expr
+\end{lstlisting}
+\end{minipage}
+%
+\end{center}
+
+with a kind of spiritual kinship between \lstinline[language=Haskell,mathescape=true]!expr$_1$ $<<$ expr$_2$! and \lstinline[language=Scala,mathescape=true]!expr$_1$ ; expr$_2$!.
+
+

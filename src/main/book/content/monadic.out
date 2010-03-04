@@ -13,9 +13,9 @@
 \BOOKMARK [0][-]{chapter.2}{Toolbox}{}
 \BOOKMARK [1][-]{section.2.1}{Introduction to notation and terminology}{chapter.2}
 \BOOKMARK [1][-]{section.2.2}{Introduction to core design patterns}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.2.1}{A little history}{section.2.2}
 \BOOKMARK [1][-]{section.2.3}{Variations in presentation}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.3.1}{A little history}{section.2.3}
-\BOOKMARK [2][-]{subsection.2.3.2}{A little more history}{section.2.3}
+\BOOKMARK [2][-]{subsection.2.3.1}{A little more history}{section.2.3}
 \BOOKMARK [0][-]{chapter.3}{An IO-monad for http streams}{}
 \BOOKMARK [1][-]{section.3.1}{Code first, questions later}{chapter.3}
 \BOOKMARK [2][-]{subsection.3.1.1}{An HTTP-request processor}{section.3.1}
