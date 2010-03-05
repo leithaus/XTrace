@@ -143,6 +143,24 @@ parameter. Similarly, an APPLICATION is modeled by an instance of the
 to the actual parameter called (not surprisingly)
 \lstinline[language=Scala]!actual!.
 
+\paragraph{Currying}
+The attentive reader will have noticed that there's a difference
+between the abstract syntax and our \texttt{Scala} model. The abstract
+syntax only supports a single formal parameter under
+$\lambda$-abstraction, while the \texttt{Scala} model declares the
+\lstinline[language=Scala,mathescape=true]!formals! to be of type
+\lstinline[language=Scala,mathescape=true]!List[Nominal]!. The model
+anticipates the encoding $\lambda \; x \; y . M \stackrel{def}{=}
+\lambda \; x. \lambda \; y . M$. Given that abstractions are
+first-class values, in the sense that they can be returned as values
+and passed as parameters, this is a fairly intuitive encoding. It has
+some pleasant knock-on effects. For example, when there is an arity
+shortfall, i.e. the number of actual parameters is less than the
+number of formal parameters, then it is both natural and useful simply
+to return an abstraction. Thus, $(\lambda x y. f x y)u$ can be
+evaluated to return $(\lambda y. f u y)u$. This is an extremely
+convenient mechanism to support partial evaluation.
+
 \paragraph{Type parametrization and quotation}
 One key aspect of this representation is that we acknowledge that the
 abstract syntax is strangely silent on what the \emph{terminals}
