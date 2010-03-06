@@ -67,22 +67,22 @@
 \contentsline {chapter}{\numberline {6}Zippers and contexts and URI's, oh my!}{59}{chapter.6}
 \contentsline {section}{\numberline {6.1}Zippers are not just for Bruno anymore}{59}{section.6.1}
 \contentsline {section}{\numberline {6.2}Constructing contexts and zippers from data types}{59}{section.6.2}
-\contentsline {section}{\numberline {6.3}Mapping URIs to zipper-based paths and back}{61}{section.6.3}
-\contentsline {chapter}{\numberline {7}A review of collections as monads}{63}{chapter.7}
-\contentsline {section}{\numberline {7.1}Monad as container}{63}{section.7.1}
-\contentsline {section}{\numberline {7.2}Monads and take-out}{63}{section.7.2}
-\contentsline {chapter}{\numberline {8}Domain model, storage and state}{65}{chapter.8}
-\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{65}{section.8.1}
-\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{65}{section.8.2}
-\contentsline {section}{\numberline {8.3}Continuations revisited}{65}{section.8.3}
-\contentsline {chapter}{\numberline {9}Putting it all together}{67}{chapter.9}
-\contentsline {section}{\numberline {9.1}Our web application end-to-end}{67}{section.9.1}
-\contentsline {section}{\numberline {9.2}Deploying our application}{67}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{67}{subsection.9.2.1}
-\contentsline {section}{\numberline {9.3}From one web application to web framework}{67}{section.9.3}
-\contentsline {chapter}{\numberline {10}The semantic web}{69}{chapter.10}
-\contentsline {section}{\numberline {10.1}How our web framework enables different kinds of application queries}{69}{section.10.1}
-\contentsline {section}{\numberline {10.2}Searching for programs}{69}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}A new foundation for search}{69}{subsection.10.2.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{69}{section*.40}
-\contentsline {subsection}{\numberline {10.2.2}Examples}{69}{subsection.10.2.2}
+\contentsline {section}{\numberline {6.3}Mapping URIs to zipper-based paths and back}{64}{section.6.3}
+\contentsline {chapter}{\numberline {7}A review of collections as monads}{65}{chapter.7}
+\contentsline {section}{\numberline {7.1}Monad as container}{65}{section.7.1}
+\contentsline {section}{\numberline {7.2}Monads and take-out}{65}{section.7.2}
+\contentsline {chapter}{\numberline {8}Domain model, storage and state}{67}{chapter.8}
+\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{67}{section.8.1}
+\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{67}{section.8.2}
+\contentsline {section}{\numberline {8.3}Continuations revisited}{67}{section.8.3}
+\contentsline {chapter}{\numberline {9}Putting it all together}{69}{chapter.9}
+\contentsline {section}{\numberline {9.1}Our web application end-to-end}{69}{section.9.1}
+\contentsline {section}{\numberline {9.2}Deploying our application}{69}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{69}{subsection.9.2.1}
+\contentsline {section}{\numberline {9.3}From one web application to web framework}{69}{section.9.3}
+\contentsline {chapter}{\numberline {10}The semantic web}{71}{chapter.10}
+\contentsline {section}{\numberline {10.1}How our web framework enables different kinds of application queries}{71}{section.10.1}
+\contentsline {section}{\numberline {10.2}Searching for programs}{71}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}A new foundation for search}{71}{subsection.10.2.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{71}{section*.40}
+\contentsline {subsection}{\numberline {10.2.2}Examples}{71}{subsection.10.2.2}
