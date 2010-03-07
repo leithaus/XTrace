@@ -6,6 +6,146 @@
 {\small\em Where are we; how did we get here; and where are we going?}
 \end{center}
 
+In all of the preceding chapters we deferred one of the most important
+questions: do monads themselves compose? After all, if monad is the
+proposal to replace the notion of object, and the primary criticism of
+the notion of object is its lack of support for composition, hadn't we
+better check that monads compose?
+
+Intriguingly, monads do not automatically compose. That is, if
+\lstinline[language=Scala,mathescape=true]!F $=$ (F, unit$_F$, mult$_F$)!
+and \lstinline[language=Scala,mathescape=true]!G $=$ (G, unit$_G$, mult$_G$)!
+are monads it does not necessarily follow that
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  F $\circ$ G $\stackrel{def}{=}$
+  (F $\circ$ G, unit$_F$ $\circ$ unit$_G$, mult$_f$ $\circ$ mult$_G$)
+\end{lstlisting}
+
+(which we'll write simply as
+\lstinline[language=Scala,mathescape=true]!F G! going forward) is a
+monad. In \texttt{Haskell} this is one of the purposes of monad
+transformers, to sketch out a compositional model for monads. Here, we
+follow a different route. The internal structure of a monad nearly
+dictates the simplest conditions under which
+\lstinline[language=Scala,mathescape=true]!F G! forms a
+monad. Consider the requirement of having a
+\lstinline[language=Scala,mathescape=true]!mult! for
+\lstinline[language=Scala,mathescape=true]!F G!. We need a natural
+transformation from \lstinline[language=Scala,mathescape=true]!mult: F G F G => F G!.
+
+The components we have to build this mult are primarily
+\lstinline[language=Scala,mathescape=true]!mult$_F$! and
+\lstinline[language=Scala,mathescape=true]!mult$_G$!. These act to
+take \lstinline[language=Scala,mathescape=true]!F F => G! and
+\lstinline[language=Scala,mathescape=true]!G G => G!, yet we have
+\lstinline[language=Scala,mathescape=true]!F G F G! as our initial
+type. Notice that if we had a way of swapping the interior
+\lstinline[language=Scala,mathescape=true]!G F! to make it
+\lstinline[language=Scala,mathescape=true]!F G!, that is, we had a map
+of the form \lstinline[language=Scala,mathescape=true]!d : G F => F G!
+(\lstinline[language=Scala,mathescape=true]!d! for distributive
+because it distributes \lstinline[language=Scala,mathescape=true]!F!
+across \lstinline[language=Scala,mathescape=true]!G!), then we could
+chain up like so
+
+\begin{diagram}
+  F G F G & \rTo^{F\;d\;G} & F F G G & \rTo^{mult_F \; mult_G} & F G \\
+\end{diagram}
+
+It is natural therefore, to require a map like
+\lstinline[language=Scala,mathescape=true]!d! in order to compose
+monads. We can investigate whether this proposal scales by looking at
+how it fairs when we have three monads,
+\lstinline[language=Scala,mathescape=true]!F!,
+\lstinline[language=Scala,mathescape=true]!G! and
+\lstinline[language=Scala,mathescape=true]!H!. We insist on being
+supplied with distributive maps
+\lstinline[language=Scala,mathescape=true]!d$_1$ : G F => F G!,
+\lstinline[language=Scala,mathescape=true]!d$_2$ : H G => G H!  and,
+for good measure, \lstinline[language=Scala,mathescape=true]!d$_3$ : H F => F H!. These will give canonical monads
+\lstinline[language=Scala,mathescape=true]!(F G)H! and
+\lstinline[language=Scala,mathescape=true]!F (G H)!, but we cannot
+ensure their equality. That is, we cannot ensure the higher level of
+associativity. To get this we need to impose an additional set of
+requirements. These requirements come down to making the following
+diagram commute.
+
+\begin{diagram}
+        &              & G H F & \rTo^{Gd_3}   & G F H &                 &       \\
+        & \ruTo^{d_2F} &       &               &       & \rdTo^{d_{1}H}  &       \\
+  H G F &              &       &               &       &                 & F G H \\
+        & \rdTo_{Hd_1} &       &               &        & \ruTo_{Fd_{2}} &       \\
+        &              & H F G & \rTo^{d_{3}G} & F H G &                 &       \\
+\end{diagram}
+
+They are the coherence conditions, the conditions of good interaction
+amongst the distributive maps. In fact, this is sufficient to scale
+out to arbitrary collections of monads. That is, if for any pair of
+monads in the collection we have a distributive map, and for any three
+we have the switching condition above, then composition is completely
+coherent and well defined. To illustrate that this is not just some
+abstract mathematical gadget lets put it to work. 
+
+\subsubsection{Preliminary}
+First we will consider a single distributive map. We will look at this
+in terms of two extremely simple monads, a DSL for forming arithmetic
+expressions involving only addition, i.e. a monoid, and a monad for
+collection, in this case
+\lstinline[language=Scala,mathescape=true]!Set!.
+
+\break
+\begin{lstlisting}[language=Scala]
+  case class MonoidExpr[Element]( val e : List[Element] )
+  class MMExpr[A] extends Monad[A,MonoidExpr] {
+    override def unit( e : A ) = MonoidExpr( List( e ) )
+    override def mult( mme : MonoidExpr[MonoidExpr[A]] ) =
+    mme match {
+      case MonoidExpr( Nil ) =>
+         MonoidExpr( Nil )
+      case MonoidExpr( mes ) => 
+         MonoidExpr(
+            ( Nil /: mes)( 
+               { ( acc, me ) => me match { 
+                   case MonoidExpr( es ) => acc +++ es 
+                 } 
+               } 
+             )
+         )
+    }
+  }
+\end{lstlisting}
+
+Now, what we need to construct is a map
+\lstinline[language=Scala,mathescape=true]!d! that takes elements
+inhabiting the type
+\lstinline[language=Scala,mathescape=true]!MMExpr[Set[A]]! to elements
+inhabiting the type
+\lstinline[language=Scala,mathescape=true]!Set[MMExpr[A]]!.
+
+The primary technique is what's called point-wise lifting of
+operations. Consider a simple example, such as the element
+
+\lstinline[language=Scala,mathescape=true]!e = MMExpr( List( Set( a$_1$, a$_2$ ), Set( b$_1$, b$_2$, b$_3$ ) ) )!.
+
+This element represents the composition of two sets. We can turn this
+into a set of compositions, by considering pairs of
+\lstinline[language=Scala,mathescape=true]!a!'s with
+\lstinline[language=Scala,mathescape=true]!b!'s. That is,
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  e match {
+    case MMExpr( s$_1$ :: s$_2$ :: Nil ) => 
+       Set(
+          for( a <- s$_1$; b <- s$_2$ )
+          yield { MMExpr( List( a, b ) ) }
+       )
+    case ...
+    }
+\end{lstlisting}
+
+This is exactly the type we want.
+
 \input{chapters/ten/semantic-web}
 \input{chapters/ten/new-queries}
 \input{chapters/ten/search-for-behavior}

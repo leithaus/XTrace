@@ -81,8 +81,9 @@
 \contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{69}{subsection.9.2.1}
 \contentsline {section}{\numberline {9.3}From one web application to web framework}{69}{section.9.3}
 \contentsline {chapter}{\numberline {10}The semantic web}{71}{chapter.10}
-\contentsline {section}{\numberline {10.1}How our web framework enables different kinds of application queries}{71}{section.10.1}
-\contentsline {section}{\numberline {10.2}Searching for programs}{71}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}A new foundation for search}{71}{subsection.10.2.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{71}{section*.40}
-\contentsline {subsection}{\numberline {10.2.2}Examples}{71}{subsection.10.2.2}
+\contentsline {subsubsection}{Preliminary}{72}{section*.40}
+\contentsline {section}{\numberline {10.1}How our web framework enables different kinds of application queries}{74}{section.10.1}
+\contentsline {section}{\numberline {10.2}Searching for programs}{74}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}A new foundation for search}{74}{subsection.10.2.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{74}{section*.41}
+\contentsline {subsection}{\numberline {10.2.2}Examples}{74}{subsection.10.2.2}
