@@ -81,9 +81,16 @@
 \contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{69}{subsection.9.2.1}
 \contentsline {section}{\numberline {9.3}From one web application to web framework}{69}{section.9.3}
 \contentsline {chapter}{\numberline {10}The semantic web}{71}{chapter.10}
-\contentsline {subsubsection}{Preliminary}{72}{section*.40}
-\contentsline {section}{\numberline {10.1}How our web framework enables different kinds of application queries}{74}{section.10.1}
-\contentsline {section}{\numberline {10.2}Searching for programs}{74}{section.10.2}
-\contentsline {subsection}{\numberline {10.2.1}A new foundation for search}{74}{subsection.10.2.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{74}{section*.41}
-\contentsline {subsection}{\numberline {10.2.2}Examples}{74}{subsection.10.2.2}
+\contentsline {section}{\numberline {10.1}Referential transparency}{71}{section.10.1}
+\contentsline {section}{\numberline {10.2}Composing monads}{72}{section.10.2}
+\contentsline {subsubsection}{Preliminary}{73}{section*.40}
+\contentsline {section}{\numberline {10.3}How our web framework enables different kinds of application queries}{75}{section.10.3}
+\contentsline {subsubsection}{An alternative presentation}{75}{section*.41}
+\contentsline {paragraph}{Logic: the set monad as an algebra}{75}{section*.42}
+\contentsline {paragraph}{Primes: an application}{76}{section*.43}
+\contentsline {paragraph}{Summary}{77}{section*.44}
+\contentsline {subsubsection}{Iterating the design pattern}{77}{section*.45}
+\contentsline {section}{\numberline {10.4}Searching for programs}{78}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{78}{subsection.10.4.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{78}{section*.46}
+\contentsline {subsection}{\numberline {10.4.2}Examples}{78}{subsection.10.4.2}

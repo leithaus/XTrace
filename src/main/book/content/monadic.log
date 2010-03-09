@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  7 MAR 2010 04:22
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  8 MAR 2010 19:58
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -356,20 +356,20 @@ Writing index file monadic.idx
 (./chapters/nine/ch.aux) (./chapters/ten/ch.aux) (./bibliography/monadic.aux))
 \openout1 = `monadic.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
 
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
 (/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
@@ -405,26 +405,26 @@ loading : Context Support Macros / PDF (2004.03.26)
 \MPnumerator=\count142
 \everyMPtoPDFconversion=\toks45
 )
-Package hyperref Info: Link coloring OFF on input line 34.
+Package hyperref Info: Link coloring OFF on input line 33.
  (/opt/local/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
 \c@section@level=\count143
 )
-LaTeX Info: Redefining \ref on input line 34.
-LaTeX Info: Redefining \pageref on input line 34.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
  (./monadic.out)
 (./monadic.out)
 \openout3 = `monadic.out'.
 
 \c@lstlisting=\count144
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 37.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 36.
  (/opt/local/share/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 37.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 37.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
  [1
 
 
@@ -433,7 +433,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package hyperref Warning: No destination for bookmark of \addcontentsline,
-(hyperref)                destination is added on input line 37.
+(hyperref)                destination is added on input line 36.
 
 (./monadic.toc
 Underfull \vbox (badness 2689) has occurred while \output is active []
@@ -470,7 +470,7 @@ l.53 ... IO-monad for http streams}{47}{chapter.3}
 s been already used, duplicate ignored
 <to be read again> 
                    \penalty 
-l.74 \include{chapters/one/ch}
+l.73 \include{chapters/one/ch}
                                [1]
 \openout2 = `chapters/one/ch.aux'.
 
@@ -537,7 +537,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 ) (./chapters/one/where-are-we-going.tex [9] [10] [11] [12])
 (./chapters/one/how-are-we-going-to-get-there.tex
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/R
-LambdaSignupPageScreenShot.pdf, id=410, 1353.055pt x 881.2925pt>
+LambdaSignupPageScreenShot.pdf, id=420, 1353.055pt x 881.2925pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/RLambdaSignupPageScreenShot.pdf Graphic file (type pdf)
 
@@ -550,7 +550,7 @@ Overfull \hbox (46.785pt too wide) in paragraph at lines 26--27
 [13] [14 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/
 figures/RLambdaSignupPageScreenShot.pdf>]
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/R
-LambdaREPLPageScreenShot.pdf, id=428, 1353.055pt x 881.2925pt>
+LambdaREPLPageScreenShot.pdf, id=438, 1353.055pt x 881.2925pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/RLambdaREPLPageScreenShot.pdf Graphic file (type pdf)
 
@@ -562,7 +562,7 @@ Overfull \hbox (46.785pt too wide) in paragraph at lines 51--52
 
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/R
-LambdaSampleEvaluationResultPage.pdf, id=429, 1353.055pt x 881.2925pt>
+LambdaSampleEvaluationResultPage.pdf, id=439, 1353.055pt x 881.2925pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/RLambdaSampleEvaluationResultPage.pdf Graphic file (type pdf)
 
@@ -1016,22 +1016,38 @@ Chapter 9.
 
 ]
 Chapter 10.
-
-Overfull \hbox (34.15538pt too wide) in paragraph at lines 15--19
+[71]
+Overfull \hbox (34.15538pt too wide) in paragraph at lines 50--54
 []\OT1/cmr/m/n/12 Intriguingly, mon-ads do not au-to-mat-i-cally com-pose. That
  is, if [][][][][][][][][][][][][][][][][]
  []
 
-[71]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+
+Underfull \vbox (badness 2035) has occurred while \output is active []
 
  [72]
-(./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex)
-(./chapters/ten/search-for-behavior.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [73])
-[74])
+ [73]
+(./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [74]
+Overfull \hbox (124.69936pt too wide) has occurred while \output is active
+[]\OT1/cmr/m/sl/12 10.3.  HOW OUR WEB FRAMEWORK ENABLES DIFFERENT KINDS OF APPL
+ICATION QUERIES \OT1/cmr/m/n/12 75
+ []
+
+[75] [76]) (./chapters/ten/search-for-behavior.tex)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (124.69936pt too wide) has occurred while \output is active
+[]\OT1/cmr/m/sl/12 10.3.  HOW OUR WEB FRAMEWORK ENABLES DIFFERENT KINDS OF APPL
+ICATION QUERIES \OT1/cmr/m/n/12 77
+ []
+
+[77] [78])
 \openout2 = `bibliography/monadic.aux'.
 
 
@@ -1046,33 +1062,34 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 9571 strings out of 94500
- 120719 string characters out of 1174972
- 220763 words of memory out of 1000000
- 11322 multiletter control sequences out of 10000+50000
- 18278 words of font info for 70 fonts, out of 500000 for 2000
+ 9596 strings out of 94500
+ 120975 string characters out of 1174972
+ 220765 words of memory out of 1000000
+ 11329 multiletter control sequences out of 10000+50000
+ 19826 words of font info for 75 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  31i,20n,43p,489b,1556s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 1712 PDF objects out of 300000
- 1122 named destinations out of 131072
- 456 words of extra memory for PDF output out of 65536
-</opt/local/share/texmf-dist/fonts/type1/bluesky/latex/line10.pfb></opt/local
-/share/texmf-dist/fonts/type1/bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist
-/fonts/type1/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/blu
-esky/cm/cmmi7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb
-></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/sh
-are/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/fo
-nts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesk
-y/cm/cmcsc10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt10.pfb
-></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/sha
-re/texmf-dist/fonts/type1/bluesky/cm/cmti12.pfb></opt/local/share/texmf-dist/fo
-nts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
-cm/cmr8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt12.pfb></op
-t/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></opt/local/share/te
-xmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb></opt/local/share/texmf-dist/fonts/t
-ype1/bluesky/cm/cmti10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/
-cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/
-local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf
--dist/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (83 pages, 818968 bytes).
+ 1751 PDF objects out of 300000
+ 1135 named destinations out of 131072
+ 472 words of extra memory for PDF output out of 65536
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx8.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/latex/line10.pfb></opt/local/share/texmf-dist
+/fonts/type1/bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/blue
+sky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb
+></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb></opt/local/shar
+e/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-dist/fo
+nts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
+/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmcsc10.pfb>
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt10.pfb></opt/local/shar
+e/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/cm/cmti12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
+/cm/cmr7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt
+/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt12.pfb></opt/local/share/tex
+mf-dist/fonts/type1/bluesky/cm/cmsl12.pfb></opt/local/share/texmf-dist/fonts/ty
+pe1/bluesky/cm/cmbx12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/c
+mti10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/
+local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf
+-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dist/fonts/type1
+/bluesky/cm/cmr17.pfb>
+Output written on monadic.pdf (87 pages, 842859 bytes).

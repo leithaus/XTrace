@@ -47,7 +47,9 @@
 \BOOKMARK [2][-]{subsection.9.2.1}{Why we are not deploying on GAE}{section.9.2}
 \BOOKMARK [1][-]{section.9.3}{From one web application to web framework}{chapter.9}
 \BOOKMARK [0][-]{chapter.10}{The semantic web}{}
-\BOOKMARK [1][-]{section.10.1}{How our web framework enables different kinds of application queries}{chapter.10}
-\BOOKMARK [1][-]{section.10.2}{Searching for programs}{chapter.10}
-\BOOKMARK [2][-]{subsection.10.2.1}{A new foundation for search}{section.10.2}
-\BOOKMARK [2][-]{subsection.10.2.2}{Examples}{section.10.2}
+\BOOKMARK [1][-]{section.10.1}{Referential transparency}{chapter.10}
+\BOOKMARK [1][-]{section.10.2}{Composing monads}{chapter.10}
+\BOOKMARK [1][-]{section.10.3}{How our web framework enables different kinds of application queries}{chapter.10}
+\BOOKMARK [1][-]{section.10.4}{Searching for programs}{chapter.10}
+\BOOKMARK [2][-]{subsection.10.4.1}{A new foundation for search}{section.10.4}
+\BOOKMARK [2][-]{subsection.10.4.2}{Examples}{section.10.4}

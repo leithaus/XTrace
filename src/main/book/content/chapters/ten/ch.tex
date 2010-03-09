@@ -6,6 +6,41 @@
 {\small\em Where are we; how did we get here; and where are we going?}
 \end{center}
 
+\section{Referential transparency}
+
+In the interest of complete transparency, it is important for me to be
+clear about my position on the current approach to the semantic
+web. As early as 2004 i appeared in print as stating that a complete
+lack of confidence regarding meta-data, tags and ontology-based
+approaches. Despite the attention and intense efforts around
+technologies like \texttt{OWL}, i am unaware of major success
+stories. The funny thing is, the same could be said of the same sorts
+of efforts put underway two decades before that, such as \texttt{KIF},
+and those two decades before that. In my humble opinion, the theory of
+computing is currently the best theory we have of knowledge
+representation, bar none.
+
+As such, i want to illustrate how the monadic techniques provide a new
+foundation for search on a semantic basis. In particular, what we will
+see in the following sections of the concluding chapter is how to use
+monads to search for programs in our toy language on the basis of
+their structure and their \emph{behavior}! Despite the fact that the
+open source movement has created such a demand for higher-level
+techniques for search code repositories, at present writing, i am
+unaware of any system, not \texttt{Hoogle}, not \texttt{Merobase}, not
+\texttt{Google Codebase}, nor any of the other of several dozen
+efforts in this direction, that offer this feature. Yet, the monadic
+design pattern not only makes it clear that such a feature is a
+possibility, it makes the organization of the code to do it perfectly
+tractable. i cannot imagine a more powerful argument for the efficacy
+of this technique for structuring functional programs.
+
+Before we approach this we need to introduce just a little bit more
+machinery, namely how to compose monads.
+
+
+\section{Composing monads}
+
 In all of the preceding chapters we deferred one of the most important
 questions: do monads themselves compose? After all, if monad is the
 proposal to replace the notion of object, and the primary criticism of
