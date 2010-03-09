@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  8 MAR 2010 19:58
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  8 MAR 2010 20:18
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -1017,15 +1017,12 @@ Chapter 9.
 ]
 Chapter 10.
 [71]
-Overfull \hbox (34.15538pt too wide) in paragraph at lines 50--54
+Overfull \hbox (34.15538pt too wide) in paragraph at lines 56--60
 []\OT1/cmr/m/n/12 Intriguingly, mon-ads do not au-to-mat-i-cally com-pose. That
  is, if [][][][][][][][][][][][][][][][][]
  []
 
-
-Underfull \vbox (badness 2035) has occurred while \output is active []
-
- [72]
+[72]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [73]
@@ -1092,4 +1089,4 @@ mti10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/
 local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf
 -dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dist/fonts/type1
 /bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (87 pages, 842859 bytes).
+Output written on monadic.pdf (87 pages, 843559 bytes).
