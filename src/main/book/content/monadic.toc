@@ -82,15 +82,24 @@
 \contentsline {section}{\numberline {9.3}From one web application to web framework}{69}{section.9.3}
 \contentsline {chapter}{\numberline {10}The semantic web}{71}{chapter.10}
 \contentsline {section}{\numberline {10.1}Referential transparency}{71}{section.10.1}
+\contentsline {paragraph}{A little motivation}{72}{section*.40}
 \contentsline {section}{\numberline {10.2}Composing monads}{72}{section.10.2}
-\contentsline {subsubsection}{Preliminary}{73}{section*.40}
-\contentsline {section}{\numberline {10.3}How our web framework enables different kinds of application queries}{75}{section.10.3}
-\contentsline {subsubsection}{An alternative presentation}{75}{section*.41}
-\contentsline {paragraph}{Logic: the set monad as an algebra}{75}{section*.42}
-\contentsline {paragraph}{Primes: an application}{76}{section*.43}
-\contentsline {paragraph}{Summary}{77}{section*.44}
-\contentsline {subsubsection}{Iterating the design pattern}{77}{section*.45}
-\contentsline {section}{\numberline {10.4}Searching for programs}{78}{section.10.4}
-\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{78}{subsection.10.4.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{78}{section*.46}
-\contentsline {subsection}{\numberline {10.4.2}Examples}{78}{subsection.10.4.2}
+\contentsline {subsubsection}{Preliminary}{74}{section*.41}
+\contentsline {section}{\numberline {10.3}Semantic application queries}{75}{section.10.3}
+\contentsline {subsubsection}{An alternative presentation}{75}{section*.42}
+\contentsline {paragraph}{Logic: the set monad as an algebra}{75}{section*.43}
+\contentsline {paragraph}{Primes: an application}{76}{section*.44}
+\contentsline {paragraph}{Summary}{77}{section*.45}
+\contentsline {subsubsection}{Patterns}{77}{section*.46}
+\contentsline {subsubsection}{A first mini-query language}{78}{section*.47}
+\contentsline {subsubsection}{Iterating the design pattern}{78}{section*.48}
+\contentsline {paragraph}{A spatial-behavioral-style logic for $\lambda $-calculus}{79}{section*.49}
+\contentsline {paragraph}{Examples}{79}{section*.50}
+\contentsline {subsubsection}{Logical semantics}{80}{section*.51}
+\contentsline {subsubsection}{Other collection monads, other logics}{80}{section*.52}
+\contentsline {paragraph}{Stateful collections}{80}{section*.53}
+\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{80}{subsection.10.3.1}
+\contentsline {section}{\numberline {10.4}Searching for programs}{80}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{80}{subsection.10.4.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{80}{section*.54}
+\contentsline {subsection}{\numberline {10.4.2}Examples}{80}{subsection.10.4.2}

@@ -1,4 +1,4 @@
-\section{How our web framework enables different kinds of application queries}
+\section{Semantic application queries}
 
 \subsubsection{An alternative presentation}
 
@@ -75,7 +75,7 @@ formulae by the operations of the monoid \emph{acting on sets}.
   \and
   \inferrule* [lab=conjunction] {} {\;| \; c \& d}
   \and
-  \inferrule* [lab=identity verity] {} {\bf{e}}
+  \inferrule* [lab=identity verity] {} { \bf{e} }
   \and
   \inferrule* [lab=negation] {} {\;| \; \bf{g_1} \; | \; ... \; | \; \bf{g_n}}
   \and
@@ -125,10 +125,12 @@ eliminate non-trivial compositions. We know how to express the
 identity element, that's $\bf{e}$, so we are interested in those
 elements that are not the identity, i.e. $\neg \bf{e}$. Then a formula
 that eliminates compositions of non-trivial elements is spelled out
-$\neg (\neg e * \neg e)$. Finally, we want to eliminate the identity
-as a solution. So, we arrive at $\neg (\neg e * \neg e) \& \neg
-e$. There, that formula picks out the \emph{primes} of \emph{any}
-monoid.
+$\neg (\neg e * \neg e)$ \footnote{Note the similarity of this
+  construction to the DeMorgan construction of Boolean
+  disjunction. This is, in fact, another kind of
+  disjunction.}. Finally, we want to eliminate the identity as a
+solution. So, we arrive at $\neg (\neg e * \neg e) \& \neg e$. There,
+that formula picks out the \emph{primes} of \emph{any} monoid.
 
 \paragraph{Summary}
 
@@ -138,6 +140,66 @@ this particular distributive map coincides with giving a semantics to
 a particular logic, one whose structure is derived solely from the
 shape of the collection monad, i.e. set, and the shape of the term
 language, in this case monoid.
+
+The observation that the distributive map is also a semantics for a
+logic comes about through a kind of factoring. We note that there is a
+language, the language of Boolean algebra, that takes its meaning in
+the set monad. As with the monoid monad, the \emph{syntax} of Boolean
+algebra is given by a monad. The semantics of Boolean algebra can
+expressed in terms of sets. That is, one can find models for the
+syntax in terms of sets. In some sense, the distributive map is the
+unique extension of that semantics map to an enrichment of the syntax
+with the constructors of the monoid term language.
+
+\subsubsection{Patterns}
+
+The constructions of a language of patterns for our monoid expressions
+is also completely determined by monadic structure. All we are really
+doing is constructing the data type of 1-holed contexts. In chapter 6
+we showed how the derivative of a given regular data type is exactly
+the 1-holed contexts for the data type. This provides our first
+example of how to calculate the pattern language for our
+\lstinline[language=Scala,mathescape=true]!for!-comprehensions. After
+calculation we arrive at
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{m,n} ::=}
+  \and
+  \inferrule* [lab=hole] {} {x}
+  \and
+  \inferrule* [lab=identity] {} {\;|\;e}
+  \and
+
+  \inferrule* [lab=generators] {} {\;| \; g_1 \; | \; ... \; | \; g_n}
+  \and
+  \inferrule* [lab=multiplication] {} {\;| \; m * n}
+\end{mathpar} 
+
+In some sense, the story here, much like the Sherlock Holmes story, is
+that the dog didn't bark. The patterns we calculate from our term
+language are precisely the sorts of patterns we expect if we modeled
+our term language via \texttt{Scala}
+\lstinline[language=Scala,mathescape=true]!case! classes.
+
+\subsubsection{A first mini-query language}
+
+We can now use these pieces to flesh out some examples of the kinds of
+queries we might build. The expression
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( x <- d if $\neg (\neg e * \neg e) \& \neg e$ ) yield x
+\end{lstlisting}
+
+will result in a collection of primes residing in the data source
+\lstinline[language=Scala,mathescape=true]!d!.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  for( x <- d if $(\neg e * g)$ ) yield x
+\end{lstlisting}
+
+will result in a collection of expressions residing in the data source
+\lstinline[language=Scala,mathescape=true]!d! having $g$ as a factor
+in a non-trivial composition.
 
 \subsubsection{Iterating the design pattern}
 
@@ -155,7 +217,7 @@ the lambda calculus.
 
 It is key to understand this underlying structure of language
 definitions. In essence, when a DSL is purely about structure it is
-presented entirely in terms of generators (read a grammar) and
+presented entirely in terms of generators (read: a grammar) and
 relations (like the monoid laws). When the DSL is also about behavior,
 i.e. the terms in the language somehow express some kind of
 computation, then the language has a third component, some kind of
@@ -176,3 +238,115 @@ reduction relation. \footnote{In some sense this is one of the central
 this common factoring of the specification of a language, makes it
 possible to factor code that handles a wide range of semantic
 features. The logic we derive below provides a great example.
+
+\paragraph{A spatial-behavioral-style logic for $\lambda$-calculus}
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{c,d} ::=}
+  \and
+  \inferrule* [lab=identity verity] {} {true}
+  \and
+  \inferrule* [lab=negation] {} {\;| \; \neg c}
+  \and
+  \inferrule* [lab=conjunction] {} {\;| \; c \& d}
+  \\
+  \inferrule* [lab=mention] {} {\; | \; \bf{x}}
+  \and
+  \inferrule* [lab=abstraction] {} {\;| \; \texttt{(} \bf{x_1} \texttt{,} ... \texttt{,} \bf{x_k} \texttt{)} \; \texttt{=>} \; c}
+  \and
+  \inferrule* [lab=application] {} {\;| \; c\texttt{(} c_1 \texttt{,} ... \texttt{,} c_k \texttt{)}}
+  \\
+  \inferrule* [lab=let] {} {\;| \; \texttt{\bf{val}} \; \bf{x} \; \texttt{\bf{=}} \; c \texttt{;} d}
+  \and
+  \inferrule* [lab=seq] {} {\;| \; c \texttt{;} d }
+  \and
+  \inferrule* [lab=group] {} {\;| \; \texttt{ \{ } c \texttt{ \} } }
+  \\
+  \inferrule* [lab=probe] {} {\;| \; \langle d \rangle c }
+\end{mathpar} 
+
+The first category of formulae, included for completeness, is again,
+just the language of Boolean algebra we get because our collection
+monad is \lstinline[language=Scala,mathescape=true]!Set!. The next
+category comes directly from the abstract syntax of the
+$\lambda$-calculus. The next group is of interest because it shows
+that the construction faithfully supports syntactic sugar. The
+semantics of the ``sugar'' formulae is the semantics of desugaring
+factored through our distributive map. These latter two categories
+allow us to investigate the structure of terms. The final category of
+formulae, which has only one entry, $PROBE$, is the means of
+investigating behavior of terms.
+
+\paragraph{Examples}
+Before we get to the formal specification of the semantics of our
+logic, let's exercise intuition via a few examples.
+
+\begin{itemize}
+  \item \begin{lstlisting}[language=Scala,mathescape=true]
+      for( fn( _, ..., _ ) <- d if $true( c_1, ..., c_n )$ ) yield fn
+    \end{lstlisting}
+
+  \item \begin{lstlisting}[language=Scala,mathescape=true]
+      for( _( fixpt ) <- d
+           if $(( f ) => (( x ) => f( x( x ) ))(( x ) => f( x( x ))))( true )$ )
+      yield fixpt
+    \end{lstlisting}
+  \item \begin{lstlisting}[language=Scala,mathescape=true]
+      for( a <- d if $\langle ( x ) => ((Y f) x) \rangle$ $\bf{a}$ )
+      yield a
+    \end{lstlisting}
+\end{itemize}
+
+The first of these will return the expressions in ``function''
+position applied the actual parameters meeting the conditions
+\lstinline[language=Scala,mathescape=true]!c$_i$! respectively. The
+second will return all actual parameters of expressions that calculate
+fixpoints. Both of these examples are representative common code
+optimization schemes that are usually carefully hand-coded. The third
+example finds all elements in d that are already fixpoints of a given
+function, $f$.
+
+
+\subsubsection{Logical semantics}
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{c,d} ::=}
+  \and
+  \inferrule* [lab=identity verity] {} {\meaningof{true} = L(m)}
+  \and
+  \inferrule* [lab=negation] {} {\;| \; \meaningof{\neg c}= L(m) \backslash \meaningof{c}}
+  \and
+  \inferrule* [lab=conjunction] {} {\;| \; c \& d = \meaningof{c} \cap \meaningof{d}}
+  \\
+  \inferrule* [lab=mention] {} {\; | \; \bf{x} = \{ m \in L(m) \;|\: m \equiv x \}}
+  \and
+  \inferrule* [lab=abstraction] {} {\;| \; \meaningof{\texttt{(} \bf{x_1} \texttt{,} ... \texttt{,} \bf{x_k} \texttt{)} \; \texttt{=>} \; c} = \{ m \in L(m) \;|\; m \equiv (x_1, ..., x_k) => m', m' \in \meaningof{c} \}}
+  \and
+  \inferrule* [lab=application] {} {\;| \; \meaningof{c\texttt{(} c_1 \texttt{,} ... \texttt{,} c_k \texttt{)}} = \{ m \in L(m) \;|\; m \equiv m'(m_1,...,m_n), m' \in \meaningof{c}, m_i \in \meaningof{c_i} \}}
+  \\
+  \inferrule* [lab=let] {} {\;| \; \texttt{\bf{val}} \; \bf{x} \; \texttt{\bf{=}} \; c \texttt{;} d}
+  \and
+  \inferrule* [lab=seq] {} {\;| \; c \texttt{;} d }
+  \and
+  \inferrule* [lab=group] {} {\;| \; \texttt{ \{ } c \texttt{ \} } }
+  \\
+  \inferrule* [lab=probe] {} {\;| \; \meaningof{\langle d \rangle c} = \{ m \in L(m) \; | \; \exists m' \in \meaningof{d}. m'(m) \to m'', m'' \in \meaningof{c} \} }
+\end{mathpar} 
+
+\subsubsection{Other collection monads, other logics}
+
+\paragraph{Stateful collections}
+
+\subsection{Other logical operations}
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{c,d} ::=}
+  \and
+  \inferrule* [lab=previous] {} {\;| \; ... }
+  \and
+  \inferrule* [lab=quantification] {} {\;| \; \forall v . c }
+  \and
+  \inferrule* [lab=fixpt defn] {} {\;| \; rec \; X . c }
+  \and
+  \inferrule* [lab=fixpt mention] {} {\;| \; X }
+\end{mathpar} 

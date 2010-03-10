@@ -49,7 +49,8 @@
 \BOOKMARK [0][-]{chapter.10}{The semantic web}{}
 \BOOKMARK [1][-]{section.10.1}{Referential transparency}{chapter.10}
 \BOOKMARK [1][-]{section.10.2}{Composing monads}{chapter.10}
-\BOOKMARK [1][-]{section.10.3}{How our web framework enables different kinds of application queries}{chapter.10}
+\BOOKMARK [1][-]{section.10.3}{Semantic application queries}{chapter.10}
+\BOOKMARK [2][-]{subsection.10.3.1}{Other logical operations}{section.10.3}
 \BOOKMARK [1][-]{section.10.4}{Searching for programs}{chapter.10}
 \BOOKMARK [2][-]{subsection.10.4.1}{A new foundation for search}{section.10.4}
 \BOOKMARK [2][-]{subsection.10.4.2}{Examples}{section.10.4}
