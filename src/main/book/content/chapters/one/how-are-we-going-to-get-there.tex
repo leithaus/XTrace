@@ -300,10 +300,11 @@ core of \texttt{Scala} is really the $\lambda$-calculus.
 %   \inferrule* {} {\meaningof{\lstinline[language=Scala,mathescape=true]!val x!} = let \; x = \meaningof{expr_1} in \meaningof{expr_2} }
 % \end{mathpar}
 
-\begin{lstlisting}[language=Scala,mathescape=true]
+\begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={translating concrete to abstract syntax},captionpos=b]
   $\ldb$ x $\rdb$ $=$ $x$
   $\ldb$ (x) => expr $\rdb$ $=$ $\lambda \; x . \ldb$ expr $\rdb$ 
-  $\ldb$ expr( expr$_1$, ..., expr$_n$ ) $\rdb$ $=$ $\ldb$ expr $\rdb$ $\ldb$ expr$_1$ $\rdb$ ... $\ldb$ expr$n$ $\rdb$
+  $\ldb$ expr( expr$_1$, ..., expr$_n$ ) $\rdb$
+         $=$ $\ldb$ expr $\rdb$ $\ldb$ expr$_1$ $\rdb$ ... $\ldb$ expr$_n$ $\rdb$
   $\ldb$ val x = expr$_1$ ; expr$_2$ $\rdb$ $=$ $let$ $\ldb$ x $\rdb$ $=$ $\ldb$ expr$_1$ $\rdb$ $in$ $\ldb$ expr$_2$ $\rdb$
   $\ldb$ expr$_1$ ; expr$_2$ $\rdb$ $=$ $\ldb$ expr$_1$ $\rdb$ $;$ $\ldb$ expr$_2$ $\rdb$
   $\ldb$ { expr } $\rdb$ $=$ ( $\ldb$ expr $\rdb$ )
@@ -353,7 +354,8 @@ is in terms of a \texttt{Scala} implementation.
          List( compile( applicationExpr.expression_2 ) )
       )
     }
-
+    
+    // $\ldb$ - $\rdb$ $:$ Mini-Scala => $\lambda$-calculus
     def compile( expr : Absyn.Expression )
     : Expression = {
       expr match {
@@ -756,3 +758,31 @@ essentially an elaboration of this specification. While this notation
 is clearly more compact, it is not hard to recognize that the code
 follows this structure very closely.
 
+\subsection{Chapter map}
+
+Taking a step back from the technical discussion let's recall what we
+plan to cover and how we plan to cover it. Essentially, the book is
+organized to follow the processing of \texttt{HTTP} requests from the
+browser through the server and application code out to the store and
+back.
+
+\begin{itemize}
+\item Chapter two introduces terminology, notation and concepts
+  necessary for the rest of the book.
+\item Chapter three looks at the organization of an \texttt{HTTP} server.
+\item Chapter four investigates parsing the transport and application
+  level requests.
+\item Chapter five focuses on the application domain model.
+\item Chapter six addresses at the navigation model.
+\item Chapter seven reviews collections.
+\item Chapter eight looks at the storage model.
+\item Chapter nine investigates deployment of the application.
+\item Chapter ten addresses new foundations for semantic query.
+\end{itemize}
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.65]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/MonadicDesignPatternsChapterMap2.pdf} }
+\caption{ Chapter map }
+\end{center}
+\end{figure}
