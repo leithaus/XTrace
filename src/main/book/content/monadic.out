@@ -27,21 +27,58 @@
 \BOOKMARK [1][-]{section.4.1}{Obligatory parsing monad}{chapter.4}
 \BOOKMARK [1][-]{section.4.2}{Your parser combinators are showing}{chapter.4}
 \BOOKMARK [1][-]{section.4.3}{EBNF and why higher levels of abstraction are better}{chapter.4}
+\BOOKMARK [2][-]{subsection.4.3.1}{Different platforms, different parsers}{section.4.3}
+\BOOKMARK [2][-]{subsection.4.3.2}{Different performance constraints, different parsers}{section.4.3}
+\BOOKMARK [2][-]{subsection.4.3.3}{Maintainability}{section.4.3}
 \BOOKMARK [0][-]{chapter.5}{The domain model as abstract syntax}{}
 \BOOKMARK [1][-]{section.5.1}{Our abstract syntax}{chapter.5}
 \BOOKMARK [1][-]{section.5.2}{Our application domain model}{chapter.5}
 \BOOKMARK [1][-]{section.5.3}{A transform pipeline}{chapter.5}
 \BOOKMARK [0][-]{chapter.6}{Zippers and contexts and URI's, oh my!}{}
 \BOOKMARK [1][-]{section.6.1}{Zippers are not just for Bruno anymore}{chapter.6}
-\BOOKMARK [1][-]{section.6.2}{Constructing contexts and zippers from data types}{chapter.6}
-\BOOKMARK [1][-]{section.6.3}{Mapping URIs to zipper-based paths and back}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.1.1}{The history of the zipper}{section.6.1}
+\BOOKMARK [1][-]{section.6.2}{Zipper and one-holed contexts}{chapter.6}
+\BOOKMARK [1][-]{section.6.3}{Differentiation and contexts}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.3.1}{Regular types}{section.6.3}
+\BOOKMARK [2][-]{subsection.6.3.2}{Container types}{section.6.3}
+\BOOKMARK [1][-]{section.6.4}{Generic zipper -- differentiating navigation}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.4.1}{Delimited continuations}{section.6.4}
+\BOOKMARK [1][-]{section.6.5}{Species of Structure}{chapter.6}
+\BOOKMARK [1][-]{section.6.6}{Constructing contexts and zippers from data types}{chapter.6}
+\BOOKMARK [1][-]{section.6.7}{Mapping URIs to zipper-based paths and back}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.7.1}{Path and context}{section.6.7}
+\BOOKMARK [2][-]{subsection.6.7.2}{Homomorphisms and obfuscation}{section.6.7}
 \BOOKMARK [0][-]{chapter.7}{A review of collections as monads}{}
-\BOOKMARK [1][-]{section.7.1}{Monad as container}{chapter.7}
-\BOOKMARK [1][-]{section.7.2}{Monads and take-out}{chapter.7}
+\BOOKMARK [1][-]{section.7.1}{Sets, Lists and Languages}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.1.1}{Witnessing Sets and Lists monadicity}{section.7.1}
+\BOOKMARK [2][-]{subsection.7.1.2}{Languages and Sets of Words}{section.7.1}
+\BOOKMARK [2][-]{subsection.7.1.3}{Of lenses and bananas}{section.7.1}
+\BOOKMARK [1][-]{section.7.2}{Containers and syntax}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.2.1}{The algebra of Sets}{section.7.2}
+\BOOKMARK [2][-]{subsection.7.2.2}{The algebra of Lists}{section.7.2}
+\BOOKMARK [2][-]{subsection.7.2.3}{The algebra of Sets of Words}{section.7.2}
+\BOOKMARK [1][-]{section.7.3}{Algebras}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.3.1}{Kleisli}{section.7.3}
+\BOOKMARK [2][-]{subsection.7.3.2}{Eilenberg-Moore}{section.7.3}
+\BOOKMARK [1][-]{section.7.4}{Monad as container}{chapter.7}
+\BOOKMARK [1][-]{section.7.5}{Monads and take-out}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.5.1}{Option as container}{section.7.5}
+\BOOKMARK [2][-]{subsection.7.5.2}{I/O monad for contrast}{section.7.5}
+\BOOKMARK [2][-]{subsection.7.5.3}{Matching gazintas and gazoutas}{section.7.5}
+\BOOKMARK [1][-]{section.7.6}{Co-monad and take-out}{chapter.7}
+\BOOKMARK [1][-]{section.7.7}{Hopf structure}{chapter.7}
+\BOOKMARK [1][-]{section.7.8}{Container and control}{chapter.7}
+\BOOKMARK [2][-]{subsection.7.8.1}{Delimited continuations reconsidered}{section.7.8}
 \BOOKMARK [0][-]{chapter.8}{Domain model, storage and state}{}
 \BOOKMARK [1][-]{section.8.1}{Mapping our domain model to storage}{chapter.8}
+\BOOKMARK [2][-]{subsection.8.1.1}{Functional and relational models}{section.8.1}
+\BOOKMARK [2][-]{subsection.8.1.2}{Functional and XML models}{section.8.1}
+\BOOKMARK [2][-]{subsection.8.1.3}{ORM}{section.8.1}
 \BOOKMARK [1][-]{section.8.2}{Storage and language-integrated query}{chapter.8}
+\BOOKMARK [2][-]{subsection.8.2.1}{LINQ and [language=Scala]!for!-comprehensions}{section.8.2}
 \BOOKMARK [1][-]{section.8.3}{Continuations revisited}{chapter.8}
+\BOOKMARK [2][-]{subsection.8.3.1}{Stored state}{section.8.3}
+\BOOKMARK [2][-]{subsection.8.3.2}{Transactions}{section.8.3}
 \BOOKMARK [0][-]{chapter.9}{Putting it all together}{}
 \BOOKMARK [1][-]{section.9.1}{Our web application end-to-end}{chapter.9}
 \BOOKMARK [1][-]{section.9.2}{Deploying our application}{chapter.9}
