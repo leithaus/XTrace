@@ -1,3 +1,35 @@
 \section{Our abstract syntax}
 
-TBD
+\paragraph{Abstract syntax}
+%For our example we'll need a toy language.
+Fittingly for a book about \texttt{Scala} we'll use the
+$\lambda$-calculus as our toy language. \footnote{A word to the wise:
+  even if you are an old hand at programming language semantics, even
+  if you know the $\lambda$-calculus like the back of your hand, you
+  are likely to be surprised by some of the things you see in the next
+  few sections. Just to make sure that everyone gets a chance to look
+  at the formalism as if it were brand new, a few recent theoretical
+  developments have been thrown in. So, watch out!} The core
+\textit{abstract} syntax of the lambda calculus is given by the
+following \textit{EBNF} grammar.
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{M,N} ::=}
+  \and
+  \inferrule* [lab=mention] {} {x}
+  \and
+  \inferrule* [lab=abstraction] {} {\;| \; \lambda x . M}
+  \and
+  \inferrule* [lab=application] {} {\;| \; M N}
+\end{mathpar} 
+
+Informally, this is really a language of pure variable management. For
+example, if the expression $M$ mentions $x$, then $\lambda x. M$ turns
+$x$ into a variable in $M$ and provides a means to substitute values
+into $M$, via application. Thus, $(\lambda x.M)N$ will result in a new
+term, sometimes written $M[N/x]$, in which every occurrence of $x$ has
+been replaced by an occurrence of $N$. Thus, $(\lambda x.x)M$ yields
+$M$, illustrating the implementation in the $\lambda$-calculus of the
+identity function. It turns out to be quite remarkable what you can do
+with pure variable management.
+
