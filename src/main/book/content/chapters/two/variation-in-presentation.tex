@@ -575,11 +575,12 @@ of the monad laws and their original presentation.
 \break
 \begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={categorical presentation of monad as Scala trait},captionpos=b]
 trait Monad[M[_]] {
+   // map part of M 
+   // part of the requirement of M's functoriality
+   // M : Scala => Scala
+   def map[A,B]( a2b : A => B ) : M[A] => M[B]   
    // the unit natural transformation, $unit : Identity $ => $M[A]$
-   // unit and type part of functor M coincide
    def unit[A]( a : A ) : M[A]
-   // map part of the functor M
-   def map[A,B]( a2b : A => B ) : M[A] => M[B]
    // the mult natural transformation, $mult : M[M[A]] $ => $M[A]$   
    def mult[A]( mma : M[M[A]] ) : M[A]
 
