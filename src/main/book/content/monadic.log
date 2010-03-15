@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  14 MAR 2010 00:58
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2008.11.17)  15 MAR 2010 06:03
 entering extended mode
 **monadic.tex
 (./monadic.tex
@@ -658,25 +658,34 @@ Overfull \hbox (20.22949pt too wide) in paragraph at lines 376--377
 ! (error detected at row 1, column 1, but probably caused elsewhere)
 ! Commutative Diagram: increase cell width to 4em at lines 432--436
 ! (error detected at row 3, column 1, but probably caused elsewhere) [34]
-[35]) [36])
+[35]
+Underfull \vbox (badness 2285) has occurred while \output is active []
+
+ [36]
+Overfull \hbox (3.25792pt too wide) in paragraph at lines 587--588
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][] 
+ []
+
+) [37])
 \openout2 = `chapters/three/ch.aux'.
 
- (./chapters/three/ch.tex
+ (./chapters/three/ch.tex [38
+
+
+
+]
 Chapter 3.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus3.pdf, id=1208, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus3.pdf, id=1231, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus3.pdf Graphic file (type pdf)
 
 <use /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus3.pdf>
 (./chapters/three/io-monad-for-http-streams.tex)
-(./chapters/three/code-first.tex [37
-
-
-
-]
+(./chapters/three/code-first.tex [39]
 Overfull \hbox (10.3079pt too wide) in paragraph at lines 34--36
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -698,7 +707,7 @@ Overfull \hbox (59.65782pt too wide) in paragraph at lines 43--44
 ][][] 
  []
 
-[38 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
+[40 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus3.pdf>]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 63--65
 [][][][][][][][][][][][][][][][] 
@@ -722,7 +731,7 @@ Overfull \hbox (101.95775pt too wide) in paragraph at lines 84--85
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [39]
+ [41]
 Overfull \hbox (66.70781pt too wide) in paragraph at lines 114--116
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -730,7 +739,7 @@ Overfull \hbox (66.70781pt too wide) in paragraph at lines 114--116
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [40]
+ [42]
 Overfull \hbox (109.00774pt too wide) in paragraph at lines 134--135
 [][][][][][][][][][][][][][][][][][] 
  []
@@ -753,7 +762,7 @@ Overfull \hbox (17.3579pt too wide) in paragraph at lines 164--165
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [41]
+ [43]
 Overfull \hbox (66.70781pt too wide) in paragraph at lines 198--199
 [][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -766,7 +775,7 @@ Overfull \hbox (3.25792pt too wide) in paragraph at lines 204--205
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [42]
+ [44]
 Overfull \hbox (17.3579pt too wide) in paragraph at lines 220--221
 [][][][][][][][][][][][][][][][][][] 
  []
@@ -786,12 +795,12 @@ Overfull \hbox (59.65782pt too wide) in paragraph at lines 250--251
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [43]
+ [45]
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 257.
 )
 (./chapters/three/synchrony-asynchrony-buffering.tex)
-(./chapters/three/state-statelessness-continuations.tex) [44])
+(./chapters/three/state-statelessness-continuations.tex) [46])
 \openout2 = `chapters/four/ch.aux'.
 
 
@@ -799,14 +808,14 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <12> not available
 Chapter 4.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus4.pdf, id=1746, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus4.pdf, id=1770, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus4.pdf Graphic file (type pdf)
 
 <use /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus4.pdf> (./chapters/four/parsing.tex)
 (./chapters/four/obligatory-parsing-monad.tex)
-(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex [45
+(./chapters/four/parser-combinators.tex) (./chapters/four/EBNF.tex [47
 
 
 
@@ -829,7 +838,7 @@ Overfull \hbox (496.75706pt too wide) in paragraph at lines 25--27
 ][][][] 
  []
 
-[46 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
+[48 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus4.pdf>]
 Overfull \hbox (116.05772pt too wide) in paragraph at lines 38--39
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
@@ -862,10 +871,10 @@ Overfull \hbox (130.1577pt too wide) in paragraph at lines 49--51
 [][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-) [47])
+) [49])
 \openout2 = `chapters/five/ch.aux'.
 
- (./chapters/five/ch.tex [48
+ (./chapters/five/ch.tex [50
 
 
 
@@ -873,23 +882,23 @@ Overfull \hbox (130.1577pt too wide) in paragraph at lines 49--51
 Chapter 5.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus5.pdf, id=2005, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus5.pdf, id=2028, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus5.pdf Graphic file (type pdf)
 
 <use /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus5.pdf> (./chapters/five/domain-model.tex
 ) (./chapters/five/abstract-syntax.tex)
-(./chapters/five/application-domain-model.tex [49]
+(./chapters/five/application-domain-model.tex [51]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [50 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
-res/MonadicDesignPatternsChapterMapFocus5.pdf>] [51]
+ [52 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
+res/MonadicDesignPatternsChapterMapFocus5.pdf>] [53]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 96--97
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[52] [53] [54]
+[54] [55] [56]
 Overfull \hbox (59.65782pt too wide) in paragraph at lines 253--254
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -897,18 +906,18 @@ Overfull \hbox (59.65782pt too wide) in paragraph at lines 253--254
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [55]
+ [57]
 Underfull \vbox (badness 7186) has occurred while \output is active []
 
- [56]
+ [58]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 364--365
 [][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[57]
+[59]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [58]
+ [60]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 439--440
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -916,7 +925,7 @@ Overfull \hbox (3.25792pt too wide) in paragraph at lines 439--440
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [59]
+ [61]
 Overfull \hbox (24.40788pt too wide) in paragraph at lines 461--462
 [][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -926,7 +935,7 @@ Overfull \hbox (59.65782pt too wide) in paragraph at lines 466--467
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[60] [61] [62]
+[62] [63] [64]
 Overfull \hbox (10.3079pt too wide) in paragraph at lines 618--619
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -939,7 +948,7 @@ Overfull \hbox (17.3579pt too wide) in paragraph at lines 634--635
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [63]
+ [65]
 Overfull \hbox (3.25792pt too wide) in paragraph at lines 648--649
 [][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -954,7 +963,7 @@ Overfull \hbox (45.55785pt too wide) in paragraph at lines 658--659
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[64] [65]) (./chapters/five/transform-pipeline.tex) [66])
+[66] [67]) (./chapters/five/transform-pipeline.tex) [68])
 \openout2 = `chapters/six/ch.aux'.
 
 
@@ -962,7 +971,7 @@ Overfull \hbox (45.55785pt too wide) in paragraph at lines 658--659
 Chapter 6.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus6.pdf, id=2594, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus6.pdf, id=2617, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus6.pdf Graphic file (type pdf)
 
@@ -973,21 +982,21 @@ es/MonadicDesignPatternsChapterMapFocus6.pdf>
 (./chapters/six/zippers-and-contexts.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [67
+ [69
 
 
 
 ]
-[68 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
+[70 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus6.pdf>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [69]
+ [71]
 Overfull \hbox (10.3079pt too wide) in paragraph at lines 65--66
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[70]
+[72]
 Overfull \hbox (31.45787pt too wide) in paragraph at lines 111--112
 [][][][][][][][][][][][][][][][][] 
  []
@@ -1000,7 +1009,7 @@ Overfull \hbox (10.3079pt too wide) in paragraph at lines 122--123
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [71]
+ [73]
 Overfull \hbox (73.7578pt too wide) in paragraph at lines 167--168
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -1008,16 +1017,16 @@ Overfull \hbox (73.7578pt too wide) in paragraph at lines 167--168
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [72])
+ [74])
 (./chapters/six/mapping-uris-zipper-based-paths.tex
 Overfull \hbox (3.44252pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/17.28 Mapping URIs to zipper-based paths and back 
  []
 
-) [73])
+) [75])
 \openout2 = `chapters/seven/ch.aux'.
 
- (./chapters/seven/ch.tex [74
+ (./chapters/seven/ch.tex [76
 
 
 
@@ -1025,32 +1034,37 @@ Overfull \hbox (3.44252pt too wide) in paragraph at lines 1--1
 Chapter 7.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus7.pdf, id=3008, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus7.pdf, id=3032, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus7.pdf Graphic file (type pdf)
 
 <use /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
 es/MonadicDesignPatternsChapterMapFocus7.pdf>
-(./chapters/seven/collections-as-monads.tex) (./chapters/seven/container.tex)
-(./chapters/seven/monad-and-comonad.tex
-Underfull \vbox (badness 10000) has occurred while \output is active []
+(./chapters/seven/collections-as-monads.tex
+Overfull \hbox (3.25792pt too wide) in paragraph at lines 16--17
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][] 
+ []
 
- [75]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [76 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
-res/MonadicDesignPatternsChapterMapFocus7.pdf>])
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 4752) has occurred while \output is active []
 
  [77]
-[78])
+[78 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
+es/MonadicDesignPatternsChapterMapFocus7.pdf>] [79])
+(./chapters/seven/container.tex) (./chapters/seven/monad-and-comonad.tex
+[80]) [81])
 \openout2 = `chapters/eight/ch.aux'.
 
- (./chapters/eight/ch.tex
+ (./chapters/eight/ch.tex [82
+
+
+
+]
 Chapter 8.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus8.pdf, id=3212, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus8.pdf, id=3304, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus8.pdf Graphic file (type pdf)
 
@@ -1062,19 +1076,16 @@ es/MonadicDesignPatternsChapterMapFocus8.pdf>
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 (hyperref)                removing `\lstinline' on input line 3.
 
-) (./chapters/eight/continuations-revisited.tex) [79
-
-
-
-] [80 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/fig
-ures/MonadicDesignPatternsChapterMapFocus8.pdf>])
+) (./chapters/eight/continuations-revisited.tex) [83] [84 </Users/lgm/work/src/
+projex/biosimilarity/trace/src/main/book/content/figures/MonadicDesignPatternsC
+hapterMapFocus8.pdf>])
 \openout2 = `chapters/nine/ch.aux'.
 
  (./chapters/nine/ch.tex
 Chapter 9.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus9.pdf, id=3412, 751.80875pt x 580.1675pt>
+onadicDesignPatternsChapterMapFocus9.pdf, id=3504, 751.80875pt x 580.1675pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus9.pdf Graphic file (type pdf)
 
@@ -1082,11 +1093,11 @@ res/MonadicDesignPatternsChapterMapFocus9.pdf Graphic file (type pdf)
 es/MonadicDesignPatternsChapterMapFocus9.pdf>
 (./chapters/nine/putting-it-all-together.tex) (./chapters/nine/end-to-end.tex)
 (./chapters/nine/deployment.tex) (./chapters/nine/application-to-framework.tex)
-[81
+[85
 
 
 
-]) [82 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/fi
+]) [86 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/fi
 gures/MonadicDesignPatternsChapterMapFocus9.pdf>]
 \openout2 = `chapters/ten/ch.aux'.
 
@@ -1094,16 +1105,16 @@ gures/MonadicDesignPatternsChapterMapFocus9.pdf>]
 Chapter 10.
 
 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/M
-onadicDesignPatternsChapterMapFocus10.pdf, id=3606, 748.7975pt x 582.175pt>
+onadicDesignPatternsChapterMapFocus10.pdf, id=3697, 748.7975pt x 582.175pt>
 File: /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figu
 res/MonadicDesignPatternsChapterMapFocus10.pdf Graphic file (type pdf)
 
 <use /Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figur
-es/MonadicDesignPatternsChapterMapFocus10.pdf> [83
+es/MonadicDesignPatternsChapterMapFocus10.pdf> [87
 
 
 
-] [84 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/fig
+] [88 </Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/fig
 ures/MonadicDesignPatternsChapterMapFocus10.pdf>]
 Overfull \hbox (34.15538pt too wide) in paragraph at lines 90--94
 []\OT1/cmr/m/n/12 Intriguingly, mon-ads do not au-to-mat-i-cally com-pose. That
@@ -1113,9 +1124,9 @@ Overfull \hbox (34.15538pt too wide) in paragraph at lines 90--94
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [85]
-[86] (./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex [87]
-[88] [89] [90] [91] [92]) (./chapters/ten/search-for-behavior.tex) [93])
+ [89]
+[90] (./chapters/ten/semantic-web.tex) (./chapters/ten/new-queries.tex [91]
+[92] [93] [94] [95] [96]) (./chapters/ten/search-for-behavior.tex) [97])
 \openout2 = `bibliography/monadic.aux'.
 
 
@@ -1130,16 +1141,16 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 9807 strings out of 94500
- 128216 string characters out of 1174972
+ 9895 strings out of 94500
+ 129463 string characters out of 1174972
  210928 words of memory out of 1000000
- 11416 multiletter control sequences out of 10000+50000
+ 11425 multiletter control sequences out of 10000+50000
  19826 words of font info for 75 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 34i,20n,56p,489b,1556s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 34i,20n,56p,489b,1558s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 3904 PDF objects out of 300000
- 1250 named destinations out of 131072
+ 3996 PDF objects out of 300000
+ 1329 named destinations out of 131072
  901 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx8.pfb></opt/local/sha
 re/texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb></opt/local/share/texmf-dist/fon
@@ -1160,4 +1171,4 @@ mti10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/
 local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf
 -dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dist/fonts/type1
 /bluesky/cm/cmr17.pfb>
-Output written on monadic.pdf (102 pages, 4054406 bytes).
+Output written on monadic.pdf (106 pages, 4070853 bytes).

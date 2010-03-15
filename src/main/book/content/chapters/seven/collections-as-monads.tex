@@ -2,7 +2,79 @@
 
 \subsection{Witnessing Sets and Lists monadicity}
 
+\begin{lstlisting}[language=Scala,mathescape=true]
+trait Monad[M[_]] {
+   // the unit natural transformation, $unit : Identity $ => $M[A]$
+   // unit and type part of functor M coincide
+   def unit[A]( a : A ) : M[A]
+   // map part of the functor M
+   def map[A,B]( a2b : A => B ) : M[A] => M[B]
+   // the mult natural transformation, $mult : M[M[A]] $ => $M[A]$   
+   def mult[A]( mma : M[M[A]] ) : M[A]
+
+   // derived
+   def flatMap[A,B]( ma : M[A], a2mb : A => M[B] ) : M[B] = {
+      mult( map( a2mb )( ma ) )
+   }
+}
+\end{lstlisting}
+
+\break
+\begin{lstlisting}[language=Scala,mathescape=true]
+trait ListM extends Monad[List] {  
+   // the unit natural transformation of the List monad
+   override def unit[A]( a : A ) = List( a )
+   // map part of the List functor
+   override def map[A,B]( a2b : A => B ) = {
+       ( sa : List[A] ) => sa map a2b
+   }
+   // the mult natural transformation of the List monad
+   override def mult[A]( mma : List[List[A]] ) =
+   (( List( ) : List[A] ) /: mma )(
+      { ( acc : List[A], elem : List[A] ) => acc ++ elem }
+   )
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+trait SetM extends Monad[Set] {
+   // the unit natural transformation of the Set monad
+   def unit[A]( a : A ) = Set( a )
+   // map part of the Set functor
+   def map[A,B]( a2b : A => B ) = {
+       ( sa : Set[A] ) => sa map a2b
+   }
+   // the mult natural transformation of the Set monad
+   def multT[A]( mma : Set[Set[A]] ) =
+   (( Set( ) : Set[A] ) /: mma )(
+      { ( acc : Set[A], elem : Set[A] ) => acc ++ elem }
+   )
+}
+\end{lstlisting}
+
 \subsection{Languages and Sets of Words}
+
+\subsubsection{Kleene star}
+
+\subsubsection{I am not a number, I am a free monoid}
+
+\paragraph{Lists represent the free monoid}
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+trait SetListM[A] extends Monad[Set[List[_]],List[A]] {
+   // the unit natural transformation of the Set monad
+   def unit( a : A ) = Set( a )
+   // map part of the Set functor
+   def map( a2b : A => B ) = {
+       ( sa : Set[A] ) => sa map a2b
+   }
+   // the mult natural transformation of the Set monad
+   def multT( mma : Set[Set[A]] ) =
+   (( Set( ) : Set[A] ) /: mma )(
+      { ( acc : Set[A], elem : Set[A] ) => acc ++ elem }
+   )
+}
+\end{lstlisting}
 
 \subsection{Of lenses and bananas}
 

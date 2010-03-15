@@ -572,6 +572,24 @@ All of this is discussion leads up to the context in which to
 understand the correspondence between the \texttt{Haskell} variation
 of the monad laws and their original presentation. 
 
+\break
+\begin{lstlisting}[language=Scala,mathescape=true,frame=single,caption={categorical presentation of monad as Scala trait},captionpos=b]
+trait Monad[M[_]] {
+   // the unit natural transformation, $unit : Identity $ => $M[A]$
+   // unit and type part of functor M coincide
+   def unit[A]( a : A ) : M[A]
+   // map part of the functor M
+   def map[A,B]( a2b : A => B ) : M[A] => M[B]
+   // the mult natural transformation, $mult : M[M[A]] $ => $M[A]$   
+   def mult[A]( mma : M[M[A]] ) : M[A]
+
+   // flatMap, aka bind is a derived notion
+   def flatMap[A,B]( ma : M[A], a2mb : A => M[B] ) : M[B] = {
+      mult( map( a2mb )( ma ) )
+   }
+}
+\end{lstlisting}
+
 % These two definitions are interchangeable. That's what makes them
 % ``presentations'' of the same underlying idea.
 
