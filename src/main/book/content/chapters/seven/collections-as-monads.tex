@@ -60,17 +60,18 @@ trait SetM extends Monad[Set] {
 \paragraph{Lists represent the free monoid}
 
 \begin{lstlisting}[language=Scala,mathescape=true]
-trait SetListM extends Monad[Set[List[_]]] {
+type SetList[X] = Set[List[X]]
+trait SetListM extends Monad[SetList] {
    // map part of the Set functor
    def map( a2b : A => B ) = {
-       ( sa : Set[A] ) => sa map a2b
+       ( sa : Set[List[A]] ) => sa map a2b
    }
    // the unit natural transformation of the Set monad
-   def unit( a : A ) = Set( a )
+   def unit( a : A ) = Set( List( a ) )
    // the mult natural transformation of the Set monad
-   def multT( mma : Set[Set[A]] ) =
+   def mult( mma : Set[List[Set[List[A]]]] ) =
    (( Set( ) : Set[A] ) /: mma )(
-      { ( acc : Set[A], elem : Set[A] ) => acc ++ elem }
+      { ( acc : Set[List[A]], elem : Set[List[A]] ) => ... }
    )
 }
 \end{lstlisting}

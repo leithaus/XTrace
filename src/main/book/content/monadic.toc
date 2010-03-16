@@ -14,10 +14,10 @@
 \contentsline {subsubsection}{Our toy language}{17}{section*.7}
 \contentsline {paragraph}{Abstract syntax}{17}{section*.8}
 \contentsline {paragraph}{Concrete syntax}{17}{section*.9}
-\contentsline {subsubsection}{Code editor}{18}{section*.10}
-\contentsline {subsubsection}{Project editor}{18}{section*.11}
-\contentsline {subsubsection}{Advanced features}{18}{section*.12}
-\contentsline {subsection}{\numberline {1.3.2}Chapter map}{18}{subsection.1.3.2}
+\contentsline {subsubsection}{Code editor}{19}{section*.10}
+\contentsline {subsubsection}{Project editor}{19}{section*.11}
+\contentsline {subsubsection}{Advanced features}{19}{section*.12}
+\contentsline {subsection}{\numberline {1.3.2}Chapter map}{19}{subsection.1.3.2}
 \contentsline {chapter}{\numberline {2}Toolbox}{21}{chapter.2}
 \contentsline {section}{\numberline {2.1}Introduction to notation and terminology}{21}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Scala}{21}{subsection.2.1.1}
@@ -163,8 +163,8 @@
 \contentsline {subsubsection}{Logical semantics}{96}{section*.70}
 \contentsline {subsubsection}{Other collection monads, other logics}{96}{section*.71}
 \contentsline {paragraph}{Stateful collections}{96}{section*.72}
-\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{97}{subsection.10.3.1}
-\contentsline {section}{\numberline {10.4}Searching for programs}{97}{section.10.4}
-\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{97}{subsection.10.4.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{97}{section*.73}
-\contentsline {subsection}{\numberline {10.4.2}Examples}{97}{subsection.10.4.2}
+\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{98}{subsection.10.3.1}
+\contentsline {section}{\numberline {10.4}Searching for programs}{98}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{98}{subsection.10.4.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{98}{section*.73}
+\contentsline {subsection}{\numberline {10.4.2}Examples}{98}{subsection.10.4.2}
