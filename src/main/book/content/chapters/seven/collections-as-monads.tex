@@ -1,7 +1,22 @@
 \section{Sets, Lists and Languages}
 
+As we saw in chapter two, one role of monad is to provide the bridge
+between ``flattenable'' collections and the models of binary
+operators, investigating two paradigmatic kinds of collections and,
+more importantly, their interaction, exposes some of the necessary
+interior structure of a wide range of species of monad. It also
+prepares us for an investigation of the new \texttt{Scala} collections
+library. Hence, in this section we investigate, in detail, the
+\lstinline[language=Scala,mathescape=true]!Set! and
+\lstinline[language=Scala,mathescape=true]!List! monads as well as
+their combinations.
+
 \subsection{Witnessing Sets and Lists monadicity}
 
+Recalling our basic encapsulation of the core of the monad structure
+in \texttt{Scala}
+
+\break
 \begin{lstlisting}[language=Scala,mathescape=true]
 trait Monad[M[_]] {
    // map part of the functor M
@@ -19,6 +34,14 @@ trait Monad[M[_]] {
 \end{lstlisting}
 
 \break
+
+We instantiate it for \lstinline[language=Scala,mathescape=true]!List!
+by extending \lstinline[language=Scala,mathescape=true]!Monad[List]!
+in order to provide canonical implementations of the operations
+\lstinline[language=Scala,mathescape=true]!map!,
+\lstinline[language=Scala,mathescape=true]!unit! and
+\lstinline[language=Scala,mathescape=true]!mult!.
+
 \begin{lstlisting}[language=Scala,mathescape=true]
 trait ListM extends Monad[List] {  
    // map part of the List functor
@@ -35,6 +58,49 @@ trait ListM extends Monad[List] {
 }
 \end{lstlisting}
 
+The definition suggests we have named
+\lstinline[language=Scala,mathescape=true]!map! well: our
+\lstinline[language=Scala,mathescape=true]!map! means \texttt{Scala}'s
+\lstinline[language=Scala,mathescape=true]!map!. This is a fairly
+general recipe: in a preponderance of cases lifting a function, say
+\lstinline[language=Scala,mathescape=true]!f : A => B!, to a function,
+\lstinline[language=Scala,mathescape=true]!M[f] : M[A] => M[B]!, means
+calculating the function on each of the ``elements'' of
+\lstinline[language=Scala,mathescape=true]!M[A]! and collecting the
+results in an \lstinline[language=Scala,mathescape=true]!M!-like
+collection, namely
+\lstinline[language=Scala,mathescape=true]!M[B]!. In the case above,
+\lstinline[language=Scala,mathescape=true]!M! just happens to be
+\lstinline[language=Scala,mathescape=true]!Set!.
+
+In a similar manner, the recipe for the implementation of
+\lstinline[language=Scala,mathescape=true]!unit! is
+... well... paradigmatic. If the meaning of
+\lstinline[language=Scala,mathescape=true]!unit! is the construction
+of a container embracing a single element, say
+\lstinline[language=Scala,mathescape=true]!a!, then calling the
+constructor of the \lstinline[language=Scala,mathescape=true]!M!
+collection feels like a natural choice. This is yet another view on
+the discussion in chapter 2 on monads as a kind of generic brace
+notation. If that was the syntactic view, this is the semantic view of
+the very same concept.
+
+Finally, while there are several ways to implement
+\lstinline[language=Scala,mathescape=true]!mult! we choose
+\lstinline[language=Scala,mathescape=true]!fold! because the
+genericity of this implementation is a quick and dirty demonstration
+of the universality of
+\lstinline[language=Scala,mathescape=true]!fold!. In some very real
+sense, all ``flattening'' of structure is representable as a
+\lstinline[language=Scala,mathescape=true]!fold!.
+
+To illustrate the genericity of these definitions, we compare them
+with a simple implementation of the
+\lstinline[language=Scala,mathescape=true]!Set! monad. The
+implementations are nearly identical, begging the question of a DRYer
+expression of these instantiations, which we defer to a later section.
+
+\break
 \begin{lstlisting}[language=Scala,mathescape=true]
 trait SetM extends Monad[Set] {
    // map part of the Set functor
@@ -50,6 +116,104 @@ trait SetM extends Monad[Set] {
    )
 }
 \end{lstlisting}
+
+They illustrate another point that bears investigation. What
+distinguishes \lstinline[language=Scala,mathescape=true]!Set!s from
+\lstinline[language=Scala,mathescape=true]!List!s is that the latter
+remembers both order and multiplicity. Not to put to fine a point on
+it, we expect that \lstinline[language=Scala,mathescape=true]!Set( 1 )++Set( 1 )==Set( 1)! while
+\lstinline[language=Scala,mathescape=true]!List( 1 )++List( 1 )==List( 1, 1 )!. In a similar manner, \lstinline[language=Scala,mathescape=true]!Set( 1, 2 ) == Set( 2, 1 )! while \lstinline[language=Scala,mathescape=true]!List( 1, 2 )$\not$=List( 2, 1 )!. As the code should make clear, when encountering these two species of collection in the wild, the notion of monad is indifferent to their distinguishing markings. It will assimilate either of them in exactly the same manner. At least as used in this particular way, monad is \emph{not} where we encode order information. Likewise, it is not where we encode characteristics like the \emph{idempotency} of operations like the idempotency of the \lstinline[language=Scala,mathescape=true]!++! operation on \lstinline[language=Scala,mathescape=true]!Set!s.
+
+Recalling the summary of what goes into a language definition at the
+end of chapter six, notice that there are -- at a minimum -- two
+components: the grammar generating terms in the language and the
+relations saying when two terms in the language may be considered
+equal despite surface syntactic differences. The point of contact
+between monads and languages, as we will see in the upcoming sections,
+is that monads assimilate and encode the \emph{grammar} part of a
+language \emph{without} the relations part. A language that is pure
+grammar, with no additional identification of terms, i.e. no relation
+component, is called \emph{free}. The above code is an encoding of the
+\emph{proof} that \lstinline[language=Scala,mathescape=true]!List! and
+\lstinline[language=Scala,mathescape=true]!Set! stand in the same
+relation to some underlying ``free'' structure. That is, there is a
+language the terms of which stand in one-to-one correspondence with
+syntactic representations of
+\lstinline[language=Scala,mathescape=true]!Set!s and
+\lstinline[language=Scala,mathescape=true]!List!s. The difference
+between the two structures lies ``above'' this underlying syntactic
+representation, in the relations component of a purely syntactic
+presentation of either data structure. That is why the monadic view of
+these data structures is identical.
+
+It is also worth noting that while
+\lstinline[language=Scala,mathescape=true]!List! records more
+information about order and multiplicity of the elements of a
+collection inhabiting the type, that corresponds to \emph{fewer}
+constraints on the operation
+\lstinline[language=Scala,mathescape=true]!++!. Inversely,
+\lstinline[language=Scala,mathescape=true]!Set! records \emph{less}
+information about order and multiplicity of the elements inhabiting
+the type; yet, this corresponds to \emph{more} properties imposed on
+the operation \lstinline[language=Scala,mathescape=true]!++!. To wit,
+on the data type \lstinline[language=Scala,mathescape=true]!++!, the
+operation is required to be commutative, i.e. if
+\lstinline[language=Scala,mathescape=true]!s$_1$:Set[A]! and
+\lstinline[language=Scala,mathescape=true]!s$_2$:Set[A]!, then
+\lstinline[language=Scala,mathescape=true]!(s$_1$++s$_2$)==(s$_2$++s$_1$)!. Likewise,
+if \lstinline[language=Scala,mathescape=true]!s : Set[A]!, then
+\lstinline[language=Scala,mathescape=true]!(s++s)==s!.
+
+This is a general principle worth internalizing. When the
+\emph{operations} associated with a collection acquire more structure,
+i.e. enjoy more \emph{properties}, the collection remembers less
+information about the individual inhabitants of the type, precisely
+because the operation associated with ``collecting'' \emph{identifies}
+more inhabitants of the type. In some sense the the assumption of
+properties drops a kind of veil down over individual
+structure. Controposatively, ``freedom'' means that individual
+structure is the only carrier of information, or that all inhabitants
+of the type are ``perfectly'' individuated.
+
+As seen below, the structure underlying the monadic view of
+\lstinline[language=Scala,mathescape=true]!List! and
+\lstinline[language=Scala,mathescape=true]!Set! is the data type we
+called a \lstinline[language=Scala,mathescape=true]!Monoid! in chapter
+two. More specifically, it is the \emph{free} monoid. It turns out
+that \lstinline[language=Scala,mathescape=true]!List! is really just
+another syntax for the free monoid, while
+\lstinline[language=Scala,mathescape=true]!Set! is a characterization
+of the smallest version of the monoid where the binary operation is
+commutative and idempotent. For those in the know, this means that
+\lstinline[language=Scala,mathescape=true]!Set! is model of Boolean
+algebra. In terms of our discussion of DSLs, this means that there is
+an isomorphism between the DSL of Boolean algebra and the data type
+\lstinline[language=Scala,mathescape=true]!Set!.
+
+Why go to such lengths to expose truths that most programmers know in
+their bones, even if they don't know that they know them? We return to
+our aim: complexity management. What we have seen is that there is a
+deep simplicity, in fact one common structure, underlying these data
+types. Moreover, the notation of monad provides a specific framework
+for factoring this common structure in a way that both aligns with the
+principles of DSL-based design and with mathematical wisdom now vetted
+over 50 years. Looked at from another point of view, it provides
+justification for the intuitions guiding proposals for DSL-based
+design. Language-oriented design hooks into and makes available a wide
+range of tools that actually can simplify code and encourage reuse.
+
+Moreover, like the language design view, the categorical view also
+provides a factorization of the free structure, aka the grammar, and
+the identities on terms, aka the relations. In categorical language
+the addition of identities takes place in what's called the
+Eilenberg-Moore algebras of the the monad. As we will see below, in a
+computatonal universe such as \texttt{Scala} this is just a four
+syllable name for the action of pairing the grammar with the
+relations. As we will see in the last chapter, on semantic search,
+holding a place for the relations widens the scope of the
+applicability of this technology. Specifically, it provides a unified
+framework for constraint-based programming, significantly expanding
+the scope of reach of \texttt{LINQ}-like technologies.
 
 \subsection{Languages and Sets of Words}
 
@@ -82,9 +246,61 @@ trait SetListM extends Monad[SetList] {
 
 \subsection{The algebra of Sets}
 
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{m,n} ::=}
+  \and
+  \inferrule* [lab=additive identity] {} {T}
+  \and
+  \inferrule* [lab=generators] {} {\;| \; g_1 \; | \; ... \; | \; g_n}
+  \and
+  \inferrule* [lab=complement] {} {\;| \; \neg m}
+  \and
+  \inferrule* [lab=addition] {} {\;| \; m \& n}
+\end{mathpar}
+
 \subsection{The algebra of Lists}
 
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{m,n} ::=}
+  \and
+  \inferrule* [lab=multiplicative identity] {} {1}
+  \and
+  \inferrule* [lab=generators] {} {\;| \; g_1 \; | \; ... \; | \; g_n}
+  \and
+  \inferrule* [lab=multiplication] {} {\;| \; m * n}
+\end{mathpar}
+
 \subsection{The algebra of Sets of Words}
+
+Often we want to compose different kinds of collections. Languages
+offer a good example. Languages are
+\lstinline[language=Scala,mathescape=true]!Set!s of words -- which, as
+we saw above, can be identified with
+\lstinline[language=Scala,mathescape=true]!List!s. That is, languages
+are \lstinline[language=Scala,mathescape=true]!Set!s of
+\lstinline[language=Scala,mathescape=true]!List!s. Just like
+\lstinline[language=Scala,mathescape=true]!Set!s and
+\lstinline[language=Scala,mathescape=true]!List!s the composite also
+has an algebra, known in the literature as a \emph{quantale}. The free
+quantale is legitimately identified with the
+\lstinline[language=Scala,mathescape=true]!Set! of all
+\lstinline[language=Scala,mathescape=true]!Set!s of
+\lstinline[language=Scala,mathescape=true]!List!s of some finite
+enumeration. Presented as a algebra this looks like
+
+\begin{mathpar}
+  \inferrule* [lab=expression] {} {{m,n} ::=}
+  \and
+  \inferrule* [lab=additive identity] {} {T}
+  \and
+  \inferrule* [lab=multiplicative identity] {} {1}
+  \and
+  \inferrule* [lab=generators] {} {\;| \; g_1 \; | \; ... \; | \; g_n}
+  \and
+  \inferrule* [lab=addition] {} {\;| \; m \& n}
+  \and
+  \inferrule* [lab=multiplication] {} {\;| \; m * n}
+\end{mathpar}
 
 \section{Algebras}
 
