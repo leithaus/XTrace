@@ -6,7 +6,8 @@
   <inceptionYear>2008</inceptionYear>
   <properties>
     <!-- scala.version>2.8-SNAPSHOT</scala.version -->
-    <scala.version>2.8.0.Beta1</scala.version>
+    <!-- <scala.version>2.8.0.Beta1</scala.version> -->
+    <scala.version>2.8.0.RC1</scala.version>
     <!-- scala.home>/Users/lgm/work/src/projex/biosimilarity/scala</scala.home -->
     <scala.home>/Users/lgm/work/src/devtools/scala/scala-2.8.0.Beta1-RC8</scala.home>
     <doxiaVersion>1.1</doxiaVersion>
@@ -89,16 +90,16 @@
       <version>1.2.5</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.scala-tools</groupId>
-      <artifactId>selectivecps-library</artifactId>
-      <version>local</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-tools</groupId>
-      <artifactId>selectivecps-plugin</artifactId>
-      <version>local</version>
-    </dependency>    
+    <!-- <dependency> -->
+<!--       <groupId>org.scala-tools</groupId> -->
+<!--       <artifactId>selectivecps-library</artifactId> -->
+<!--       <version>local</version> -->
+<!--     </dependency> -->
+    <!-- <dependency> -->
+<!--       <groupId>org.scala-lang.plugins</groupId> -->
+<!--       <artifactId>continuations</artifactId> -->
+<!--       <version>${scala.version}</version> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>com.rabbitmq</groupId>
       <artifactId>rabbitmq-client</artifactId>
@@ -198,11 +199,11 @@
       <artifactId>kiama</artifactId>
       <version>0.9.0</version>
     </dependency>    
-    <dependency>
-      <groupId>net.liftweb</groupId>
-      <artifactId>lift-mapper</artifactId>
-      <version>2.0-scala280-SNAPSHOT</version>
-    </dependency>
+    <!-- <dependency> -->
+<!--       <groupId>net.liftweb</groupId> -->
+<!--       <artifactId>lift-mapper</artifactId> -->
+<!--       <version>2.0-scala280-SNAPSHOT</version> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -255,14 +256,18 @@
           <scalaVersion>${scala.version}</scalaVersion>
 	  <displayCmd>true</displayCmd>
           <args>
-            <!-- arg>-target:jvm-1.5</arg -->
-	    <arg>-Xplugin:${scala.home}/continuations/build/pack/selectivecps-plugin.jar</arg>
-	    <arg>-cp</arg>
-	    <arg>${scala.home}/continuations/build/build.library</arg>
+	    <arg>-P:continuations:enable</arg>
           </args>
 	  <jvmArgs>
 	    <jvmArg>-Xmx128m</jvmArg> 
 	  </jvmArgs>
+	  <compilerPlugins>
+	    <compilerPlugin>	      
+	      <groupId>org.scala-lang.plugins</groupId>
+	      <artifactId>continuations</artifactId>
+	      <version>${scala.version}</version>
+	    </compilerPlugin>
+	  </compilerPlugins>
         </configuration>        
       </plugin>
       <plugin>

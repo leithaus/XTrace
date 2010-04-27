@@ -11,8 +11,8 @@ package com.biosimilarity.validation
 import java.net.URI
 import com.eaio.uuid.UUID
 
-import scala.continuations._ 
-import scala.continuations.ControlContext._ 
+import scala.util.continuations._ 
+//import scala.util.continuations.ControlContext._ 
 import scala.collection.mutable._
 import scala.actors._
 import Actor._
