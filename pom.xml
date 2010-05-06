@@ -68,7 +68,7 @@
     </repository>
     <repository>
       <id>biosim</id>
-      <url>http://biosimrepomirror.googlecode.com/svn/trunk/</url>
+      <url>http://biosimrepomirror.googlecode.com/svn/trunk</url>
     </repository>     
   </repositories>
 
