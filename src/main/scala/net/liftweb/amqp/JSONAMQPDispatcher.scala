@@ -153,7 +153,7 @@ trait JSONToSQLHandler {
   }
 }
 
-class JSONAMQPListener {
+class JSONAMQPListener( host : String ) {
   val LOG_PROPERTIES_FILE : String =
     "src/main/resources/Log4J.properties";  
 
@@ -168,7 +168,8 @@ class JSONAMQPListener {
   val amqp =
     new JSONSerializedAMQPDispatcher[String](
       factory,
-      "localhost",
+      //"localhost",
+      host,
       5672
     )
 
@@ -187,7 +188,7 @@ class JSONAMQPListener {
   }
   
   def testHandle = {
-    val jal = new net.liftweb.amqp.JSONAMQPListener
+    val jal = new net.liftweb.amqp.JSONAMQPListener( "localhost" )
     jal.amqp ! net.liftweb.amqp.AMQPReconnect( 4 )
     jal.jsonListener.handle( "rlambda_production" )(
       new com.thoughtworks.xstream.XStream(

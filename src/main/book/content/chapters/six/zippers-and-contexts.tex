@@ -1,5 +1,44 @@
 \section{Constructing contexts and zippers from data types}
 
+The key intuition is that a zipper is a ``focus'' on a subterm of a
+term. The data needed to capture this idea is a pair,
+\lstinline[language=Scala,mathescape=true]!(T,$\partial$)!, the
+subterm itself, and the context in which it occurs. Using types to
+guide our intuition we see that the subterm must have the same type as
+a term while the type of a context is determined by a calculation that
+perfectly matches a version of the derivative one might have learned
+in high school calculus -- but applied to data structures.
+
+\subsection{Contexts}
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.65]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/ZipperContext1.pdf} }
+\caption{ Context and subterm }
+\end{center}
+\end{figure}
+
+\begin{mathpar}
+  \inferrule* {} {\partial Const_A = 0}
+  \\
+  \inferrule* {} {\partial Id = 0}
+  \\
+  \inferrule* {} {\partial F + G = \partial F + \partial G}
+  \\
+  \inferrule* {} {\partial F \times G = F \times \partial G + \partial F \times G}
+  \\
+  \inferrule* {} {\partial F \circ G = \partial F \circ G \times G}
+\end{mathpar}
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.75]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/Derivative.pdf} }
+\caption{ Context and subterm }
+\end{center}
+\end{figure}
+
+\subsection{Zippers}
+
 \begin{lstlisting}[language=Scala]
   case class Context[Name, NSeq <: NmSeq[Name]](
      override val self : RegularType[Name,NSeq]

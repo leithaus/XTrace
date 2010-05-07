@@ -51,6 +51,8 @@
 \BOOKMARK [2][-]{subsection.6.4.1}{Delimited continuations}{section.6.4}
 \BOOKMARK [1][-]{section.6.5}{Species of Structure}{chapter.6}
 \BOOKMARK [1][-]{section.6.6}{Constructing contexts and zippers from data types}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.6.1}{Contexts}{section.6.6}
+\BOOKMARK [2][-]{subsection.6.6.2}{Zippers}{section.6.6}
 \BOOKMARK [1][-]{section.6.7}{Mapping URIs to zipper-based paths and back}{chapter.6}
 \BOOKMARK [2][-]{subsection.6.7.1}{Path and context}{section.6.7}
 \BOOKMARK [2][-]{subsection.6.7.2}{Homomorphisms and obfuscation}{section.6.7}
