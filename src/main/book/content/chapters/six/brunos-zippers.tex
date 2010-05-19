@@ -2,7 +2,194 @@
 
 \subsection{The history of the zipper}
 
+The origin of the zipper rests in the desire to provide an efficient
+functional representation of a ``structure'' editor. For example, we
+might consider navigation and destructive modification of a tree. In a
+functional representation destructive operations need to be replaced
+by copying. Done naively, this can be very expensive.
+
 \subsubsection{Huet's zipper}
+
+In his functional pearl Huet describes a generic approach to the
+problem of an applicative structure editor. He dubbed it the
+zipper. The key idea is to denote the location of a position in a tree
+by splitting it into two pieces: the subtree of focus and the context
+in which it appears.
+
+To render this idea in \texttt{Scala} suppose that we have modeled the
+type of a tree as
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  trait Tree[A]
+  abstract class TreeItem[A]( val item : A ) extends Tree[A]
+  class TreeItemExtractor[A] {
+    def unapply( tree : TreeItem[A] )
+    : ( A ) = {
+      ( tree.item )
+    }
+  }
+  abstract class TreeSection[A](
+     val section: List[Tree[A]]
+  ) extends Tree[A]
+  class TreeSectionExtractor[B] {
+    def unapply( tree : TreeItem[A] )
+    : ( List[Tree[A]] ) = {
+      ( tree.section )
+    }
+  }
+\end{lstlisting}
+
+then we would model a context in the tree as
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  trait Context[A]
+  case object Top extends Context[Any]
+  abstract class TreeContext[A](
+     val left : List[Tree[A]],
+     val ctxt : Context[A],
+     val right : List[Tree[A]]
+  ) extends Path[A]
+  class TreeContextExtractor[A] {
+    def unapply( ctxt : TreeContext[A] )
+    : ( List[Tree[A]], TreeContext[A], List[Tree[A]] ) = {
+      ( ctxt.left, ctxt.ctxt, ctxt.right )
+    }
+  }
+\end{lstlisting}
+
+then a location is
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  abstract class Location[A](
+    val tree : Tree[A],
+    val ctxt : Context[A]
+  )
+  class LocationExtractor[A] {
+    def unapply( loc : Location[A] )
+    : ( Tree[A], Path[A] ) = {
+      ( loc.tree, loc.ctxt )
+    }
+  }  
+\end{lstlisting}
+
+As a paradigmatic example consider (a crude model of) the syntax tree
+of an arithmetic expression.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  case class Token[A](
+   override item : A
+  ) extends TreeItem[A]( item )
+  case class AST[A](
+    override section : List[Tree[A]]
+  ) extends TreeSection[A]( section )
+\end{lstlisting}
+
+Then an instance might look like
+
+\break
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  AST[String](
+    List(
+      AST[String](
+        List(
+          Token[String]( ``a'' ),
+          Token[String]( ``*'' ),
+          Token[String]( ``b'' )
+        )
+      ),
+      Token[String]( ``+'' ),
+      AST[String](
+        List(
+          Token[String]( ``c'' ),
+          Token[String]( ``*'' ),
+          Token[String]( ``d'' )
+        )
+      )
+    )
+  )
+\end{lstlisting}
+
+Then the location of the second multiplication sign is:
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  Location[String](
+    Token[String]( ``*'' ),
+    TreeContext[String](
+      List( Token[String]( ``c'' ) ),
+      TreeContext[String](
+        List(
+          Token[String]( ``+'' ),
+          AST[String](
+            List(
+              Token[String]( ``a'' ),
+              Token[String]( ``*'' ),
+              Token[String]( ``b'' )
+              )
+            )
+          ),
+          Top,
+          List( )
+          ),
+      List( Token[String]( ``d'' ) )
+    )
+  )
+\end{lstlisting}
+
+\paragraph{The navigation functions} With this structure we can define
+generic navigation functions.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+trait ZipperNavigation[A] {
+  def left( location : Location[A] ) : Location[A] = {
+    location match {
+      case Location( _, Top ) => {
+        throw new Exception( ``left of top'' )
+      }
+      case Location( t, TreeContext( l :: left, up, right ) ) => {
+        Location( l, TreeContext( left, up, t :: right ) )
+      }
+      case Location( t, TreeContext( Nil, up, right ) ) => {
+        throw new Exception( ``left of first'' )
+      }
+    }
+  }
+  def right( location : Location[A] ) : Location[A] = {
+    location match {
+      case Location( _, Top ) => {
+        throw new Exception( ``right of top'' )
+      }
+      case Location( t, TreeContext( left, up, r :: right ) ) => {
+        Location( r, TreeContext( t :: left, up, right ) )
+      }
+      case Location( t, _ ) => {
+        throw new Exception( ``right of last'' )
+      }
+    }
+  }
+  def up( location : Location[A] ) : Location[A] = {
+    location match {
+      case Location( _, Top ) => {
+        throw new Exception( ``up of top'' )
+      }   
+      case Location( t, TreeContext( left, up, right ) ) => {
+        Location( TreeSection[A]( left.reverse ::: ( t :: right ) ),
+                  up )
+      }
+    }
+  }
+  def down( location : Location[A] ) : Location[A] = {
+    location match {
+      case Location( t : TreeItem[A], _ ) => {
+        throw new Exception( ``down of item'' )
+      }
+      case Location( t : TreeSection[A]( u :: trees ), ctxt ) => {
+        Location( u, Context( Nil, ctxt, trees ) )
+      }
+    }
+  }
+}
+\end{lstlisting}
 
 \subsubsection{Zippers generically}
 

@@ -59,3 +59,49 @@ class BasicJSONAMQPSender {
   amqp.start
   
 }
+
+trait JSONAMQPForwarder {
+  val params = new ConnectionParameters
+  // All of the params, exchanges, and queues are all just example data.
+  params.setUsername("guest")
+  params.setPassword("guest")
+  params.setVirtualHost("/")
+  params.setRequestedHeartbeat(0)
+  val factory = new ConnectionFactory(params)
+
+  var _amqpSender : Option[JSONAMQPSender] = None
+
+  def amqp( host : String ) = {
+    _amqpSender match {
+      case Some( amqpSender ) => amqpSender
+      case None => {
+	val jaS = 
+	  new JSONAMQPSender(
+	    factory,
+	    host,
+	    5672,
+	    "mult",
+	    "routeroute"
+	  )
+	_amqpSender =
+	  Some( jaS )
+	jaS.start
+	jaS
+      }
+    }    
+  }
+  
+  def send( contents : java.lang.Object ) : Unit = {
+    for( amqp <- _amqpSender ) {
+      amqp ! AMQPMessage(
+	new XStream( new JettisonMappedXmlDriver() ).toXML( contents )	
+      )
+    }
+  }  
+  
+}
+
+class StdJSONOverAMQPSender( host : String )
+extends JSONAMQPForwarder {
+  amqp( host )
+}
