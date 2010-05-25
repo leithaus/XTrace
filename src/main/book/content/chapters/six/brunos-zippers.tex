@@ -21,20 +21,23 @@ type of a tree as
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   trait Tree[A]
-  abstract class TreeItem[A]( val item : A ) extends Tree[A]
-  class TreeItemExtractor[A] {
-    def unapply( tree : TreeItem[A] )
-    : ( A ) = {
-      ( tree.item )
+  class TreeItem[A]( val item : A ) extends Tree[A]
+  object TreeItem {
+    def apply[A]( item : A ) = { new TreeItem( item ) }
+    def unapply[A]( tree : TreeItem[A] )
+    : Option[( A )] = {
+      Some( ( tree.item ) )
     }
   }
-  abstract class TreeSection[A](
-     val section: List[Tree[A]]
-  ) extends Tree[A]
-  class TreeSectionExtractor[B] {
-    def unapply( tree : TreeItem[A] )
-    : ( List[Tree[A]] ) = {
-      ( tree.section )
+  class TreeSection[A]( val section: List[Tree[A]] )
+  extends Tree[A]
+  object TreeSection {
+    def apply[A]( section : List[Tree[A]] ) = {
+      new TreeSection( section )
+    }
+    def unapply[A]( tree : TreeSection[A] )
+    : Option[( List[Tree[A]] )] = {
+      Some( ( tree.section ) )
     }
   }
 \end{lstlisting}
@@ -43,31 +46,40 @@ then we would model a context in the tree as
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   trait Context[A]
-  case object Top extends Context[Any]
-  abstract class TreeContext[A](
-     val left : List[Tree[A]],
-     val ctxt : Context[A],
-     val right : List[Tree[A]]
-  ) extends Path[A]
-  class TreeContextExtractor[A] {
-    def unapply( ctxt : TreeContext[A] )
-    : ( List[Tree[A]], TreeContext[A], List[Tree[A]] ) = {
-      ( ctxt.left, ctxt.ctxt, ctxt.right )
-    }
+  case class Top[A]( ) extends Context[A]
+  class TreeContext[A](
+    val left : List[Tree[A]],
+    val ctxt : Context[A],
+    val right : List[Tree[A]]
+  ) extends Context[A]
+  object TreeContext {
+    def apply[A](
+      left : List[Tree[A]],
+      ctxt : Context[A],
+      right : List[Tree[A]] ) = {
+        new TreeContext( left, ctxt, right )
+      }
+      def unapply[A]( ctxt : TreeContext[A] )
+      : Option[( List[Tree[A]], Context[A], List[Tree[A]] )] = {
+        Some( ( ctxt.left, ctxt.ctxt, ctxt.right ) )
+      }
   }
 \end{lstlisting}
 
 then a location is
 
 \begin{lstlisting}[language=Scala,mathescape=true]
-  abstract class Location[A](
+  class Location[A](
     val tree : Tree[A],
     val ctxt : Context[A]
   )
-  class LocationExtractor[A] {
-    def unapply( loc : Location[A] )
-    : ( Tree[A], Path[A] ) = {
-      ( loc.tree, loc.ctxt )
+  object Location {
+    def apply[A]( tree : Tree[A], ctxt : Context[A] ) = {
+      new Location( tree, ctxt )
+    }
+    def unapply[A]( loc : Location[A] )
+    : Option[( Tree[A], Context[A] )] = {
+      Some( ( loc.tree, loc.ctxt ) )
     }
   }  
 \end{lstlisting}
@@ -93,17 +105,17 @@ Then an instance might look like
     List(
       AST[String](
         List(
-          Token[String]( ``a'' ),
-          Token[String]( ``*'' ),
-          Token[String]( ``b'' )
+          Token[String]( "a" ),
+          Token[String]( "*" ),
+          Token[String]( "b" )
         )
       ),
-      Token[String]( ``+'' ),
+      Token[String]( "+" ),
       AST[String](
         List(
-          Token[String]( ``c'' ),
-          Token[String]( ``*'' ),
-          Token[String]( ``d'' )
+          Token[String]( "c" ),
+          Token[String]( "*" ),
+          Token[String]( "d" )
         )
       )
     )
@@ -114,24 +126,24 @@ Then the location of the second multiplication sign is:
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   Location[String](
-    Token[String]( ``*'' ),
+    Token[String]( "*" ),
     TreeContext[String](
-      List( Token[String]( ``c'' ) ),
+      List( Token[String]( "c" ) ),
       TreeContext[String](
         List(
-          Token[String]( ``+'' ),
+          Token[String]( "+" ),
           AST[String](
             List(
-              Token[String]( ``a'' ),
-              Token[String]( ``*'' ),
-              Token[String]( ``b'' )
+              Token[String]( "a" ),
+              Token[String]( "*" ),
+              Token[String]( "b" )
               )
             )
           ),
-          Top,
+          Top( ),
           List( )
           ),
-      List( Token[String]( ``d'' ) )
+      List( Token[String]( "d" ) )
     )
   )
 \end{lstlisting}
@@ -144,33 +156,33 @@ trait ZipperNavigation[A] {
   def left( location : Location[A] ) : Location[A] = {
     location match {
       case Location( _, Top ) => {
-        throw new Exception( ``left of top'' )
+        throw new Exception( "left of top" )
       }
       case Location( t, TreeContext( l :: left, up, right ) ) => {
         Location( l, TreeContext( left, up, t :: right ) )
       }
       case Location( t, TreeContext( Nil, up, right ) ) => {
-        throw new Exception( ``left of first'' )
+        throw new Exception( "left of first" )
       }
     }
   }
   def right( location : Location[A] ) : Location[A] = {
     location match {
       case Location( _, Top ) => {
-        throw new Exception( ``right of top'' )
+        throw new Exception( "right of top" )
       }
       case Location( t, TreeContext( left, up, r :: right ) ) => {
         Location( r, TreeContext( t :: left, up, right ) )
       }
       case Location( t, _ ) => {
-        throw new Exception( ``right of last'' )
+        throw new Exception( "right of last" )
       }
     }
   }
   def up( location : Location[A] ) : Location[A] = {
     location match {
       case Location( _, Top ) => {
-        throw new Exception( ``up of top'' )
+        throw new Exception( "up of top" )
       }   
       case Location( t, TreeContext( left, up, right ) ) => {
         Location( TreeSection[A]( left.reverse ::: ( t :: right ) ),
@@ -180,15 +192,123 @@ trait ZipperNavigation[A] {
   }
   def down( location : Location[A] ) : Location[A] = {
     location match {
-      case Location( t : TreeItem[A], _ ) => {
-        throw new Exception( ``down of item'' )
+      case Location( TreeItem( _ ), _ ) => {
+        throw new Exception( "down of item" )
       }
-      case Location( t : TreeSection[A]( u :: trees ), ctxt ) => {
+      case Location( TreeSection( u :: trees ), ctxt ) => {
         Location( u, Context( Nil, ctxt, trees ) )
       }
     }
   }
 }
+\end{lstlisting}
+
+\paragraph{Exercising the zipper} We can exercise the zipper
+navigation functions using the two examples from above.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  object Exercise extends ZipperNavigation[String] {
+    val arithmeticExpr1 =
+      AST[String](
+        List(
+	  AST[String](
+            List(
+              Token[String]( "a" ),
+              Token[String]( "*" ),
+              Token[String]( "b" )
+           )
+         ),
+         Token[String]( "+" ),
+         AST[String](
+           List(
+             Token[String]( "c" ),
+             Token[String]( "*" ),
+             Token[String]( "d" )
+           )
+	)
+      )
+    )
+
+    val locationOf2ndMult =
+      Location[String](
+        Token[String]( "*" ),
+        TreeContext[String](
+	  List( Token[String]( "c" ) ),
+          TreeContext[String](
+            List(
+              Token[String]( "+" ),
+              AST[String](
+                List(
+		  Token[String]( "a" ),
+                  Token[String]( "*" ),
+                  Token[String]( "b" )
+                )
+              )
+            ),
+            Top( ),
+            List( )
+          ),
+          List( Token[String]( "d" ) )
+       )
+     )
+
+     def show( depth : Int )( tree : Tree[String] ) : Unit = {
+       tree match {
+         case TreeItem( item : String ) => {
+           val indent =
+           ( "" /: (1 to depth) )( { ( acc, d ) => acc + " " } )
+           println( indent + "Leaf : " + item )
+         }
+         case TreeSection( section : List[Tree[String]] ) => {
+           for( t <- section ){ show( depth + 2 )( t ) }
+         }
+       }
+     }     
+   }
+\end{lstlisting}
+
+\break
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  scala> import Exercise._
+  import Exercise._
+  import Exercise._
+
+  scala> show( 0 )( arithmeticExpr1 )
+  show( 0 )( arithmeticExpr1 )
+    Leaf : a
+    Leaf : *
+    Leaf : b
+  Leaf : +
+    Leaf : c
+    Leaf : *
+    Leaf : d
+
+  scala> show( 0 )( locationOf2ndMult.tree )
+  show( 0 )( locationOf2ndMult.tree )
+  Leaf : *
+
+  scala> show( 0 )( up( locationOf2ndMult ).tree )
+  show( 0 )( up( locationOf2ndMult ).tree )
+  Leaf : c
+  Leaf : *
+  Leaf : d
+
+  scala> show( 0 )( up( up( locationOf2ndMult ) ).tree )
+  show( 0 )( up( up( locationOf2ndMult ) ).tree )
+    Leaf : a
+    Leaf : *
+    Leaf : b
+  Leaf : +
+    Leaf : c
+    Leaf : *
+    Leaf : d
+
+  scala> show( 0 )( up( up( up( locationOf2ndMult ) ) ).tree )
+  show( 0 )( up( up( up( locationOf2ndMult ) ) ).tree )
+  java.lang.Exception: up of top
+        ...
+  scala> 
 \end{lstlisting}
 
 \subsubsection{Zippers generically}
