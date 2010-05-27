@@ -21,7 +21,20 @@ type of a tree as
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   trait Tree[A]
+  // Leaf
   class TreeItem[A]( val item : A ) extends Tree[A]
+  // Branches
+  class TreeSection[A](
+    val section: List[Tree[A]]
+  ) extends Tree[A]  
+\end{lstlisting}
+
+with corresponding companion objects for easy construction and
+deconstruction. (We'd make these
+\lstinline[language=Scala,mathescape=true]!case class!es, but then we
+couldn't use inheritance.)
+
+\begin{lstlisting}[language=Scala,mathescape=true]
   object TreeItem {
     def apply[A]( item : A ) = { new TreeItem( item ) }
     def unapply[A]( tree : TreeItem[A] )
@@ -29,8 +42,6 @@ type of a tree as
       Some( ( tree.item ) )
     }
   }
-  class TreeSection[A]( val section: List[Tree[A]] )
-  extends Tree[A]
   object TreeSection {
     def apply[A]( section : List[Tree[A]] ) = {
       new TreeSection( section )
@@ -52,6 +63,16 @@ then we would model a context in the tree as
     val ctxt : Context[A],
     val right : List[Tree[A]]
   ) extends Context[A]
+\end{lstlisting}
+
+Essentially, a \lstinline[language=Scala,mathescape=true]!Context!
+denotes a place where we might ``plugin'' a subtree. Thus, it
+identifies the branches to the left, the branches to the right and a
+``path'' to a ``hole''.
+
+Of course, we have the obligatory companion object.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
   object TreeContext {
     def apply[A](
       left : List[Tree[A]],
@@ -66,26 +87,31 @@ then we would model a context in the tree as
   }
 \end{lstlisting}
 
-then a location is
+Since it is clear how this boilerplate is made, we will dispense with
+it in subsequent discussion; but note that the cost in boilerplate may
+not have been worth deprecating inheritance in
+\lstinline[language=Scala,mathescape=true]!case class!es.
+
+Now, we have the types necessary to model our intuitions as to what a
+location is. It's a pair of a context and a tree that plugs into the
+context. Note that neither of these datum are suffient in an of
+themselves to identify a location in a tree. The subtree could occur
+in any number of trees. Likewise, the context could be filled with any
+number of subtrees. It takes the pair to identify a location in a
+tree. For those with some experience in mathematics, this idea is
+strongly reminiscent of both Dedekind cuts and Conway's models of
+games as numbers.
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   class Location[A](
     val tree : Tree[A],
     val ctxt : Context[A]
-  )
-  object Location {
-    def apply[A]( tree : Tree[A], ctxt : Context[A] ) = {
-      new Location( tree, ctxt )
-    }
-    def unapply[A]( loc : Location[A] )
-    : Option[( Tree[A], Context[A] )] = {
-      Some( ( loc.tree, loc.ctxt ) )
-    }
-  }  
+  )  
 \end{lstlisting}
 
 As a paradigmatic example consider (a crude model of) the syntax tree
-of an arithmetic expression.
+of an arithmetic expression. (Now, the decision to model a tree as a
+\lstinline[language=Scala,mathescape=true]!class! becomes clear.)
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   case class Token[A](
@@ -97,8 +123,6 @@ of an arithmetic expression.
 \end{lstlisting}
 
 Then an instance might look like
-
-\break
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   AST[String](
@@ -208,49 +232,9 @@ navigation functions using the two examples from above.
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   object Exercise extends ZipperNavigation[String] {
-    val arithmeticExpr1 =
-      AST[String](
-        List(
-	  AST[String](
-            List(
-              Token[String]( "a" ),
-              Token[String]( "*" ),
-              Token[String]( "b" )
-           )
-         ),
-         Token[String]( "+" ),
-         AST[String](
-           List(
-             Token[String]( "c" ),
-             Token[String]( "*" ),
-             Token[String]( "d" )
-           )
-	)
-      )
-    )
+    val arithmeticExpr1 = ...
 
-    val locationOf2ndMult =
-      Location[String](
-        Token[String]( "*" ),
-        TreeContext[String](
-	  List( Token[String]( "c" ) ),
-          TreeContext[String](
-            List(
-              Token[String]( "+" ),
-              AST[String](
-                List(
-		  Token[String]( "a" ),
-                  Token[String]( "*" ),
-                  Token[String]( "b" )
-                )
-              )
-            ),
-            Top( ),
-            List( )
-          ),
-          List( Token[String]( "d" ) )
-       )
-     )
+    val locationOf2ndMult = ...
 
      def show( depth : Int )( tree : Tree[String] ) : Unit = {
        tree match {
@@ -266,8 +250,6 @@ navigation functions using the two examples from above.
      }     
    }
 \end{lstlisting}
-
-\break
 
 \begin{lstlisting}[language=Scala,mathescape=true]
   scala> import Exercise._
@@ -316,8 +298,7 @@ Of course, the real desiderata are the mutation functions.
 \begin{lstlisting}
   trait ZipperMutation[A] {
     def update(
-      location : Location[A],
-      tree : Tree[A]
+    location : Location[A], tree : Tree[A]
     ) : Location[A] = {
       location match {
         case Location( _, ctxt ) =>
@@ -325,20 +306,17 @@ Of course, the real desiderata are the mutation functions.
         }
       }
     def insertRight(
-      location : Location[A],
-      tree : Tree[A]
+      location : Location[A], tree : Tree[A]
     ) : Location[A] = {
       location match {
         case Location( _, Top( ) ) => {
           throw new Exception( "insert of top" )
         }
         case Location(
-	  curr,
-          TreeContext( left, up, right )
+	  curr, TreeContext( left, up, right )
         ) => {
           Location(
-	    curr,
-            TreeContext( left, up, tree :: right )
+	    curr, TreeContext( left, up, tree :: right )
           )	
         }
       }    
@@ -351,64 +329,53 @@ Of course, the real desiderata are the mutation functions.
           throw new Exception( "insert of top" )
         }
         case Location(
-	  curr,
-          TreeContext( left, up, right )
+	  curr, TreeContext( left, up, right )
         ) => {
           Location(
-	    curr,
-            TreeContext( tree :: left, up, right )
+	    curr, TreeContext( tree :: left, up, right )
           )	
         }
       }    
     }
     def insertDown(
-      location : Location[A],
-      tree : Tree[A]
+      location : Location[A], tree : Tree[A]
     ) : Location[A] = {
       location match {
         case Location( TreeItem( _ ), _ ) => {
           throw new Exception( "down of item" )
         }
         case Location(
-	  TreeSection( progeny ),
-          ctxt
+	  TreeSection( progeny ), ctxt
         ) => {
           Location(
-	    tree,
-            TreeContext( Nil, ctxt, progeny )
+	    tree, TreeContext( Nil, ctxt, progeny )
           )
         }
       }
     }
     def delete(
-      location : Location[A],
-      tree : Tree[A]
+      location : Location[A], tree : Tree[A]
     ) : Location[A] = {
       location match {
         case Location( _, Top( ) ) => {
           throw new Exception( "delete of top" )
         }
         case Location(
-	  _,
-          TreeContext( left, up, r :: right )
+	  _, TreeContext( left, up, r :: right )
         ) => {
           Location(
-	    r,
-            TreeContext( left, up, right )
+	    r, TreeContext( left, up, right )
           )
         }
         case Location(
-	  _,
-          TreeContext( l :: left, up, Nil )
+	  _, TreeContext( l :: left, up, Nil )
         ) => {
           Location(
-	    l,
-            TreeContext( left, up, Nil )
+	    l, TreeContext( left, up, Nil )
           )
         }
         case Location(
-	  _,
-          TreeContext( Nil, up, Nil )
+	  _, TreeContext( Nil, up, Nil )
         ) => {
           Location( TreeSection( Nil ), up )
         }
