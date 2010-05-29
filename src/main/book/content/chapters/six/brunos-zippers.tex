@@ -386,3 +386,92 @@ Of course, the real desiderata are the mutation functions.
 
 \subsubsection{Zippers generically}
 
+\paragraph{Two kinds of genericity} 
+It turns out that Huet's discovery can be made to work on a much wider
+class of structures than ``just'' trees. Intuitively speaking, if their
+type arguments are ``zippable'', then virtually all of the common
+functional data type constructors, including sequencing constructors
+like product, and branching constructors, like summation or
+``casing'', result in ``zippable'' types. That is, there are
+procedures for deriving a notion of zipper capable of traversing and
+mutating the structure. Essentially, there are two strategies to
+achieve this genericity: one is based on structural genericity and the
+other on procedural genericity.
+
+\paragraph{Genericity of structure}
+
+The former approach relies on being able to define a notion of context
+for any ``reasonable'' data structure. Not surprisingly, it turns out
+that we can give a good definition of ``reasonable''. What is
+surprising is that the resulting definition is amenable to an
+operation that perfectly mimics the notion of derivative from Newton's
+calculus. The operation is an operation on \emph{types}. This allows
+us to give a type-level definition of the notion of location -- just
+as we did with trees, but now for any type.
+
+We can use \texttt{Scala}'s type notation to see where the new
+genericity has been added. The type of trees in the example is already
+polymorphic:
+\lstinline[language=Scala,mathescape=true]!Tree[A]!. That's what
+having that type parameter
+\lstinline[language=Scala,mathescape=true]!A! means. The navigation
+trait is therefore also parametric in
+\lstinline[language=Scala,mathescape=true]!A!. The navigation trait,
+however, is hardcoded in the container type,
+\lstinline[language=Scala,mathescape=true]!Tree[A]!. When we add this
+second level of genericity, the navigation trait will have to take a
+second, \emph{higher-kinded} type parameter for the container because
+it will work on any container within a range of reasonably defined
+containers.
+
+The use case we have been considering -- navigating and mutating an
+in-memory representation of a tree -- is then extended to navigating
+and mutating an in-memory representation of an arbitrary data
+structure. Moreover, the code is purely functional -- with all of the
+attendant advantages of purely functional code we have been observing
+since Chapter 1. Obviously, in the context of the web, this particular
+use case is of considerable interest. Nearly, every web application is
+of this form: navigating a tree or graph of pages. Usually, that graph
+of pages is somehow homomorphic, i.e. an image of, the graph of some
+underlying domain data structure, like the data structures of employee
+records in a payroll system, or the social graph of a social media
+application like Twitter. Many web applications, such as so-called
+content management systems, also support the mutation of the graph of
+pages. So, having a method of generating this functionality from the
+types of the underlying data domain, be they web pages, or some other
+domain data type, is clearly pertinent to the most focused of
+application developers.
+
+And yet, the notion of a \emph{derivative of data types} is
+irresistably intriguing. It's not simply that it has many other
+applications besides web navigation and update. That a calculational
+device that an Englishman discovered some 400+ years ago in his
+investigations for providing a mathematical framework for gravitation
+and other physical phenomena should be applicable to structuring
+computer programs is as surprising as it is elegant and that makes it
+\emph{cool}.
+
+\paragraph{Genericity of control}
+
+The latter approach to generically constructing zippers is just as
+rich in terms of the world of ideas it opens up as it is in the
+imminent practicality of its immediate applications. The key insight
+is to abstract on control, rather than on form. Not surprisingly, then
+the central tool is the (delimited) continuation. To be clear, in
+this approach, originally developed by Oleg Kiselyov, navigation is
+reifed as a function and supplied as a parameter. In this sense, it is
+not automagically deriving mechanism for navigation, as does the
+structural approach. The semantics of mutation, on the other hand, is
+provided with a powerful generative mechanism. More specifically, a
+dial is provided for the visibility of mutation with respect to
+different threads of control. In other words, fine-grained constrol on
+the \emph{transactional semantics} of mutating the data structure is
+provided. This is exceptionally powerful because, as we have mentioned
+since Chapter 1, the transactional semantics is one of the principal
+places on which performance of a system -- especially a high-volume
+system -- hinges; but, by being based on a form of monad, namely
+delimited continuations, the abstraction gets the compiler
+involved. This has the effect of enlisting the compiler in maintaining
+discipline and sanity on transaction semantics -- which is vitally
+important when supplying a fine-grained control on something as
+performance-critical as the semantics and visibility of update.
