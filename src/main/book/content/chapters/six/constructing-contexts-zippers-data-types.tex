@@ -8,6 +8,49 @@
 
 \section{Generic zipper -- differentiating navigation}
 
+\begin{lstlisting}[language=Scala,mathescape=true]
+  trait CC[R,M,A] {
+  }
+
+  trait Prompt[R,A] {
+  }
+
+  trait ControlOps[R,M,A] {
+    def promptP( f : Prompt[R,A] => CC[R,M,A] ) : CC[R,M,A]
+    def shiftP[B](
+      p : Prompt[R,B],
+      f : (CC[R,M,A] => CC[R,M,B]) => CC[R,M,B]
+    ) : CC[R,M,A]
+  }
+
+  trait Zipper[R,M,T,D] {
+    def term : T
+  }
+
+  class DCZipper[R,M,T,D](
+    override val term : T,
+    val traversal : CC[R,M,(Option[T],D)] => CC[R,M,Zipper[R,M,T,D]]
+  ) extends Zipper[R,M,T,D]
+
+  class ZipDone[R,M,T,D](
+    override val term : T
+  ) extends Zipper[R,M,T,D]
+\end{lstlisting}
+
+\break
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  trait ZipperOps[R,M,T,D] {
+    def zipTerm(
+      traversal
+      : ( ( T => CC[R,M,( Option[T], D )] ), T )
+        => CC[R,M,T],
+      term : T
+    ) : CC[R,M,Zipper[R,M,T,D]]
+    def zipThrough( zipper : Zipper[R,M,T,D] ) : Unit
+  }
+\end{lstlisting}
+
 \subsection{Delimited continuations}
 
 \section{Species of Structure}
