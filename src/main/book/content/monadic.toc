@@ -98,17 +98,17 @@
 \contentsline {subsection}{\numberline {6.3.1}Regular types}{80}{subsection.6.3.1}
 \contentsline {subsection}{\numberline {6.3.2}Container types}{80}{subsection.6.3.2}
 \contentsline {section}{\numberline {6.4}Generic zipper -- differentiating navigation}{80}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}Delimited continuations}{81}{subsection.6.4.1}
-\contentsline {section}{\numberline {6.5}Species of Structure}{81}{section.6.5}
-\contentsline {section}{\numberline {6.6}Constructing contexts and zippers from data types}{81}{section.6.6}
-\contentsline {subsection}{\numberline {6.6.1}Contexts}{81}{subsection.6.6.1}
-\contentsline {subsection}{\numberline {6.6.2}Zippers}{81}{subsection.6.6.2}
-\contentsline {section}{\numberline {6.7}Mapping URIs to zipper-based paths and back}{89}{section.6.7}
-\contentsline {subsection}{\numberline {6.7.1}Path and context}{89}{subsection.6.7.1}
-\contentsline {subsection}{\numberline {6.7.2}Homomorphisms and obfuscation}{89}{subsection.6.7.2}
-\contentsline {section}{\numberline {6.8}Applying zippers to our project}{89}{section.6.8}
-\contentsline {subsection}{\numberline {6.8.1}Navigating and editing terms}{89}{subsection.6.8.1}
-\contentsline {subsection}{\numberline {6.8.2}Navigating and editing projects}{89}{subsection.6.8.2}
+\contentsline {subsection}{\numberline {6.4.1}Delimited continuations}{82}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}Species of Structure}{82}{section.6.5}
+\contentsline {section}{\numberline {6.6}Constructing contexts and zippers from data types}{82}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}Contexts}{82}{subsection.6.6.1}
+\contentsline {subsection}{\numberline {6.6.2}Zippers}{83}{subsection.6.6.2}
+\contentsline {section}{\numberline {6.7}Mapping URIs to zipper-based paths and back}{90}{section.6.7}
+\contentsline {subsection}{\numberline {6.7.1}Path and context}{90}{subsection.6.7.1}
+\contentsline {subsection}{\numberline {6.7.2}Homomorphisms and obfuscation}{90}{subsection.6.7.2}
+\contentsline {section}{\numberline {6.8}Applying zippers to our project}{90}{section.6.8}
+\contentsline {subsection}{\numberline {6.8.1}Navigating and editing terms}{90}{subsection.6.8.1}
+\contentsline {subsection}{\numberline {6.8.2}Navigating and editing projects}{90}{subsection.6.8.2}
 \contentsline {chapter}{\numberline {7}A review of collections as monads}{91}{chapter.7}
 \contentsline {section}{\numberline {7.1}Sets, Lists and Languages}{91}{section.7.1}
 \contentsline {subsection}{\numberline {7.1.1}Witnessing Sets and Lists monadicity}{91}{subsection.7.1.1}

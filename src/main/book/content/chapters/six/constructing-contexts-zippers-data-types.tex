@@ -8,39 +8,87 @@
 
 \section{Generic zipper -- differentiating navigation}
 
+In this section we build a bridge between Oleg Kiselyov's Haskell
+implementation of the generic zipper. This is a transliteration of his
+original code. As such, we provide a veneer over \texttt{Scala}'s
+native delimited continuation library. Then we use this veneer to
+express a direct translation of Oleg's code.
+
 \begin{lstlisting}[language=Scala,mathescape=true]
-  trait CC[R,M,A] {
+  object MonadDefns {
+    type MonadLike = { 
+      def map[A,B]( f : A => B )
+      def flatMap[M[_],A,B]( f : A => M[B] )
+      def filter[A]( p : A => Boolean )
+      def lift[ML[_],MU[_],A]( m : ML[A] ) : MU[A]
+    }
+  }
+
+  trait StateT[V,M[_],A]{
+  }
+
+  trait CC[R,M[_],A] {
+    def k2P : K[R,M,A,_] => StateT[Int,M,A]
   }
 
   trait Prompt[R,A] {
   }
 
-  trait ControlOps[R,M,A] {
+  trait Frame[M[_],R,A,B]{
+    def a2CC : A => CC[R,M,B]
+  }
+
+  trait K[R,M[_],A,B]{
+    def frame : Frame[M,R,A,B]
+    def r : R
+    def a : A
+    def b : B
+
+    def map[C]( f : A => C )
+    def flatMap[C]( f : A => K[R,M,A,C] )
+    def filter( p : A => Boolean )
+    def lift( m : M[A] ) : CC[R,M,A]
+  }
+
+  trait SubK[R,M[_],A,B] extends K[R,M,A,B]{
+  }
+
+  trait ControlOps[R,M[_],A] {
+    def appk[B]( k : K[R,M,A,B], a : A ) : StateT[Int,M,A]
+    def runCC( cc : CC[R,M,A] ) : M[A]
     def promptP( f : Prompt[R,A] => CC[R,M,A] ) : CC[R,M,A]
     def shiftP[B](
       p : Prompt[R,B],
       f : (CC[R,M,A] => CC[R,M,B]) => CC[R,M,B]
     ) : CC[R,M,A]
-  }
+}
+\end{lstlisting}
 
-  trait Zipper[R,M,T,D] {
+Essentially, a zipper in this new style wraps a term. It may also
+contain a traversal function.
+
+\begin{lstlisting}[language=Scala,mathescape=true]  
+  trait Zipper[R,M[_],T,D] {
     def term : T
   }
 
-  class DCZipper[R,M,T,D](
+  class DCZipper[R,M[_],T,D](
     override val term : T,
     val traversal : CC[R,M,(Option[T],D)] => CC[R,M,Zipper[R,M,T,D]]
   ) extends Zipper[R,M,T,D]
 
-  class ZipDone[R,M,T,D](
+  class ZipDone[R,M[_],T,D](
     override val term : T
   ) extends Zipper[R,M,T,D]
 \end{lstlisting}
 
 \break
 
+We then provide basic factory mechanism for constructing zippers and
+then using them.
+
 \begin{lstlisting}[language=Scala,mathescape=true]
-  trait ZipperOps[R,M,T,D] {
+  trait ZipperOps[R,M[_],T,D] {
     def zipTerm(
       traversal
       : ( ( T => CC[R,M,( Option[T], D )] ), T )
