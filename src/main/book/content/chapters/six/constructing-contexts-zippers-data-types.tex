@@ -141,4 +141,82 @@ then using them.
 
 \subsection{Delimited continuations}
 
+In previous sections we have used the analogy of monads as maintaining
+a discipline for "putting things in a box"; similarly, comonads
+provide a discipline for "taking things out of the box". There is a
+connection between this and delimited continuations. To see the
+connection, we might imagine a picture like
+
+\begin{figure}[tbp]
+\begin{center}
+{ \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/ProducerConsumerEeyoreNPoohInitial.pdf} }
+\caption{ delimited continuations and synchronized exchange  }
+\end{center}
+\end{figure}
+
+One way to implement this is that the ``daemon'', Pooh, is really just
+the act of wrapping either client's access to the box in code that
+grabs the current continuation, call it kg (or kt, respectively), and
+then does the following.  
+\begin{itemize}
+  \item Giver side: 
+    \begin{figure}[tbp]
+      \begin{center}
+        { \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/ProducerConsumerEeyoreNPoohSupply.pdf} }
+        \caption{ Giver's side }
+      \end{center}
+    \end{figure}
+    \begin{itemize} 
+    \item check to see if there is a matching taker, kt, (in a queue
+      of taker requests packaged as continuations). 
+    \item If there is, invoke (kt v) passing it the value, v, that
+      came in on the giver's call, and invoke (kg unit), passing it
+      unit. 
+    \item Otherwise, queue (v,kg) in a giver's queue.
+    \end{itemize}
+  \item Taker's side:
+    \begin{figure}[tbp]
+      \begin{center}
+        { \includegraphics[scale=.35]{/Users/lgm/work/src/projex/biosimilarity/trace/src/main/book/content/figures/ProducerConsumerEeyoreNPoohRequest.pdf} }
+        \caption{ Taker's side }
+      \end{center}
+    \end{figure}
+    \begin{itemize}
+    \item check to see if there is a matching giver, (v,kg),
+      (in a queue of giver requests packages as continuations).
+    \item If there is, invoke (kt v), passing v to the taker's
+      continuation, and (kg unit) passing unit to the giver's
+      continuation.
+    \item Otherwise, queue kt in a taker's queue.
+  \end{itemize}
+\end{itemize}
+
+If these look strangely like the put and get operations of the State
+monad -- they's because they are. They've been coordinated around a
+state cell that is "located" at a rendezvous point for a pair of
+coroutines to exchange data.
+
+For the adventurous, it is possible to develop a further connection to
+Milner's $\pi$-calculus. Roughly speaking, this is the way to
+implement synchronous-IO-style in the $\pi$-calculus, spelling out a
+specific relationship between delimited continuations and
+$\pi$-calculus-style communication.
+
+If you see a further connection between this pattern and tuple spaces,
+that's because it's the basic mechanism for implementing tuple spaces.
+
+Summarizing, monads like IO that are forever sticky, are one-way
+monads. Like the roach motel, or Hotel California, things go in, but
+don't come out. Monads that are really containers are
+"intuitionistic". That is, you know that if you put something in, you
+can get it out; but, if you receive a container, you don't know if it
+has anything in it until you open the lid. They have a relationship
+with a comonad that is "intuitionistically" disciplined. Finally,
+there are monad-comonad pairs that enjoy a linear discipline. This
+linear discipline matches every "gozinta" with a "gozouta" and vice
+versa. That discipline may be implemented by delimited
+continuations. This implementation strategy, by the way, also connects
+delimited continuations to the other generic zipper, discovered by
+Oleg.
+
 \section{Species of Structure}
