@@ -141,6 +141,66 @@ then using them.
 
 \subsection{Delimited continuations}
 
+In \texttt{Scala} we have the delimited continuations plugin. This
+provides access to a type-driven source-to-source
+continuation-passing-style translation of code involving the operators
+\lstinline[language=Scala,mathescape=true]!shift! and
+\lstinline[language=Scala,mathescape=true]!reset! to code that does
+not. This approach has several interesting and novel features,
+including a so-called ``direct-style'' syntax to express the
+operations of delimited continuations.
+
+This direct-style syntax is to be contrasted with a monadic
+presentation of delimited continuations, as discovered by Dybvig,
+Peyton-Jones and Sabry. One of the criticisms of this approach is that
+it involves the use of a monadic ``meta-language''. That is, access to
+the delimited continuations functionality requires using the monadic
+operations plus some additional ones. However, assuming we have a
+monad, \lstinline[language=Scala,mathescape=true]!T! supporting the
+semantics for usual cast of
+\lstinline[language=Scala,mathescape=true]!map!,
+\lstinline[language=Scala,mathescape=true]!flatMap! and
+\lstinline[language=Scala,mathescape=true]!filter!, together with four
+additional operations --
+\lstinline[language=Scala,mathescape=true]!newPrompt!,
+\lstinline[language=Scala,mathescape=true]!pushPrompt!,
+\lstinline[language=Scala,mathescape=true]!withSubCont! and
+\lstinline[language=Scala,mathescape=true]!pushSubCont! -- we can use
+\lstinline[language=Scala,mathescape=true]!for!  comprehensions
+together with the prompt and sub-continuation operations as a DSL for
+delimited continuations. We only need source-to-source translations
+for embedded use of the prompt and subcontinuation operations -- i.e.,
+occurrences of the those operations inside a
+\lstinline[language=Scala,mathescape=true]!for! comprehension -- which
+we give below.
+
+\break
+
+\begin{lstlisting}[language=Scala,mathescape=true]    
+  $\mathcal{T}\ldb$ newPrompt $\rdb$ = newPrompt
+  $\mathcal{T}\ldb$ pushPrompt $e_{1} \; e_{2}$ $\rdb$ =
+     $\mathcal{T}\meaningof{e_1}$ flatMap {
+       ( p ) => pushPrompt p $\mathcal{T}\meaningof{e_2}$
+     }
+  $\mathcal{T}\ldb$ withSubCont $e_1 \; e_2$ $\rdb$ =
+     $\mathcal{T}\meaningof{e_1}$ flatMap {
+       ( p ) => $\mathcal{T}\meaningof{e_2}$ flatMap {
+         ( f ) => withSubCont p f
+       }
+     }
+  $\mathcal{T}\ldb$ pushSubCont $e_1 \; e_2$ $\rdb$ =
+     $\mathcal{T}\meaningof{e_1}$ flatMap {
+       ( s ) => pushSubCont s $\mathcal{T}\meaningof{e_2}$
+     }
+\end{lstlisting}
+
+This would allow an alternative presentation of delimited
+continuations which has the advantage of facilitating
+``transliteration'' of \texttt{Haskell} packages dependent on the
+widely used Dybvig-Peyton-Jones-Sabry approach.
+
+\subsubsection{The genericity of delimited continuations}
+
 In previous sections we have used the analogy of monads as maintaining
 a discipline for "putting things in a box"; similarly, comonads
 provide a discipline for "taking things out of the box". There is a
