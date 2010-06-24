@@ -44,135 +44,135 @@
 \contentsline {paragraph}{Monads are triples}{34}{section*.28}
 \contentsline {chapter}{\numberline {3}An IO-monad for http streams}{39}{chapter.3}
 \contentsline {section}{\numberline {3.1}Code first, questions later}{39}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}An HTTP-request processor}{46}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}What we did}{46}{subsection.3.1.2}
-\contentsline {section}{\numberline {3.2}Synchrony, asynchrony and buffering}{46}{section.3.2}
-\contentsline {section}{\numberline {3.3}State, statelessness and continuations}{46}{section.3.3}
-\contentsline {chapter}{\numberline {4}Parsing requests, monadically}{47}{chapter.4}
-\contentsline {section}{\numberline {4.1}Obligatory parsing monad}{47}{section.4.1}
-\contentsline {section}{\numberline {4.2}Your parser combinators are showing}{47}{section.4.2}
-\contentsline {section}{\numberline {4.3}EBNF and why higher levels of abstraction are better}{47}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Different platforms, different parsers}{47}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Different performance constraints, different parsers}{47}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Maintainability}{47}{subsection.4.3.3}
-\contentsline {chapter}{\numberline {5}The domain model as abstract syntax}{51}{chapter.5}
-\contentsline {section}{\numberline {5.1}Our abstract syntax}{51}{section.5.1}
-\contentsline {paragraph}{Abstract syntax}{51}{section*.29}
-\contentsline {section}{\numberline {5.2}Our application domain model}{52}{section.5.2}
-\contentsline {subsubsection}{Our toy language}{52}{section*.30}
-\contentsline {paragraph}{A simple-minded representation}{52}{section*.31}
-\contentsline {paragraph}{Currying}{53}{section*.32}
-\contentsline {paragraph}{Type parametrization and quotation}{54}{section*.33}
-\contentsline {paragraph}{Some syntactic sugar}{55}{section*.34}
-\contentsline {paragraph}{Digression: complexity management principle}{55}{section*.35}
-\contentsline {paragraph}{Concrete syntax}{55}{section*.36}
-\contentsline {paragraph}{Translating concrete syntax to abstract syntax}{56}{section*.37}
-\contentsline {paragraph}{Structural equivalence and Relations or What makes abstract syntax abstract}{59}{section*.38}
-\contentsline {paragraph}{Digression: the internal structure of the type of variables}{63}{section*.39}
-\contentsline {paragraph}{Evaluation -- aka operational semantics}{64}{section*.40}
-\contentsline {paragraph}{Ordinary maps}{64}{section*.41}
-\contentsline {paragraph}{DeBruijn notation}{64}{section*.42}
-\contentsline {subsubsection}{The \texttt {Scala} implementation}{64}{section*.43}
-\contentsline {subsubsection}{What goes into a language definition}{66}{section*.44}
-\contentsline {paragraph}{Syntax}{67}{section*.45}
-\contentsline {paragraph}{Structural equivalence}{67}{section*.46}
-\contentsline {paragraph}{Operational semantics}{67}{section*.47}
-\contentsline {paragraph}{Discussion}{67}{section*.48}
-\contentsline {section}{\numberline {5.3}The project model}{68}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Abstract syntax}{68}{subsection.5.3.1}
-\contentsline {subsection}{\numberline {5.3.2}Concrete syntax -- and presentation layer}{68}{subsection.5.3.2}
-\contentsline {subsection}{\numberline {5.3.3}Domain model}{68}{subsection.5.3.3}
-\contentsline {section}{\numberline {5.4}A transform pipeline}{68}{section.5.4}
-\contentsline {chapter}{\numberline {6}Zippers and contexts and URI's, oh my!}{69}{chapter.6}
-\contentsline {section}{\numberline {6.1}Zippers are not just for Bruno anymore}{69}{section.6.1}
-\contentsline {subsection}{\numberline {6.1.1}The history of the zipper}{69}{subsection.6.1.1}
-\contentsline {subsubsection}{Huet's zipper}{69}{section*.49}
-\contentsline {paragraph}{The navigation functions}{73}{section*.50}
-\contentsline {paragraph}{Exercising the zipper}{74}{section*.51}
-\contentsline {subsubsection}{Zippers generically}{78}{section*.52}
-\contentsline {paragraph}{Two kinds of genericity}{78}{section*.53}
-\contentsline {paragraph}{Genericity of structure}{78}{section*.54}
-\contentsline {paragraph}{Genericity of control}{79}{section*.55}
-\contentsline {section}{\numberline {6.2}Zipper and one-holed contexts}{80}{section.6.2}
-\contentsline {section}{\numberline {6.3}Differentiation and contexts}{80}{section.6.3}
-\contentsline {subsection}{\numberline {6.3.1}Regular types}{80}{subsection.6.3.1}
-\contentsline {subsection}{\numberline {6.3.2}Container types}{80}{subsection.6.3.2}
-\contentsline {section}{\numberline {6.4}Generic zipper -- differentiating navigation}{80}{section.6.4}
-\contentsline {subsection}{\numberline {6.4.1}Delimited continuations}{83}{subsection.6.4.1}
-\contentsline {subsubsection}{The genericity of delimited continuations}{84}{section*.56}
-\contentsline {section}{\numberline {6.5}Species of Structure}{86}{section.6.5}
-\contentsline {section}{\numberline {6.6}Constructing contexts and zippers from data types}{86}{section.6.6}
-\contentsline {subsection}{\numberline {6.6.1}Contexts}{87}{subsection.6.6.1}
-\contentsline {subsection}{\numberline {6.6.2}Zippers}{87}{subsection.6.6.2}
-\contentsline {section}{\numberline {6.7}Mapping URIs to zipper-based paths and back}{93}{section.6.7}
-\contentsline {subsection}{\numberline {6.7.1}Path and context}{93}{subsection.6.7.1}
-\contentsline {subsection}{\numberline {6.7.2}Homomorphisms and obfuscation}{93}{subsection.6.7.2}
-\contentsline {section}{\numberline {6.8}Applying zippers to our project}{93}{section.6.8}
-\contentsline {subsection}{\numberline {6.8.1}Navigating and editing terms}{93}{subsection.6.8.1}
-\contentsline {subsection}{\numberline {6.8.2}Navigating and editing projects}{93}{subsection.6.8.2}
-\contentsline {chapter}{\numberline {7}A review of collections as monads}{95}{chapter.7}
-\contentsline {section}{\numberline {7.1}Sets, Lists and Languages}{95}{section.7.1}
-\contentsline {subsection}{\numberline {7.1.1}Witnessing Sets and Lists monadicity}{95}{subsection.7.1.1}
-\contentsline {subsection}{\numberline {7.1.2}Languages and Sets of Words}{100}{subsection.7.1.2}
-\contentsline {subsubsection}{Kleene star}{100}{section*.57}
-\contentsline {subsubsection}{I am not a number, I am a free monoid}{100}{section*.58}
-\contentsline {subsection}{\numberline {7.1.3}Of lenses and bananas}{100}{subsection.7.1.3}
-\contentsline {section}{\numberline {7.2}Containers and syntax}{100}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1}The algebra of Sets}{100}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2}The algebra of Lists}{100}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3}The algebra of Sets of Words}{101}{subsection.7.2.3}
-\contentsline {section}{\numberline {7.3}Algebras}{101}{section.7.3}
-\contentsline {subsection}{\numberline {7.3.1}Kleisli}{101}{subsection.7.3.1}
-\contentsline {subsection}{\numberline {7.3.2}Eilenberg-Moore}{101}{subsection.7.3.2}
-\contentsline {section}{\numberline {7.4}Monad as container}{101}{section.7.4}
-\contentsline {section}{\numberline {7.5}Monads and take-out}{101}{section.7.5}
-\contentsline {subsection}{\numberline {7.5.1}Option as container}{102}{subsection.7.5.1}
-\contentsline {subsection}{\numberline {7.5.2}I/O monad for contrast}{102}{subsection.7.5.2}
-\contentsline {subsection}{\numberline {7.5.3}Matching gazintas and gazoutas}{102}{subsection.7.5.3}
-\contentsline {subsubsection}{Intuitionistic discipline}{102}{section*.60}
-\contentsline {subsubsection}{Linear discipline}{102}{section*.61}
-\contentsline {section}{\numberline {7.6}Co-monad and take-out}{102}{section.7.6}
-\contentsline {section}{\numberline {7.7}Hopf structure}{102}{section.7.7}
-\contentsline {section}{\numberline {7.8}Container and control}{102}{section.7.8}
-\contentsline {subsection}{\numberline {7.8.1}Delimited continuations reconsidered}{102}{subsection.7.8.1}
-\contentsline {chapter}{\numberline {8}Domain model, storage and state}{103}{chapter.8}
-\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{103}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}Functional and relational models}{103}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}Functional and XML models}{103}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}ORM}{103}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{103}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}LINQ and \lstinline [language=Scala]!for!-comprehensions}{103}{subsection.8.2.1}
-\contentsline {subsubsection}{Open source implementations}{103}{section*.62}
-\contentsline {paragraph}{ScalaQuery}{103}{section*.63}
-\contentsline {paragraph}{Squeryl}{103}{section*.64}
-\contentsline {section}{\numberline {8.3}Continuations revisited}{104}{section.8.3}
-\contentsline {subsection}{\numberline {8.3.1}Stored state}{104}{subsection.8.3.1}
-\contentsline {subsection}{\numberline {8.3.2}Transactions}{104}{subsection.8.3.2}
-\contentsline {chapter}{\numberline {9}Putting it all together}{105}{chapter.9}
-\contentsline {section}{\numberline {9.1}Our web application end-to-end}{105}{section.9.1}
-\contentsline {section}{\numberline {9.2}Deploying our application}{105}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{105}{subsection.9.2.1}
-\contentsline {section}{\numberline {9.3}From one web application to web framework}{105}{section.9.3}
-\contentsline {chapter}{\numberline {10}The semantic web}{107}{chapter.10}
-\contentsline {section}{\numberline {10.1}Referential transparency}{107}{section.10.1}
-\contentsline {paragraph}{A little motivation}{108}{section*.65}
-\contentsline {section}{\numberline {10.2}Composing monads}{109}{section.10.2}
-\contentsline {subsubsection}{Preliminary}{110}{section*.66}
-\contentsline {section}{\numberline {10.3}Semantic application queries}{111}{section.10.3}
-\contentsline {subsubsection}{An alternative presentation}{111}{section*.67}
-\contentsline {paragraph}{Logic: the set monad as an algebra}{112}{section*.68}
-\contentsline {paragraph}{Primes: an application}{113}{section*.69}
-\contentsline {paragraph}{Summary}{113}{section*.70}
-\contentsline {subsubsection}{Patterns}{114}{section*.71}
-\contentsline {subsubsection}{A first mini-query language}{114}{section*.72}
-\contentsline {subsubsection}{Iterating the design pattern}{114}{section*.73}
-\contentsline {paragraph}{A spatial-behavioral-style logic for $\lambda $-calculus}{115}{section*.74}
-\contentsline {paragraph}{Examples}{115}{section*.75}
-\contentsline {subsubsection}{Logical semantics}{116}{section*.76}
-\contentsline {subsubsection}{Other collection monads, other logics}{116}{section*.77}
-\contentsline {paragraph}{Stateful collections}{116}{section*.78}
-\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{118}{subsection.10.3.1}
-\contentsline {section}{\numberline {10.4}Searching for programs}{118}{section.10.4}
-\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{118}{subsection.10.4.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{118}{section*.79}
-\contentsline {subsection}{\numberline {10.4.2}Examples}{118}{subsection.10.4.2}
+\contentsline {subsection}{\numberline {3.1.1}An HTTP-request processor}{48}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}What we did}{48}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Synchrony, asynchrony and buffering}{48}{section.3.2}
+\contentsline {section}{\numberline {3.3}State, statelessness and continuations}{48}{section.3.3}
+\contentsline {chapter}{\numberline {4}Parsing requests, monadically}{49}{chapter.4}
+\contentsline {section}{\numberline {4.1}Obligatory parsing monad}{49}{section.4.1}
+\contentsline {section}{\numberline {4.2}Your parser combinators are showing}{49}{section.4.2}
+\contentsline {section}{\numberline {4.3}EBNF and why higher levels of abstraction are better}{49}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Different platforms, different parsers}{49}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Different performance constraints, different parsers}{49}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Maintainability}{49}{subsection.4.3.3}
+\contentsline {chapter}{\numberline {5}The domain model as abstract syntax}{53}{chapter.5}
+\contentsline {section}{\numberline {5.1}Our abstract syntax}{53}{section.5.1}
+\contentsline {paragraph}{Abstract syntax}{53}{section*.29}
+\contentsline {section}{\numberline {5.2}Our application domain model}{54}{section.5.2}
+\contentsline {subsubsection}{Our toy language}{54}{section*.30}
+\contentsline {paragraph}{A simple-minded representation}{54}{section*.31}
+\contentsline {paragraph}{Currying}{55}{section*.32}
+\contentsline {paragraph}{Type parametrization and quotation}{56}{section*.33}
+\contentsline {paragraph}{Some syntactic sugar}{57}{section*.34}
+\contentsline {paragraph}{Digression: complexity management principle}{57}{section*.35}
+\contentsline {paragraph}{Concrete syntax}{57}{section*.36}
+\contentsline {paragraph}{Translating concrete syntax to abstract syntax}{58}{section*.37}
+\contentsline {paragraph}{Structural equivalence and Relations or What makes abstract syntax abstract}{61}{section*.38}
+\contentsline {paragraph}{Digression: the internal structure of the type of variables}{65}{section*.39}
+\contentsline {paragraph}{Evaluation -- aka operational semantics}{66}{section*.40}
+\contentsline {paragraph}{Ordinary maps}{66}{section*.41}
+\contentsline {paragraph}{DeBruijn notation}{66}{section*.42}
+\contentsline {subsubsection}{The \texttt {Scala} implementation}{66}{section*.43}
+\contentsline {subsubsection}{What goes into a language definition}{68}{section*.44}
+\contentsline {paragraph}{Syntax}{69}{section*.45}
+\contentsline {paragraph}{Structural equivalence}{69}{section*.46}
+\contentsline {paragraph}{Operational semantics}{69}{section*.47}
+\contentsline {paragraph}{Discussion}{69}{section*.48}
+\contentsline {section}{\numberline {5.3}The project model}{70}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Abstract syntax}{70}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Concrete syntax -- and presentation layer}{70}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Domain model}{70}{subsection.5.3.3}
+\contentsline {section}{\numberline {5.4}A transform pipeline}{70}{section.5.4}
+\contentsline {chapter}{\numberline {6}Zippers and contexts and URI's, oh my!}{71}{chapter.6}
+\contentsline {section}{\numberline {6.1}Zippers are not just for Bruno anymore}{71}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}The history of the zipper}{71}{subsection.6.1.1}
+\contentsline {subsubsection}{Huet's zipper}{71}{section*.49}
+\contentsline {paragraph}{The navigation functions}{75}{section*.50}
+\contentsline {paragraph}{Exercising the zipper}{76}{section*.51}
+\contentsline {subsubsection}{Zippers generically}{80}{section*.52}
+\contentsline {paragraph}{Two kinds of genericity}{80}{section*.53}
+\contentsline {paragraph}{Genericity of structure}{80}{section*.54}
+\contentsline {paragraph}{Genericity of control}{81}{section*.55}
+\contentsline {section}{\numberline {6.2}Zipper and one-holed contexts}{82}{section.6.2}
+\contentsline {section}{\numberline {6.3}Differentiation and contexts}{82}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Regular types}{82}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Container types}{82}{subsection.6.3.2}
+\contentsline {section}{\numberline {6.4}Generic zipper -- differentiating navigation}{82}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Delimited continuations}{85}{subsection.6.4.1}
+\contentsline {subsubsection}{The genericity of delimited continuations}{86}{section*.56}
+\contentsline {section}{\numberline {6.5}Species of Structure}{88}{section.6.5}
+\contentsline {section}{\numberline {6.6}Constructing contexts and zippers from data types}{88}{section.6.6}
+\contentsline {subsection}{\numberline {6.6.1}Contexts}{89}{subsection.6.6.1}
+\contentsline {subsection}{\numberline {6.6.2}Zippers}{89}{subsection.6.6.2}
+\contentsline {section}{\numberline {6.7}Mapping URIs to zipper-based paths and back}{95}{section.6.7}
+\contentsline {subsection}{\numberline {6.7.1}Path and context}{95}{subsection.6.7.1}
+\contentsline {subsection}{\numberline {6.7.2}Homomorphisms and obfuscation}{95}{subsection.6.7.2}
+\contentsline {section}{\numberline {6.8}Applying zippers to our project}{95}{section.6.8}
+\contentsline {subsection}{\numberline {6.8.1}Navigating and editing terms}{95}{subsection.6.8.1}
+\contentsline {subsection}{\numberline {6.8.2}Navigating and editing projects}{97}{subsection.6.8.2}
+\contentsline {chapter}{\numberline {7}A review of collections as monads}{99}{chapter.7}
+\contentsline {section}{\numberline {7.1}Sets, Lists and Languages}{99}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Witnessing Sets and Lists monadicity}{99}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}Languages and Sets of Words}{104}{subsection.7.1.2}
+\contentsline {subsubsection}{Kleene star}{104}{section*.57}
+\contentsline {subsubsection}{I am not a number, I am a free monoid}{104}{section*.58}
+\contentsline {subsection}{\numberline {7.1.3}Of lenses and bananas}{104}{subsection.7.1.3}
+\contentsline {section}{\numberline {7.2}Containers and syntax}{104}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}The algebra of Sets}{104}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}The algebra of Lists}{104}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}The algebra of Sets of Words}{105}{subsection.7.2.3}
+\contentsline {section}{\numberline {7.3}Algebras}{105}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Kleisli}{105}{subsection.7.3.1}
+\contentsline {subsection}{\numberline {7.3.2}Eilenberg-Moore}{105}{subsection.7.3.2}
+\contentsline {section}{\numberline {7.4}Monad as container}{105}{section.7.4}
+\contentsline {section}{\numberline {7.5}Monads and take-out}{105}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}Option as container}{106}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}I/O monad for contrast}{106}{subsection.7.5.2}
+\contentsline {subsection}{\numberline {7.5.3}Matching gazintas and gazoutas}{106}{subsection.7.5.3}
+\contentsline {subsubsection}{Intuitionistic discipline}{106}{section*.60}
+\contentsline {subsubsection}{Linear discipline}{106}{section*.61}
+\contentsline {section}{\numberline {7.6}Co-monad and take-out}{106}{section.7.6}
+\contentsline {section}{\numberline {7.7}Hopf structure}{106}{section.7.7}
+\contentsline {section}{\numberline {7.8}Container and control}{106}{section.7.8}
+\contentsline {subsection}{\numberline {7.8.1}Delimited continuations reconsidered}{106}{subsection.7.8.1}
+\contentsline {chapter}{\numberline {8}Domain model, storage and state}{107}{chapter.8}
+\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{107}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}Functional and relational models}{107}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}Functional and XML models}{107}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}ORM}{107}{subsection.8.1.3}
+\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{107}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}LINQ and \lstinline [language=Scala]!for!-comprehensions}{107}{subsection.8.2.1}
+\contentsline {subsubsection}{Open source implementations}{107}{section*.62}
+\contentsline {paragraph}{ScalaQuery}{107}{section*.63}
+\contentsline {paragraph}{Squeryl}{107}{section*.64}
+\contentsline {section}{\numberline {8.3}Continuations revisited}{108}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Stored state}{108}{subsection.8.3.1}
+\contentsline {subsection}{\numberline {8.3.2}Transactions}{108}{subsection.8.3.2}
+\contentsline {chapter}{\numberline {9}Putting it all together}{109}{chapter.9}
+\contentsline {section}{\numberline {9.1}Our web application end-to-end}{109}{section.9.1}
+\contentsline {section}{\numberline {9.2}Deploying our application}{109}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{109}{subsection.9.2.1}
+\contentsline {section}{\numberline {9.3}From one web application to web framework}{109}{section.9.3}
+\contentsline {chapter}{\numberline {10}The semantic web}{111}{chapter.10}
+\contentsline {section}{\numberline {10.1}Referential transparency}{111}{section.10.1}
+\contentsline {paragraph}{A little motivation}{112}{section*.65}
+\contentsline {section}{\numberline {10.2}Composing monads}{113}{section.10.2}
+\contentsline {subsubsection}{Preliminary}{114}{section*.66}
+\contentsline {section}{\numberline {10.3}Semantic application queries}{115}{section.10.3}
+\contentsline {subsubsection}{An alternative presentation}{115}{section*.67}
+\contentsline {paragraph}{Logic: the set monad as an algebra}{116}{section*.68}
+\contentsline {paragraph}{Primes: an application}{117}{section*.69}
+\contentsline {paragraph}{Summary}{117}{section*.70}
+\contentsline {subsubsection}{Patterns}{118}{section*.71}
+\contentsline {subsubsection}{A first mini-query language}{118}{section*.72}
+\contentsline {subsubsection}{Iterating the design pattern}{118}{section*.73}
+\contentsline {paragraph}{A spatial-behavioral-style logic for $\lambda $-calculus}{119}{section*.74}
+\contentsline {paragraph}{Examples}{119}{section*.75}
+\contentsline {subsubsection}{Logical semantics}{120}{section*.76}
+\contentsline {subsubsection}{Other collection monads, other logics}{120}{section*.77}
+\contentsline {paragraph}{Stateful collections}{120}{section*.78}
+\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{122}{subsection.10.3.1}
+\contentsline {section}{\numberline {10.4}Searching for programs}{122}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{122}{subsection.10.4.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{122}{section*.79}
+\contentsline {subsection}{\numberline {10.4.2}Examples}{122}{subsection.10.4.2}

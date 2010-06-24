@@ -14,4 +14,50 @@
 \end{figure}
 \subsection{Navigating and editing terms}
 
+Consider the following term.
+
+\begin{lstlisting}[language=Scala,mathescape=true]
+  // Corresponds to the Church numeral: 
+  // $\lambda \; f . \; \lambda \; x . $
+  //     $(f \; \lambda \; f . \; f \; \lambda \; f \; . \; \lambda \; x . \; x )$
+  //     $((f \; \lambda \; f \; . \; \lambda \; x . \; x) x)$ 
+  Abstraction(
+    List( StringLiteral( "f" ) ),
+    Abstraction(
+      List( StringLiteral( "x" ) ),
+      Application( 
+        Application(
+          Mention( StringLiteral( "f" ) ),
+          Abstraction( 
+            List( StringLiteral( "f" ) ),
+            Application( 
+              Mention( StringLiteral( "f" ) ),
+              Abstraction(
+                List( StringLiteral( "f" ) ),
+                Abstraction(
+                  List( StringLiteral( "x" ) ),
+                  Mention( StringLiteral( "x" ) )
+                )
+              )
+            )
+          )
+        ),
+        Application(
+          Application( 
+            Mention( StringLiteral( "f" ) ),
+            Abstraction(
+              List( StringLiteral( "f" ) ),
+              Abstraction(
+                List( StringLiteral( "x" ) ),
+                Mention( StringLiteral( "x" ) )
+              )
+            )
+          ),
+          Mention( StringLiteral( "x" ) )  
+        )
+      )
+    )
+  )
+\end{lstlisting}
+
 \subsection{Navigating and editing projects}
