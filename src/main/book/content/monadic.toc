@@ -126,53 +126,53 @@
 \contentsline {subsection}{\numberline {7.3.2}Eilenberg-Moore}{105}{subsection.7.3.2}
 \contentsline {section}{\numberline {7.4}Monad as container}{105}{section.7.4}
 \contentsline {section}{\numberline {7.5}Monads and take-out}{105}{section.7.5}
-\contentsline {subsection}{\numberline {7.5.1}Option as container}{106}{subsection.7.5.1}
-\contentsline {subsection}{\numberline {7.5.2}I/O monad for contrast}{106}{subsection.7.5.2}
-\contentsline {subsection}{\numberline {7.5.3}Matching gazintas and gazoutas}{106}{subsection.7.5.3}
-\contentsline {subsubsection}{Intuitionistic discipline}{106}{section*.60}
-\contentsline {subsubsection}{Linear discipline}{106}{section*.61}
-\contentsline {section}{\numberline {7.6}Co-monad and take-out}{106}{section.7.6}
-\contentsline {section}{\numberline {7.7}Hopf structure}{106}{section.7.7}
-\contentsline {section}{\numberline {7.8}Container and control}{106}{section.7.8}
-\contentsline {subsection}{\numberline {7.8.1}Delimited continuations reconsidered}{106}{subsection.7.8.1}
-\contentsline {chapter}{\numberline {8}Domain model, storage and state}{107}{chapter.8}
-\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{107}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}Functional and relational models}{107}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}Functional and XML models}{107}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}ORM}{107}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{107}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}LINQ and \lstinline [language=Scala]!for!-comprehensions}{107}{subsection.8.2.1}
-\contentsline {subsubsection}{Open source implementations}{107}{section*.62}
-\contentsline {paragraph}{ScalaQuery}{107}{section*.63}
-\contentsline {paragraph}{Squeryl}{107}{section*.64}
-\contentsline {section}{\numberline {8.3}Continuations revisited}{108}{section.8.3}
-\contentsline {subsection}{\numberline {8.3.1}Stored state}{108}{subsection.8.3.1}
-\contentsline {subsection}{\numberline {8.3.2}Transactions}{108}{subsection.8.3.2}
-\contentsline {chapter}{\numberline {9}Putting it all together}{109}{chapter.9}
-\contentsline {section}{\numberline {9.1}Our web application end-to-end}{109}{section.9.1}
-\contentsline {section}{\numberline {9.2}Deploying our application}{109}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{109}{subsection.9.2.1}
-\contentsline {section}{\numberline {9.3}From one web application to web framework}{109}{section.9.3}
-\contentsline {chapter}{\numberline {10}The semantic web}{111}{chapter.10}
-\contentsline {section}{\numberline {10.1}Referential transparency}{111}{section.10.1}
-\contentsline {paragraph}{A little motivation}{112}{section*.65}
-\contentsline {section}{\numberline {10.2}Composing monads}{113}{section.10.2}
-\contentsline {subsubsection}{Preliminary}{114}{section*.66}
-\contentsline {section}{\numberline {10.3}Semantic application queries}{115}{section.10.3}
-\contentsline {subsubsection}{An alternative presentation}{115}{section*.67}
-\contentsline {paragraph}{Logic: the set monad as an algebra}{116}{section*.68}
-\contentsline {paragraph}{Primes: an application}{117}{section*.69}
-\contentsline {paragraph}{Summary}{117}{section*.70}
-\contentsline {subsubsection}{Patterns}{118}{section*.71}
-\contentsline {subsubsection}{A first mini-query language}{118}{section*.72}
-\contentsline {subsubsection}{Iterating the design pattern}{118}{section*.73}
-\contentsline {paragraph}{A spatial-behavioral-style logic for $\lambda $-calculus}{119}{section*.74}
-\contentsline {paragraph}{Examples}{119}{section*.75}
-\contentsline {subsubsection}{Logical semantics}{120}{section*.76}
-\contentsline {subsubsection}{Other collection monads, other logics}{120}{section*.77}
-\contentsline {paragraph}{Stateful collections}{120}{section*.78}
-\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{122}{subsection.10.3.1}
-\contentsline {section}{\numberline {10.4}Searching for programs}{122}{section.10.4}
-\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{122}{subsection.10.4.1}
-\contentsline {subsubsection}{Monad composition via distributive laws}{122}{section*.79}
-\contentsline {subsection}{\numberline {10.4.2}Examples}{122}{subsection.10.4.2}
+\contentsline {subsection}{\numberline {7.5.1}Option as container}{107}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}I/O monad for contrast}{108}{subsection.7.5.2}
+\contentsline {subsection}{\numberline {7.5.3}Matching gazintas and gazoutas}{108}{subsection.7.5.3}
+\contentsline {subsubsection}{Intuitionistic discipline}{108}{section*.60}
+\contentsline {subsubsection}{Linear discipline}{108}{section*.61}
+\contentsline {section}{\numberline {7.6}Co-monad and take-out}{108}{section.7.6}
+\contentsline {section}{\numberline {7.7}Hopf structure}{108}{section.7.7}
+\contentsline {section}{\numberline {7.8}Container and control}{108}{section.7.8}
+\contentsline {subsection}{\numberline {7.8.1}Delimited continuations reconsidered}{108}{subsection.7.8.1}
+\contentsline {chapter}{\numberline {8}Domain model, storage and state}{109}{chapter.8}
+\contentsline {section}{\numberline {8.1}Mapping our domain model to storage}{109}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}Functional and relational models}{109}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}Functional and XML models}{109}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}ORM}{109}{subsection.8.1.3}
+\contentsline {section}{\numberline {8.2}Storage and language-integrated query}{109}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}LINQ and \lstinline [language=Scala]!for!-comprehensions}{109}{subsection.8.2.1}
+\contentsline {subsubsection}{Open source implementations}{109}{section*.62}
+\contentsline {paragraph}{ScalaQuery}{109}{section*.63}
+\contentsline {paragraph}{Squeryl}{109}{section*.64}
+\contentsline {section}{\numberline {8.3}Continuations revisited}{110}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Stored state}{110}{subsection.8.3.1}
+\contentsline {subsection}{\numberline {8.3.2}Transactions}{110}{subsection.8.3.2}
+\contentsline {chapter}{\numberline {9}Putting it all together}{111}{chapter.9}
+\contentsline {section}{\numberline {9.1}Our web application end-to-end}{111}{section.9.1}
+\contentsline {section}{\numberline {9.2}Deploying our application}{111}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Why we are not deploying on GAE}{111}{subsection.9.2.1}
+\contentsline {section}{\numberline {9.3}From one web application to web framework}{111}{section.9.3}
+\contentsline {chapter}{\numberline {10}The semantic web}{113}{chapter.10}
+\contentsline {section}{\numberline {10.1}Referential transparency}{113}{section.10.1}
+\contentsline {paragraph}{A little motivation}{114}{section*.65}
+\contentsline {section}{\numberline {10.2}Composing monads}{115}{section.10.2}
+\contentsline {subsubsection}{Preliminary}{116}{section*.66}
+\contentsline {section}{\numberline {10.3}Semantic application queries}{117}{section.10.3}
+\contentsline {subsubsection}{An alternative presentation}{117}{section*.67}
+\contentsline {paragraph}{Logic: the set monad as an algebra}{118}{section*.68}
+\contentsline {paragraph}{Primes: an application}{119}{section*.69}
+\contentsline {paragraph}{Summary}{119}{section*.70}
+\contentsline {subsubsection}{Patterns}{120}{section*.71}
+\contentsline {subsubsection}{A first mini-query language}{120}{section*.72}
+\contentsline {subsubsection}{Iterating the design pattern}{120}{section*.73}
+\contentsline {paragraph}{A spatial-behavioral-style logic for $\lambda $-calculus}{121}{section*.74}
+\contentsline {paragraph}{Examples}{121}{section*.75}
+\contentsline {subsubsection}{Logical semantics}{122}{section*.76}
+\contentsline {subsubsection}{Other collection monads, other logics}{122}{section*.77}
+\contentsline {paragraph}{Stateful collections}{122}{section*.78}
+\contentsline {subsection}{\numberline {10.3.1}Other logical operations}{124}{subsection.10.3.1}
+\contentsline {section}{\numberline {10.4}Searching for programs}{124}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}A new foundation for search}{124}{subsection.10.4.1}
+\contentsline {subsubsection}{Monad composition via distributive laws}{124}{section*.79}
+\contentsline {subsection}{\numberline {10.4.2}Examples}{124}{subsection.10.4.2}

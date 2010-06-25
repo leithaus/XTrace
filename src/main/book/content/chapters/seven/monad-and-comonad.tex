@@ -1,6 +1,118 @@
 \section{Monads and take-out}
 
+In the previous sections we've explored the idea of collections as
+monads. Likewise, we've suggested that that you can turn this
+interpretation around in the sense that you can use the notion of
+container to bootstrap an understanding of the notion of monad. In
+this section we expand this approach. More specifically, we begin with
+the notion of container as a first approximation of the notion of
+monad and then notice (some rather subtle) differences between the two
+ideas which allows us to refine our understanding of monad, and -- as
+it turns out -- our understanding of container.
+
+As we've observed before, intuitively a monad is like a ``box'' into
+which we can put things. One of the most important things we can put
+into ``boxes'' like this is other ``boxes''. The monad laws govern the
+nesting of boxes and as nesting is one of the core concepts underlying
+a notion of composition, we see that monads capture some fundamental
+aspects of the notion of composition. Monads provide a minimalist
+characterization of composition. As software engineers we must pay
+attention to this a proposal of this kind -- minimalist, yet evidently
+rich -- because composition is really one of the few tools we have to
+manage complexity. There are several ways, however, that the notion of
+composition codified by the theory of monads seems to break with our
+intuitive sense of what a physical container is.
+
+There's a favorite childhood tale that illustrates one of the vital
+differences. 
+
+\begin{quotation}
+  When Eeyore saw the pot, he became quite excited.
+  “Why!” he said. “I believe my Balloon will just go into that Pot!”
+  “Oh, no, Eeyore,” said Pooh. “Balloons are much too big to go into Pots. What you do with a balloon is, you hold the balloon -”
+  “Not mine,” said Eeyore proudly. “Look, Piglet!”
+  And as Piglet looked sorrowfully round, Eeyore picked the balloon up with his teeth, and placed it carefully in the pot; picked it out and put it on the ground; and then picked it up again and put it carefully back.
+  “So it does!” said Pooh. “It goes in!”
+  “So it does!” said Piglet. “And it comes out!”
+  “Doesn’t it?” said Eeyore. “It goes in and out like anything.”
+\end{quotation}
+
+Gloomy Eeyore takes a surprising delight in the configuration that
+allows him to put things into his very useful pot and then take them
+out again. In this sense Eeyore's honey pot was strictly richer, as an
+idea, than a monad because a monad, by itself, \emph{does not support
+  an operation to take things out of the box}. Things go in, but they
+don't go out. In this sense a monad -- without any additional gadetry
+-- is more like a piggybank than Eeyore's honey pot. This question of
+``takeout'' turns out to have some currency as it helps us classify
+and characterize a number of situations in the design of data
+structures and control flow -- common to computer scientists and
+professional programmers alike.
+
 \subsection{Option as container}
+
+To see this idea at work, recall the oft used example of the
+\lstinline[language=Scala,mathescape=true]!Option! monad. When viewed
+in terms of the question of ``takeout'' we see several things at
+once. First of all, if we are in the role of Eeyore and put something
+-- say the \lstinline[language=Scala,mathescape=true]!String!
+\lstinline[language=Scala,mathescape=true]!"ballon"! -- into our very
+useful pot, say an \lstinline[language=Scala,mathescape=true]!Option!,
+in \lstinline[language=Scala,mathescape=true]!val pigletsGift = Some( "balloon" )!, then we know that we can take it out:
+\lstinline[language=Scala,mathescape=true]!pigletsGift match { case Some( s ) => s }!. On the other hand, if we play in the role of Christopher Robin, and Eeyore hands us a very useful pot, i.e. something typed like \lstinline[language=Scala,mathescape=true]!pigletsGift : Option[String]!, then we cannot know whether there is something in the pot to take out or not \emph{without looking into the pot}: \lstinline[language=Scala,mathescape=true]!pigletsGift match { case Some( s ) => s case None => "no balloon" }!.
+
+Notice that nearly all the common containers,
+\lstinline[language=Scala,mathescape=true]!Set!,
+\lstinline[language=Scala,mathescape=true]!List!, etc, have this
+property. If we are in the role of constructing the container, we know
+whether or not the container enjoys any contents; but, if we are in
+the role of recipient, we cannot know if the container enjoys contents
+without looking inside.
+
+Now, this all may seem like plain common sense until we start to put
+it in context. As we will see in the next section, lots of monads very
+rightly do not support any sort of takeout whatsoever. This
+differentiates these situations of structure and control from the
+sorts we find with the commonly encountered containers. These
+situations and the dividing line between them turn out to be
+intimately connected with the notion of transaction! 
+
+On the flip side, there are very specialized containers and control
+disciplines in which every act of insertion is matched by an act of
+removal. Lest this seem strange, just think about the \emph{syntactic}
+structure of containers like
+\lstinline[language=Scala,mathescape=true]!List!s. For a
+\lstinline[language=Scala,mathescape=true]!List! to be well formed
+every left paren, \lstinline[language=Scala,mathescape=true]!(!, must
+eventually be matched by a right paren,
+\lstinline[language=Scala,mathescape=true]!)!. This property of
+matching pairs is really a deep, but common design pattern. When we
+think about the design of messaging systems, one of the properties we
+would like to ensure is that every request is eventually answered by a
+response. Protocols like \texttt{HTTP} are very draconian in the way
+they guarantee this property. It's not possible to ``nest''
+\texttt{HTTP} request/response pairs. This design choice forces a kind
+of ``statelessness'' on the protocol that doesn't have to be. It also
+gives rise to all kinds of work arounds to introduce sessions that
+give the modern programmer, as well as the modern user, all kinds of
+headaches. After all, why should Grandma ever have to be worried about
+``cleaning cookies out of the cache'' -- whatever that is! -- when all
+she wants to do is use the browser to book tickets to the movies for
+her grandkids?
+
+Intriguingly, the interplay between these very practical concerns and
+very deep mathematical patterns doesn't stop there. It turns out that
+this takeout-based classification scheme
+
+\begin{itemize}
+  \item contents go in, but don't come out
+  \item asymmetric roles of container provider and container recipient
+  \item matched pair discipline
+\end{itemize}
+
+is closely related to a famous historical development in logic! As
+we'll see below, the latter two categories have to do with
+\emph{intuitionistic} and \emph{linear} logics.
 
 \subsection{I/O monad for contrast}
 
